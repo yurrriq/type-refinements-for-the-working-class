@@ -1,0 +1,274 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{agda} % this should come after ams*
+\usepackage{catchfilebetweentags}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{ifdraft}
+\usepackage{ifthen}
+\usepackage{lualatex-math}
+%\usepackage{mathtools}
+\usepackage{proof}
+\usepackage{scalerel}
+\usepackage{setspace}
+\usepackage{stmaryrd}
+\usepackage{supertabular}
+\usepackage{tikz-cd}
+\usepackage{unicode-math}
+\usepackage{url}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{xunicode}
+
+\definecolor{dark-gray}{gray}{0.20}
+
+% fonts
+\usepackage[
+  activate={true,nocompatibility},
+  tracking=true
+]{microtype}
+\setmainfont{Linux Libertine O}
+\setmathfont{Asana Math}
+
+% make lualatex play nice with agda
+\makeatletter
+\ifluatex%
+   \newwrite\CATCHPATCHOUT%
+\fi
+\def\CatchFBT@Fin@l#1[#2]{%
+   \begingroup%
+      \endlinechar\m@ne\makeatletter #2%
+      \ifluatex%
+         \immediate\openout\CATCHPATCHOUT=\jobname.catchpatch%
+         \immediate\write\CATCHPATCHOUT{\CatchFBT@tok{\the\CatchFBT@tok}}%
+         \immediate\closeout\CATCHPATCHOUT%
+         \@@input\jobname.catchpatch%
+      \else%
+      \scantokens\expandafter{%
+         \expandafter\CatchFBT@tok\expandafter{\the\CatchFBT@tok}}%
+      \fi%
+      \CatchFBT@IsAToken{#1}%
+         {\global#1\expandafter{\the\CatchFBT@tok}}%
+         {\xdef#1{\the\CatchFBT@tok}}%
+      \ifx\CatchFBT@tok#1\else\global\CatchFBT@tok{}\fi%
+   \endgroup%
+}% \CatchFBT@Final
+\makeatother
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[thm]{Remark}
+\numberwithin{equation}{section}
+
+\def\IModeColorName{MidnightBlue}
+\def\OModeColorName{Maroon}
+
+\newcommand\IMode[1]{{\color{\IModeColorName}{#1}}}
+\newcommand\OMode[1]{{\color{\OModeColorName}{#1}}}
+
+\newcommand\HypJ[2]{#1\ \ (#2)}
+\newcommand\GenJ[2]{\vert_{\IMode{#1}}\; #2}
+
+\newcommand\IsTac[1]{\IMode{#1}\ \textit{tactic}}
+
+\newcommand\MkSet[1]{\left\{#1\right\}}
+\newcommand\Member[2]{\IMode{#1}\in\IMode{#2}}
+\newcommand\EqMember[3]{\IMode{#1}=\IMode{#2}\in\IMode{#3}}
+\newcommand\Of[2]{\IMode{#1}: \IMode{#2}}
+
+\newcommand\MkValence[3]{%
+  \ifthenelse{\equal{#1}{}}{}{%
+    \{#1\}%
+  }%
+  \ifthenelse{\equal{#2}{}}{}{%
+    [#2]%
+  }.\, #3%
+}
+\newcommand\MkBTm[3]{\{#1\}[#2].\, #3}
+\newcommand\MkArity[2]{(#1)\, #2}
+\newcommand\IsArity[1]{\IMode{#1}\ \textit{arity}}
+\newcommand\IsValence[1]{\IMode{#1}\ \textit{valence}}
+\newcommand\IsSort[1]{\IMode{#1}\ \textit{sort}}
+\newcommand\Leq[2]{\IMode{#1}\leq\IMode{#2}}
+
+\newcommand\ArrId[1]{1_{#1}}
+\newcommand\Match[2]{\IMode{#1}\equiv\OMode{#2}}
+
+\newcommand\Symbols{\mathbf{I}}
+\newcommand\SymSets{\mathbb{F}_\Symbols}
+\newcommand\FinSets{\mathbb{F}}
+\newcommand\Sorts{\mathcal{S}}
+\newcommand\Valences{\mathcal{V}}
+\newcommand\Arities{\mathcal{A}}
+\newcommand\Operators{\mathcal{O}}
+
+\newcommand\Cats{\mathbf{Cat}}
+\newcommand\Discrete[1]{#1_{\equiv}}
+\newcommand\Arr[1]{\mathbf{{#1}^{\rightarrow}}}
+\newcommand\Sets{\mathbf{Set}}
+\newcommand\SCtx{\mathbf{SCtx}}
+\newcommand\Ctx{\mathbf{Ctx}}
+\newcommand\Seq{\mathbf{Seq}}
+\newcommand\HypCat{\mathbf{H}}
+
+\newcommand\OpCat[1]{#1^{\mathsf{op}}}
+
+\newcommand\IsOperator[3]{\IMode{#1}\Vdash\IMode{#2}: \OMode{#3}}
+
+\newcommand\IsMetaCtx[1]{\IMode{#1}\ \textit{mctx}}
+\newcommand\IsVarCtx[1]{\IMode{#1}\ \textit{vctx}}
+\newcommand\IsSymCtx[1]{\IMode{#1}\ \textit{sctx}}
+
+\newcommand\Lookup[3]{\IMode{#1}\ni\IMode{#2}:\OMode{#3}}
+
+\newcommand\Grothendieck[2]{\oint^{#1} #2#1}
+\newcommand\Pair[2]{\left\langle#1, #2 \right\rangle}
+\newcommand\Tuple[1]{\left\langle#1 \right\rangle}
+\newcommand\FLift[2]{
+  \Operators\langle#1%
+  \ifthenelse{\equal{#2}{}}{}{, #2}\rangle%
+}
+\newcommand\PairTimes[2]{\langle#1\, {\scriptstyle{{\times}}}\, #2 \rangle}
+\newcommand\SSingleton{\bullet}
+\newcommand\Forget[1]{|\, #1\, |}
+
+\newcommand\Comma[2]{#1 \downarrow#2}
+\newcommand\Coslice[2]{#1\, /\, #2}
+
+\newcommand\IsAbt[5]{%
+  \IMode{#1}\triangleright%
+  \IMode{#2}\parallel%
+  \IMode{#3}\vdash%
+  \IMode{#4}:\OMode{#5}%
+}
+\newcommand\IsWf[5]{%
+  \IMode{#1}\triangleright%
+  \IMode{#2}\parallel%
+  \IMode{#3}\vdash%
+  \IMode{#4}\in_{\mathbf{wf}}\IMode{#5}%
+}
+
+\newcommand\IsBTm[5]{%
+  \IMode{#1}\triangleright%
+  \IMode{#2}\parallel%
+  \IMode{#3}\vdash%
+  \IMode{#4}:\IMode{#5}%
+}
+
+\newcommand\MV[1]{\mathfrak{#1}}
+\newcommand\MApp[3]{#1\{#2\}(#3)}
+\newcommand\App[2]{#1(#2)}
+\newcommand\Dom[1]{\left\vert#1\right\vert}
+\newcommand\FV[1]{\mathbf{FV}\left(#1\right)}
+\newcommand\FS[1]{\mathbf{FS}\left(#1\right)}
+\newcommand\NotIn[2]{\IMode{#1}\notin\IMode{#2}}
+\newcommand\SortExp{\mathsf{exp}}
+
+\newcommand\Hom[3]{#1\left[#2,#3\right]}
+
+\newcommand\Rename[2]{%
+  #2\upharpoonright#1%
+}
+
+\newcommand\IsRenaming[3]{%
+  \Rename{\IMode{#1}}{\IMode{#2}}%
+  \leadsto\OMode{#3}%
+}
+
+\newcommand\Subst[3]{%
+  \left[#1\, /\, #2\right]#3%
+}
+
+\newcommand\IsSubst[4]{%
+  \Subst{\IMode{#1}}{\IMode{#2}}{\IMode{#3}}%
+  \leadsto\OMode{#4}%
+}
+
+\newcommand\IsEq[2]{\IMode{#1} = \IMode{#2}}
+\newcommand\IsApart[2]{\IMode{#1} \mathrel{\#} \IMode{#2}}
+
+\newcommand\Define[2]{\IMode{#1}\triangleq\OMode{#2}}
+\newcommand\ADefine[2]{\IMode{#1}&\triangleq\OMode{#2}}
+
+\newcommand\SigFun[1]{\mathcal{F}_{#1}}
+
+\newcommand\SemBrackets[1]{\left\llbracket#1\right\rrbracket}
+\newcommand\Yoneda[1]{\boldsymbol{y} (#1)}
+
+\begin{document}
+
+\title{Type Refinements for the Working Class}
+\date{}
+\author{Jon Sterling and Darin Morrison}
+\maketitle
+
+There are two conflicting views which bedevil any discussion of the nature of
+type theory. First, there is the notion of type theory as an extension or
+generalization of universal algebra to support interdependency of sorts and
+operations, possibly subject to an arbitrary equational theory
+\cite{cartmell:1986, dybjer:1996}; we will call this \emph{formal type theory}.
+Typing, in such a setting, is a mere matter of grammar and is nearly always
+decidable. In hindsight, we may observe that this is the sort of type theory
+which Martin-L\"of first proposed in 1972 \cite{martin-lof:1972}, even if we
+will admit that this was not the intention at the time. A model for such a type
+theory is usually given by interpreting the types or sorts as presheaves or
+sheaves over contexts of hypotheses, and as such, a proof theoretic
+interpretation of the hypothetical judgment is inevitable.
+
+Secondly, there is the view of type theory as semi-formal theory of
+constructions for the Brouwer-Heyting-Kolmogorov interpretation of
+intuitionistic mathematical language, which we will call \emph{behavioral} or
+\emph{semantic type theory}. The most widely known development of this program
+is Martin-L\"of's 1979 ``extensional'' type theory \cite{martin-lof:1979,
+martin-lof:1984}, but we must give priority to Dana Scott for inventing this
+line of research in 1970 with his prophetic report, \emph{Constructive
+Validity} \cite{scott:1970}. More recently, behavioral type theory has been
+developed much further in the Nuprl family \cite{constable:1986} of proof
+assistants, including MetaPRL \cite{hickey:2003} and JonPRL \cite{jonprl:2015}.
+
+Martin-L\"of's key innovation was the commitment to pervasive functionality
+(extensionality) as part of the \emph{definitions} of the judgments and the
+types, in contrast to the state of affairs in formal type theory where
+functionality is a metatheorem which may or may not hold depending on the
+particular equational theory which has been imposed. Furthermore, models for
+behavioral type theory interpret the types as partial equivalence relations on
+only closed terms, and the meaning of the hypothetical judgment is defined
+separately and uniformly in the logical relations style.
+
+Our position is that these views of type theory are not in conflict, but rather
+merely describe two distinct layers in a single, harmonious system. From this
+perspective, formal type theories can do little more than negotiate matters of
+grammar, and therefore they serve as a syntactic (linguistic) framework
+for mathematical language, being responsible for the management of variable
+binding and substitution. On the other hand, the meaning of mathematical
+statements shall be characterized \emph{behaviorally} in the semantic type
+theory.
+
+The types of the semantic theory can then be said to \emph{refine} the types of
+the syntactic theory, both by placing restrictions on membership and by
+coarsening equivalence. Thus far, all developments of behavioral type theory
+have been built on a \emph{unityped} syntactic framework, and so the relation
+to type refinements has been difficult to see. In this paper, we contribute a
+full theory of behavioral refinements over multi-sorted abstract binding trees,
+a simple formal type theory \cite{harper:2016, sterling-morrison:2015}; this
+hybrid system allows the deployment of a Nuprl-style type theory over any
+signature of sorts and operators.
+
+\ifdraft{}{
+  \nocite{*}
+  \bibliographystyle{abbrv}
+  \bibliography{refs}
+}
+
+
+\end{document}
