@@ -151,13 +151,6 @@
   \IMode{#3}\vdash%
   \IMode{#4}:\OMode{#5}%
 }
-\newcommand\IsWf[5]{%
-  \IMode{#1}\triangleright%
-  \IMode{#2}\parallel%
-  \IMode{#3}\vdash%
-  \IMode{#4}\in_{\mathbf{wf}}\IMode{#5}%
-}
-
 \newcommand\IsBTm[5]{%
   \IMode{#1}\triangleright%
   \IMode{#2}\parallel%
@@ -204,6 +197,10 @@
 
 \newcommand\SemBrackets[1]{\left\llbracket#1\right\rrbracket}
 \newcommand\Yoneda[1]{\boldsymbol{y} (#1)}
+
+\newcommand\Refines[3]{\IMode{#1}\parallel \IMode{#2} \sqsubset \OMode{#3}}
+\newcommand\GRefines[2]{\IMode{#1}\sqsubset\OMode{#2}}
+\newcommand\RefinesCtx[2]{\IMode{#1}\sqsubset^\star\OMode{#2}}
 
 \begin{document}
 
@@ -264,6 +261,77 @@ behavioral refinements over multi-sorted abstract binding trees, a simple
 formal type theory \cite{harper:2016, sterling-morrison:2015}; this hybrid
 system allows the deployment of a Nuprl-style type theory over any signature of
 sorts and operators.
+
+\section{Abstract Binding Trees and Symbols}
+
+See \cite{sterling-morrison:2015} for the development of abstract binding trees
+with symbols.
+
+TODO: give a brief description of the framework, and present its rules.
+
+\section{Behavioral Refinements}
+
+Fixing a signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ in the abt
+framework, we will define the notion of behavioral refinement by propounding
+several judgments and their semantical explanations. We will require two
+judgments, defined mutually: $\RefinesCtx{\Phi}{\Upsilon}$, which means that
+$\Phi$ is a context which refines the symbol context $\Upsilon$ (presupposing
+$\IsSymCtx{\Upsilon}$, and $\Refines{\Phi}{\phi}{\tau}$, which shall presuppose
+$\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$).
+
+\newcommand\RefinesCtxNil{\sqsubset^\star_{\mathsf{nil}}}
+\newcommand\RefinesCtxSnoc{\sqsubset^\star_{\mathsf{snoc}}}
+
+The first judgment we define inductively:
+\begin{gather*}
+  \infer[\RefinesCtxNil]{
+    \RefinesCtx{\cdot}{\cdot}
+  }{
+  }\qquad
+  \infer[\RefinesCtxSnoc]{
+    \RefinesCtx{\Phi,u:\phi}{\Upsilon,u:\tau}
+  }{
+    \RefinesCtx{\Phi}{\Upsilon} &
+    \Refines{\Phi}{\phi}{\tau}
+  }
+\end{gather*}
+
+The second judgment is defined coinductively via the following meaning
+explanation:
+\begin{quote}
+  To know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
+  $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$) is to know, for any renaming
+  $\Of{\varrho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, for any $M, N$,
+  what it means for $M$ and $N$ to be identified under $\phi$, supposing
+  $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
+  $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$, requiring that if
+  $\IMode{M}\sim_\phi\IMode{N}$ then $\IMode{N}\sim_\phi\IMode{M}$, and if
+  $\IMode{M}\sim_\phi\IMode{N}$ and $\IMode{N}\sim_\phi\IMode{O}$, then
+  $\IMode{M}\sim_\phi\IMode{O}$.
+\end{quote}
+
+In other words, to know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
+$\RefinesCtx{\Phi}{\Upsilon}$) is to know, for any renaming of $\Upsilon$ to
+$\Upsilon'$, which partial equivalence relation on the closed $\Upsilon'$-terms
+of $\tau$ that $\phi$ denotes. At this point, it should be remarked that this
+is very similar to the semantical explanation of typehood given in
+\cite{martin-lof:1979}, except that we have generalized it to a multi-sorted
+setting, and that we have fibred the entire apparatus over collections
+$\Upsilon$ of symbols.
+
+\begin{thm}[Weakening]
+  If $\Refines{\Phi}{\phi}{\tau}$, then $\Refines{\Phi,u:\psi}{\phi}{\tau}$ (supposing
+  $\NotIn{u}{\Dom\Phi}$ and $\Refines{\Phi}{\psi}{\sigma}$).
+\end{thm}
+\begin{proof}
+  This follows trivially from the rule $\RefinesCtxSnoc$ and the canonical renaming
+  $\Upsilon\hookrightarrow\Upsilon,u:\sigma$.
+\end{proof}
+
+When we have $\Refines{\cdot}{\phi}{\tau}$, we say that $\phi$ is an
+\emph{global} refinement and may simply write $\GRefines{\phi}{\tau}$. By
+weakening, if $\GRefines{\phi}{\tau}$ then for all $\Phi$, we have
+$\Refines{\Phi}{\phi}{\tau}$ supposing $\RefinesCtx{\Phi}{\Upsilon}$.
 
 \ifdraft{}{
   \bibliographystyle{abbrv}
