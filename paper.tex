@@ -298,7 +298,7 @@ The first judgment we define inductively:
 
 The second judgment is defined coinductively via the following meaning
 explanation:
-\begin{quote}
+\begin{definition}[Refinement]
   To know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
   $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$) is to know, for any renaming
   $\Of{\varrho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, for any $M, N$,
@@ -308,7 +308,7 @@ explanation:
   $\IMode{M}\sim_\phi\IMode{N}$ then $\IMode{N}\sim_\phi\IMode{M}$, and if
   $\IMode{M}\sim_\phi\IMode{N}$ and $\IMode{N}\sim_\phi\IMode{O}$, then
   $\IMode{M}\sim_\phi\IMode{O}$.
-\end{quote}
+\end{definition}
 
 In other words, to know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
 $\RefinesCtx{\Phi}{\Upsilon}$) is to know, for any renaming of $\Upsilon$ to
