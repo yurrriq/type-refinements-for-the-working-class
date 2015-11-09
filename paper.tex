@@ -276,7 +276,7 @@ framework, we will define the notion of behavioral refinement by propounding
 several judgments and their semantical explanations. We will require two
 judgments, defined mutually: $\RefinesCtx{\Phi}{\Upsilon}$, which means that
 $\Phi$ is a context which refines the symbol context $\Upsilon$ (presupposing
-$\IsSymCtx{\Upsilon}$, and $\Refines{\Phi}{\phi}{\tau}$, which shall presuppose
+$\IsSymCtx{\Upsilon}$), and $\Refines{\Phi}{\phi}{\tau}$, which shall presuppose
 $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$).
 
 \newcommand\RefinesCtxNil{\sqsubset^\star_{\mathsf{nil}}}
@@ -301,7 +301,7 @@ explanation:
 \begin{definition}[Refinement]
   To know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
   $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$) is to know, for any renaming
-  $\Of{\varrho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, for any $M, N$,
+  $\Of{\varrho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, and for any $M, N$,
   what it means for $M$ and $N$ to be identified under $\phi$, supposing
   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$, requiring that if
