@@ -7,7 +7,8 @@ import os
 if __name__ == "__main__":
     ### check invocation dir
 
-    if os.path.basename(os.getcwd()) != "type-refinements-for-the-working-class":
+    basename = os.path.basename(os.getcwd())
+    if (basename != "type-refinements-for-the-working-class"):
         print "Invoke this script from the project root; exiting…"
         exit(1)
 
@@ -74,8 +75,9 @@ exit 0\
         cmds_latex =\
 """\
 pushd script/.. 1>&-
-latexmk %s-pdflatex='internal custom_latex lualatex %s %%O \"%s\input{%%S}\"' paper
+latexmk %s-pdflatex='internal custom_latex pdflatex %s %%O \"%s\input{%%S}\"' paper
 popd 1>&-
 exit 0\
 """ % (args_latexmk, args_pdflatex, opts_class)
         os.system(cmds_latex)
+
