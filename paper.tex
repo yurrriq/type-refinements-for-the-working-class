@@ -125,18 +125,14 @@
 \newcommand\Comma[2]{#1 \downarrow#2}
 \newcommand\Coslice[2]{#1\, /\, #2}
 
-\newcommand\IsAbt[5]{%
-  \IMode{#1}\triangleright%
-  \IMode{#2}\parallel%
-  \IMode{#3}\vdash%
-  \IMode{#4}:\OMode{#5}%
+\newcommand\IsAbtUnmoded[5]{
+  #1\triangleright%
+  #2\parallel%
+  #3\vdash%
+  #4:\OMode{#5}%
 }
-\newcommand\IsBTm[5]{%
-  \IMode{#1}\triangleright%
-  \IMode{#2}\parallel%
-  \IMode{#3}\vdash%
-  \IMode{#4}:\IMode{#5}%
-}
+\newcommand\IsAbt[5]{\IsAbtUnmoded{\IMode{#1}}{\IMode{#2}}{\IMode{#3}}{\IMode{#4}}{\OMode{#5}}}
+\newcommand\IsBTm[5]{\IsAbtUnmoded{\IMode{#1}}{\IMode{#2}}{\IMode{#3}}{\IMode{#4}}{\IMode{#5}}}
 
 \newcommand\MV[1]{\mathfrak{#1}}
 \newcommand\MApp[3]{#1\{#2\}(#3)}
@@ -189,6 +185,8 @@
 
 \newcommand\RMemEq[4]{\IMode{#1}\parallel \IMode{#2}=\IMode{#3}\in \IMode{#4}}
 \newcommand\HRMemEq[5]{\IMode{#1}\parallel \IMode{#2} \vDash \IMode{#3}=\IMode{#4}\in \IMode{#5}}
+
+\newcommand\Pow[1]{\wp\left(#1\right)}
 
 \begin{document}
 
@@ -267,8 +265,36 @@ rules.}
   the process.
 \fi
 
-\todo[inline]{explain general and hypothetical judgment with respect to ABTs (probably
-following Bob's book).}
+For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we may
+deploy a generic logical framework, where we interpret a judgment as the set of
+its derivations.
+
+\begin{definition}[General Judgment]
+  For a metavariable context $\IsMetaCtx{\Omega}$, let
+  \[\Define{[\Omega]}{\coprod_{\MV{m}:v}
+  \MkSet{E\mid\IsAbtUnmoded{\cdot}{\cdot}{\cdot}{E}{v}}}\] Then for any
+  $\Of{\mathcal{J}}{[\Omega]\to\Sets}$ we define the \emph{general judgment}
+  $\GenJ{\Omega}{\mathcal{J}}$ as the section
+  $\prod_{\omega\in[\Omega]}{\mathcal{J}(\omega)}$. Recall that metavariables
+  have \emph{valences} rather than sorts; as such, the general judgment allows
+  us to quantify over terms of higher type. However, for clarity we will often
+  write $\GenJ{\MV{m}:\sigma}{\mathcal{J}}$ rather than
+  $\GenJ{\MV{m}:\MkValence{\cdot}{\cdot}{\sigma}}{\mathcal{J}}$; likewise, in
+  the body of $\mathcal{J}$ we will simply write $\MV{m}$ rather than the more
+  proper $\MApp{\MV{m}}{\cdot}{\cdot}$.
+\end{definition}
+
+\begin{definition}[Hypothetical Judgment]
+  For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we have the
+  hypothetical judgment
+  $\Define{\HypJ{\mathcal{J}_2}{\mathcal{J}_1}}{\mathcal{J}_1\to\mathcal{J}_2}$.
+  In other words, evidence for a hypothetical judgment is an effective
+  transformation of evidence for the antecedent into evidence for the
+  consequent. Note that this is the \emph{semantic} hypothetical judgment,
+  which expresses admissibilities, rather than the \emph{syntactic}
+  hypothetical judgment, which expresses derivabilities. We will not have any
+  need for the latter.
+\end{definition}
 
 \section{Behavioral Refinements}
 
