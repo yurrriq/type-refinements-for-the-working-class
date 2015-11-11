@@ -19,6 +19,7 @@
 \usepackage{supertabular}
 \usepackage{tikz-cd}
 \usepackage{url}
+\usepackage{todonotes}
 
 \usepackage{pxfonts}
 \usepackage{eulervm}
@@ -249,24 +250,25 @@ formal type theory \cite{harper:2016, sterling-morrison:2015}; this hybrid
 system allows the deployment of a Nuprl-style type theory over any signature of
 sorts and operators.
 
-\ifcolored
-  \bigskip
-  \begin{remark*}[Typographical Conventions]
-    In this paper, we hint at the \emph{modes} of judgments and assertions
-    \cite{harper:2016} using colors, marking inputs with
-    $\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule
-    of thumb, inputs are things which are supplied when checking the
-    correctness of a judgment, and outputs are things which are synthesized in
-    the process.
-  \end{remark*}
-\fi
-
 \section{Abstract Binding Trees and Symbols}
 
 See \cite{sterling-morrison:2015} for the development of abstract binding trees
-with symbols.
+with symbols. \todo[inline]{give a brief description of the framework, and present its
+rules.}
 
-TODO: give a brief description of the framework, and present its rules.
+\section{The Ambient Logical Framework}
+
+\ifcolored
+  In this paper, we hint at the \emph{modes} of judgments and assertions
+  \cite{harper:2016} using colors, marking inputs with
+  $\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule
+  of thumb, inputs are things which are supplied when checking the
+  correctness of a judgment, and outputs are things which are synthesized in
+  the process.
+\fi
+
+\todo[inline]{explain general and hypothetical judgment with respect to ABTs (probably
+following Bob's book).}
 
 \section{Behavioral Refinements}
 
@@ -322,8 +324,10 @@ this is very similar to the semantical explanation of typehood given in
 setting, and that we have fibred the entire apparatus over collections
 $\Upsilon$ of symbols.
 
-% TODO: define maps of refined contexts, then change weakening lemma to
-% monotonicity, which is stronger and more useful.
+\todo[inline]{%
+  define maps of refined contexts, then change weakening lemma to
+  monotonicity, which is stronger and more useful.
+}
 \begin{thm}[Weakening]
   If $\Refines{\Phi}{\phi}{\tau}$, then $\Refines{\Phi,u:\psi}{\phi}{\tau}$ (supposing
   $\NotIn{u}{\Dom\Phi}$ and $\Refines{\Phi}{\psi}{\sigma}$).
