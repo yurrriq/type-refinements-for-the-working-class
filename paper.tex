@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{leftidx}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -179,6 +180,14 @@
 \newcommand\Refines[3]{\IMode{#1}\parallel \IMode{#2} \sqsubset \OMode{#3}}
 \newcommand\GRefines[2]{\IMode{#1}\sqsubset\OMode{#2}}
 \newcommand\RefinesCtx[2]{\IMode{#1}\sqsubset^\star\OMode{#2}}
+\newcommand\EqRefines[4]{\IMode{#1}\parallel\IMode{#2}=\IMode{#3}\sqsubset\OMode{#4}}
+
+\newcommand\HRefines[4]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}\sqsubset\OMode{#4}}
+\newcommand\HEqRefines[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\sqsubset\OMode{#5}}
+\newcommand\PRefinesCtx[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset^\star\OMode{#3}}
+
+\newcommand\RMemEq[4]{\IMode{#1}\parallel \IMode{#2}=\IMode{#3}\in \IMode{#4}}
+\newcommand\HRMemEq[5]{\IMode{#1}\parallel \IMode{#2} \vDash \IMode{#3}=\IMode{#4}\in \IMode{#5}}
 
 \begin{document}
 
@@ -263,10 +272,14 @@ TODO: give a brief description of the framework, and present its rules.
 
 Fixing a signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ in the abt
 framework, we will define the notion of behavioral refinement by propounding
-several judgments and their semantical explanations. We will require two
-judgments, defined mutually: $\RefinesCtx{\Phi}{\Upsilon}$, which means that
-$\Phi$ is a context which refines the symbol context $\Upsilon$ (presupposing
-$\IsSymCtx{\Upsilon}$), and $\Refines{\Phi}{\phi}{\tau}$, which shall presuppose
+several judgments and their semantical explanations.
+
+\subsection{Parametric Refinement}
+
+We will require two judgments, defined mutually: $\RefinesCtx{\Phi}{\Upsilon}$,
+which means that $\Phi$ is a symbol context which refines the symbol context
+$\Upsilon$ (presupposing $\IsSymCtx{\Upsilon}$), and parametric refinement
+$\Refines{\Phi}{\phi}{\tau}$, which shall presuppose
 $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$).
 
 \newcommand\RefinesCtxNil{\sqsubset^\star_{\mathtt{nil}}}
@@ -288,16 +301,16 @@ The first judgment we define inductively:
 
 The second judgment is defined coinductively via the following meaning
 explanation:
-\begin{definition}[Refinement]
+\begin{definition}[Parametric Refinement]
   To know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
   $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$) is to know, for any renaming
   $\Of{\varrho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, and for any $M, N$,
   what it means for $M$ and $N$ to be identified under $\phi$, supposing
   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$, requiring that if
-  $\IMode{M}\sim_\phi\IMode{N}$ then $\IMode{N}\sim_\phi\IMode{M}$, and if
-  $\IMode{M}\sim_\phi\IMode{N}$ and $\IMode{N}\sim_\phi\IMode{O}$, then
-  $\IMode{M}\sim_\phi\IMode{O}$.
+  $\IMode{M}\sim^\rho_\phi\IMode{N}$ then $\IMode{N}\sim^\rho_\phi\IMode{M}$, and if
+  $\IMode{M}\sim^\rho_\phi\IMode{N}$ and $\IMode{N}\sim^\rho_\phi\IMode{O}$, then
+  $\IMode{M}\sim^\rho_\phi\IMode{O}$.
 \end{definition}
 
 In other words, to know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
@@ -324,6 +337,126 @@ When we have $\Refines{\cdot}{\phi}{\tau}$, we say that $\phi$ \emph{globally}
 refines $\tau$ and may simply write $\GRefines{\phi}{\tau}$. By weakening, if
 $\GRefines{\phi}{\tau}$ then for all $\Phi$, we have
 $\Refines{\Phi}{\phi}{\tau}$ supposing $\RefinesCtx{\Phi}{\Upsilon}$.
+
+\subsubsection{Equality of parametric refinement}
+
+Two refinements are equal when they denote the same PER. That is, will define
+the refinement equality judgment $\EqRefines{\Phi}{\phi}{\psi}{\tau}$ as
+follows, presupposing $\RefinesCtx{\Phi}{\Upsilon}$,
+$\Refines{\Phi}{\phi}{\tau}$ and $\Refines{\Phi}{\psi}{\tau}$:
+\begin{definition}
+  To know $\EqRefines{\Phi}{\phi}{\psi}{\tau}$ is to know, for any substitution
+  $\Of{\rho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, and for any $M, N$
+  such that $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
+  $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$,
+  $\IMode{M}\sim^\rho_\phi\IMode{N}$ if and only if
+  $\IMode{M}\sim^\rho_\psi\IMode{N}$.
+\end{definition}
+
+\subsection{Parametric Equality}
+
+The primary judgment concerning refinements is the parametric equality,
+$\RMemEq{\Phi}{M}{N}{\phi}$, which presupposes $\RefinesCtx{\Phi}{\Upsilon}$,
+$\Refines{\Phi}{\phi}{\tau}$, $\IsAbt{\cdot}{\Upsilon}{\cdot}{M}{\tau}$ and
+$\IsAbt{\cdot}{\Upsilon}{\cdot}{N}{\tau}$. The meaning of this judgment is that
+$M$ and $N$ are identified by $\phi$ at the identity renaming
+$\Of{1}{\IMode{\Upsilon}\hookrightarrow\OMode{\Upsilon}}$:
+\[
+  \infer{
+    \RMemEq{\Phi}{M}{N}{\phi}
+  }{
+    \IMode{M}\sim^1_\phi\IMode{N}
+  }
+\]
+
+\subsection{Functional Refinement and Equality}
+
+\newcommand\PRefinesCtxNil{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{nil}}}}
+\newcommand\PRefinesCtxSnoc{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{snoc}}}}
+
+Next, we define hypothetico-general (or \emph{functional}) refinement
+$\HEqRefines{\Phi}{\Psi}{\phi}{\psi}{\tau}$ in terms of parametric refinement,
+simultaneously with parametric context refinement
+$\PRefinesCtx{\Phi}{\Psi}{\Gamma}$ and functional equality
+$\HRMemEq{\Phi}{\Psi}{M}{N}{\phi}$. We will write
+$\HRefines{\Phi}{\Psi}{\phi}{\tau}$ as a shorthand for
+$\HEqRefines{\Phi}{\Psi}{\phi}{\phi}{\tau}$.
+
+\newcommand\DefPRefinesCtxNil[1]{
+  \infer[\PRefinesCtxNil]{
+    \PRefinesCtx{#1}{\cdot}{\cdot}
+  }{
+  }
+}
+\newcommand\DefPRefinesCtxSnoc[6]{
+  \infer[\PRefinesCtxSnoc]{
+    \PRefinesCtx{#1}{#2,#3:#4}{#5,#3:#6}
+  }{
+    \PRefinesCtx{#1}{#2}{#5} &
+    \HRefines{#1}{#2}{#4}{#6}
+  }
+}
+
+Parametric context refinement $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$ shall be
+defined as follows, presupposing $\RefinesCtx{\Phi}{\Upsilon}$ and
+$\IsVarCtx{\Gamma}$:
+\begin{gather*}
+  \DefPRefinesCtxNil{\Phi}\qquad
+  \DefPRefinesCtxSnoc{\Phi}{\Psi}{x}{\phi}{\Gamma}{\tau}
+\end{gather*}
+
+Functional refinement $\HRefines{\Phi}{\Psi}{\phi}{\tau}$ presupposes
+$\PRefinesCtx{\Phi}{\Psi}{\Gamma}$ and $\IsSort{\tau}$, and is explained by
+induction on the evidence for its first presupposition.
+
+\paragraph{Case} $\DefPRefinesCtxNil{\Phi}$.
+\[
+  \infer{
+    \HRefines{\Phi}{\cdot}{\phi}{\tau}
+  }{
+    \Refines{\Phi}{\phi}{\tau}
+  }
+\]
+
+\paragraph{Case} $\DefPRefinesCtxSnoc{\Phi}{\Psi}{x}{\psi}{\Gamma}{\sigma}$.
+\begin{gather*}
+  \infer{
+    \HRefines{\Phi}{\Psi,x:\psi}{\phi}{\tau}
+  }{
+    \GenJ{y,z:\sigma}{
+      \HypJ{
+        \HEqRefines{\Phi}{\Psi}{\Subst{y}{x}{\phi}}{\Subst{z}{x}{\phi}}{\tau}
+      }{
+        \HRMemEq{\Phi}{\Psi}{y}{z}{\phi}
+      }
+    }
+  }
+\end{gather*}
+
+
+%% Functional equality $\HRMemEq{\Phi}{\Psi}{M}{N}{\phi}$ is defined by
+%% induction on the evidence for its presupposition
+%% $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$:
+%% \begin{gather*}
+%%   \infer{
+%%     \HRMemEq{\Phi}{\cdot}{M}{N}{\phi}
+%%   }{
+%%     \RMemEq{\Phi}{M}{N}{\phi}
+%%   }\qquad
+%%   \infer{
+%%     \HRMemEq{\Phi}{\Psi,x:\psi}{M}{N}{\phi}
+%%   }{
+%%  }
+%%\end{gather*}
+
+%%
+%% \subsection{Parametric functional equality}
+%%
+%% Next, we will define the parametric hypothetico-general (or \emph{functional})
+%% equality
+%% $\IMode{\Phi}\parallel\IMode{\Psi}\vDash\IMode{M}=\IMode{N}\in\IMode{\phi}$
+%% simultaneously with variable context well-formedness,
+%% $\IMode{\Phi}\parallel\RefinesCtx{\Psi}{\Gamma}$.
 
 \ifdraft{}{
   \bibliographystyle{abbrv}
