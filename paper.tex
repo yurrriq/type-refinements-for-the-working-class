@@ -22,38 +22,14 @@
 \usepackage{pxfonts}
 \usepackage{eulervm}
 
-\definecolor{dark-gray}{gray}{0.20}
+\newif\ifcolored
+\coloredtrue
 
 % fonts
 \usepackage[
   activate={true,nocompatibility},
   tracking=true
 ]{microtype}
-
-% make lualatex play nice with agda
-\makeatletter
-\ifluatex%
-   \newwrite\CATCHPATCHOUT%
-\fi
-\def\CatchFBT@Fin@l#1[#2]{%
-   \begingroup%
-      \endlinechar\m@ne\makeatletter #2%
-      \ifluatex%
-         \immediate\openout\CATCHPATCHOUT=\jobname.catchpatch%
-         \immediate\write\CATCHPATCHOUT{\CatchFBT@tok{\the\CatchFBT@tok}}%
-         \immediate\closeout\CATCHPATCHOUT%
-         \@@input\jobname.catchpatch%
-      \else%
-      \scantokens\expandafter{%
-         \expandafter\CatchFBT@tok\expandafter{\the\CatchFBT@tok}}%
-      \fi%
-      \CatchFBT@IsAToken{#1}%
-         {\global#1\expandafter{\the\CatchFBT@tok}}%
-         {\xdef#1{\the\CatchFBT@tok}}%
-      \ifx\CatchFBT@tok#1\else\global\CatchFBT@tok{}\fi%
-   \endgroup%
-}% \CatchFBT@Final
-\makeatother
 
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{prop}[thm]{Proposition}
@@ -64,10 +40,16 @@
 \newtheorem{example}[thm]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[thm]{Remark}
+\newtheorem*{remark*}{Remark}
 \numberwithin{equation}{section}
 
-\def\IModeColorName{MidnightBlue}
-\def\OModeColorName{Maroon}
+\ifcolored
+  \def\IModeColorName{MidnightBlue}
+  \def\OModeColorName{Maroon}
+\else
+  \def\IModeColorName{Black}
+  \def\OModeColorName{Black}
+\fi
 
 \newcommand\IMode[1]{{\color{\IModeColorName}{#1}}}
 \newcommand\OMode[1]{{\color{\OModeColorName}{#1}}}
@@ -257,6 +239,18 @@ behavioral refinements over multi-sorted abstract binding trees, a simple
 formal type theory \cite{harper:2016, sterling-morrison:2015}; this hybrid
 system allows the deployment of a Nuprl-style type theory over any signature of
 sorts and operators.
+
+\ifcolored
+  \bigskip
+  \begin{remark*}[Typographical Conventions]
+    In this paper, we hint at the \emph{modes} of judgments and assertions
+    \cite{harper:2016} using colors, marking inputs with
+    $\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule
+    of thumb, inputs are things which are supplied when checking the
+    correctness of a judgment, and outputs are things which are synthesized in
+    the process.
+  \end{remark*}
+\fi
 
 \section{Abstract Binding Trees and Symbols}
 
