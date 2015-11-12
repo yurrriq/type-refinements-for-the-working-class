@@ -570,29 +570,41 @@ where $\RefinesCtx{\Phi}{\Upsilon}$.
 \end{gather*}
 
 
-%% Functional equality $\HRMemEq{\Phi}{\Psi}{M}{N}{\phi}$ is defined by
-%% induction on the evidence for its presupposition
-%% $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$:
-%% \begin{gather*}
-%%   \infer{
-%%     \HRMemEq{\Phi}{\cdot}{M}{N}{\phi}
-%%   }{
-%%     \RMemEq{\Phi}{M}{N}{\phi}
-%%   }\qquad
-%%   \infer{
-%%     \HRMemEq{\Phi}{\Psi,x:\psi}{M}{N}{\phi}
-%%   }{
-%%  }
-%%\end{gather*}
+Functional equality $\HRMemEq{\Phi}{\Psi}{M}{N}{\phi}$ presupposes
+$\RefinesCtx{\Phi}{\Upsilon}$, $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$,
+$\HRefines{\Phi}{\Psi}{\phi}{\tau}$, $\IsAbt{\cdot}{\Upsilon}{\Gamma}{M}{\tau}$
+and $\IsAbt{\cdot}{\Upsilon}{\Gamma}{N}{\tau}$; the judgment is defined by
+induction on the evidence for the second presupposition
+$\PRefinesCtx{\Phi}{\Psi}{\Gamma}$:
 
-%%
-%% \subsection{Parametric functional equality}
-%%
-%% Next, we will define the parametric hypothetico-general (or \emph{functional})
-%% equality
-%% $\IMode{\Phi}\parallel\IMode{\Psi}\vDash\IMode{M}=\IMode{N}\in\IMode{\phi}$
-%% simultaneously with variable context well-formedness,
-%% $\IMode{\Phi}\parallel\RefinesCtx{\Psi}{\Gamma}$.
+\paragraph{Case} $\DefPRefinesCtxNil{\Phi}$.
+\[
+  \infer{
+    \HRMemEq{\Phi}{\cdot}{M}{N}{\phi}
+  }{
+    \RMemEq{\Phi}{M}{N}{\phi}
+  }
+\]
+
+\paragraph{Case} $\DefPRefinesCtxSnoc{\Phi}{\Psi}{x}{\psi}{\Gamma}{\sigma}$,
+where $\RefinesCtx{\Phi}{\Upsilon}$.
+\[
+  \infer{
+    \HRMemEq{\Phi}{\Psi,x:\psi}{M}{N}{\phi}
+  }{
+    \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
+      \HypJ{
+        \HRMemEq{\Phi}{\Psi}{
+          \Subst{\MV{m}}{x}{\phi}
+        }{
+          \Subst{\MV{n}}{x}{\psi}
+        }{\phi}
+      }{
+        \HRMemEq{\Phi}{\Psi}{\MV{n}}{\MV{n}}{\psi}
+      }
+    }
+  }
+\]
 
 \ifdraft{}{
   \bibliographystyle{abbrv}
