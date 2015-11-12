@@ -155,7 +155,7 @@
 \newcommand\NotIn[2]{\IMode{#1}\notin\IMode{#2}}
 \newcommand\SortExp{\mathsf{exp}}
 
-\newcommand\Hom[3]{#1\!\left[#2,\,#3\right]}
+\newcommand\Hom[3]{#1\!\left[#2,\,#3\right]\!}
 
 \newcommand\Rename[2]{%
   #2\upharpoonright#1%
@@ -357,7 +357,7 @@ is identified with the intensional set of its renaming-sensitive derivations.
     }\\
     &\cong
     \OMode{
-      \int_{w':\mathcal{W}}{\Hom{\Sets}{\Hom{\mathcal{W}}{w'}{w}}{\mathcal{J}_{2}(w')}}
+      \int_{w':\mathcal{W}}{\Hom{\Sets}{\Hom{\mathcal{W}}{w'}{w}\times{\mathcal{J}_{2}(w')}}{\mathcal{J}_{2}(w')}}
     }
   \end{align*}
 
