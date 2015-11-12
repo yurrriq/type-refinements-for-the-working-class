@@ -24,8 +24,8 @@
 \usepackage{pxfonts}
 \usepackage{eulervm}
 
-\newif\ifcolored
-\coloredtrue
+\newif\ifcolored%
+\coloredtrue%
 
 % fonts
 \usepackage[
@@ -45,7 +45,7 @@
 \newtheorem*{remark*}{Remark}
 \numberwithin{equation}{section}
 
-\ifcolored
+\ifcolored%
   \def\IModeColorName{MidnightBlue}
   \def\OModeColorName{Maroon}
 \else
@@ -174,7 +174,7 @@
 \newcommand\SemBrackets[1]{\left\llbracket#1\right\rrbracket}
 \newcommand\Yoneda[1]{\boldsymbol{y} (#1)}
 
-\newcommand\Refines[3]{\IMode{#1}\parallel \IMode{#2} \sqsubset \OMode{#3}}
+\newcommand\Refines[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset\OMode{#3}}
 \newcommand\GRefines[2]{\IMode{#1}\sqsubset\OMode{#2}}
 \newcommand\RefinesCtx[2]{\IMode{#1}\sqsubset^\star\OMode{#2}}
 \newcommand\EqRefines[4]{\IMode{#1}\parallel\IMode{#2}=\IMode{#3}\sqsubset\OMode{#4}}
@@ -183,8 +183,8 @@
 \newcommand\HEqRefines[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\sqsubset\OMode{#5}}
 \newcommand\PRefinesCtx[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset^\star\OMode{#3}}
 
-\newcommand\RMemEq[4]{\IMode{#1}\parallel \IMode{#2}=\IMode{#3}\in \IMode{#4}}
-\newcommand\HRMemEq[5]{\IMode{#1}\parallel \IMode{#2} \vDash \IMode{#3}=\IMode{#4}\in \IMode{#5}}
+\newcommand\RMemEq[4]{\IMode{#1}\parallel\IMode{#2}=\IMode{#3}\in\IMode{#4}}
+\newcommand\HRMemEq[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\in\IMode{#5}}
 
 \newcommand\Pow[1]{\wp\left(#1\right)}
 
@@ -202,7 +202,7 @@ operations, possibly subject to an arbitrary equational theory
 \cite{cartmell:1986, dybjer:1996}; we will call this \emph{formal type theory}.
 Typing, in such a setting, is a mere matter of grammar and is nearly always
 decidable. In hindsight, we may observe that this is the sort of type theory
-which Martin-L\"of first proposed in 1972 \cite{martin-lof:1972}, even if we
+which Martin-L\"of first proposed in 1972~\cite{martin-lof:1972}, even if we
 will admit that this was not the intention at the time. A model for such a type
 theory is usually given by interpreting the types or sorts as presheaves or
 sheaves over contexts of hypotheses, and as such, a proof theoretic
@@ -212,12 +212,12 @@ Secondly, there is the view of type theory as semi-formal theory of
 constructions for the Brouwer-Heyting-Kolmogorov interpretation of
 intuitionistic mathematical language, which we will call \emph{behavioral} or
 \emph{semantic type theory}. The most widely known development of this program
-is Martin-L\"of's 1979 ``extensional'' type theory \cite{martin-lof:1979,
+is Martin-L\"of's 1979 ``extensional'' type theory~\cite{martin-lof:1979,
 martin-lof:1984}, but we must give priority to Dana Scott for inventing this
 line of research in 1970 with his prophetic report, \emph{Constructive
-Validity} \cite{scott:1970}. More recently, behavioral type theory has been
-developed much further in the Nuprl family \cite{constable:1986} of proof
-assistants, including MetaPRL \cite{hickey:2003} and JonPRL \cite{jonprl:2015}.
+Validity}~\cite{scott:1970}. More recently, behavioral type theory has been
+developed much further in the Nuprl family~\cite{constable:1986} of proof
+assistants, including MetaPRL~\cite{hickey:2003} and JonPRL~\cite{jonprl:2015}.
 
 Martin-L\"of's key innovation was the commitment to pervasive functionality
 (extensionality) as part of the \emph{definitions} of the judgments and the
@@ -238,32 +238,30 @@ statements shall be specified \emph{behaviorally} in the semantic type
 theory.
 
 The types of the semantic theory can then be said to \emph{refine} the types of
-the syntactic theory \cite{harper-davies:2014, harper-duff:2015, harper:2016},
+the syntactic theory~\cite{harper-davies:2014, harper-duff:2015, harper:2016},
 both by placing restrictions on membership and by coarsening equivalence. Thus
 far, all developments of behavioral type theory have been built on a
 \emph{unityped} syntactic framework, and so the relation to type refinements
 has been difficult to see. In this paper, we contribute a full theory of
 behavioral refinements over multi-sorted abstract binding trees, a simple
-formal type theory \cite{harper:2016, sterling-morrison:2015}; this hybrid
+formal type theory~\cite{harper:2016, sterling-morrison:2015}; this hybrid
 system allows the deployment of a Nuprl-style type theory over any signature of
 sorts and operators.
 
 \section{Abstract Binding Trees and Symbols}
 
-See \cite{sterling-morrison:2015} for the development of abstract binding trees
+See~\cite{sterling-morrison:2015} for the development of abstract binding trees
 with symbols. \todo[inline]{give a brief description of the framework, and present its
 rules.}
 
 \section{The Ambient Logical Framework}
 
-\ifcolored
-  In this paper, we hint at the \emph{modes} of judgments and assertions
-  \cite{harper:2016} using colors, marking inputs with
-  $\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule
-  of thumb, inputs are things which are supplied when checking the
-  correctness of a judgment, and outputs are things which are synthesized in
-  the process.
-\fi
+\ifcolored%
+In this paper, we hint at the \emph{modes} of judgments and
+assertions~\cite{harper:2016} using colors, marking inputs with
+$\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule of
+thumb, inputs are things which are supplied when checking the correctness of a
+judgment, and outputs are things which are synthesized in the process. \fi
 
 For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ and small worlds
 category $\mathcal{W}$, we may deploy a generic logical framework in which the
@@ -297,7 +295,7 @@ with the intensional set of its derivations).
 
   Intuitively, the general judgment $\GenJ{\Omega}{\mathcal{J}}$ is evident
   when the family of judgments $\mathcal{J}$ shall forevermore have a section
-  (i.e. for any substitution $\Member{\omega}{\square\Omega}$,
+  (i.e.\ for any substitution $\Member{\omega}{\square\Omega}$,
   $\mathcal{J}(\omega)$ shall be evident). Recall that metavariables have
   \emph{valences} rather than sorts; as such, the general judgment allows us to
   quantify over terms of higher type.  However, for clarity we will often write
@@ -334,8 +332,8 @@ with the intensional set of its derivations).
   be an effective transformation of evidence for the antecedent into evidence
   for the consequent. It is important to keep in mind that this is a
   \emph{semantic} consequence and therefore expresses admissibilities, in
-  contrast to the \emph{logical} consequence which expresses derivabilities
-  \cite{harper:2016}.  We will not have any need for the latter.
+  contrast to the \emph{logical} consequence which expresses
+  derivabilities~\cite{harper:2016}. We will not have any need for the latter.
 \end{definition}
 
 After this section, we will define a judgment either by rules, or by an
@@ -354,7 +352,7 @@ several judgments and their semantical explanations.
 We will require two judgments, defined mutually: $\RefinesCtx{\Phi}{\Upsilon}$,
 which means that $\Phi$ is a symbol context which refines the symbol context
 $\Upsilon$ (presupposing $\IsSymCtx{\Upsilon}$), and parametric refinement
-$\Refines{\Phi}{\phi}{\tau}$, which shall presuppose
+$\Refines{\Phi}{\phi}{\tau}$ (which shall presuppose
 $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$).
 
 \newcommand\RefinesCtxNil{\sqsubset^\star_{\mathtt{nil}}}
@@ -417,7 +415,7 @@ $\Refines{\Phi}{\phi}{\tau}$ supposing $\RefinesCtx{\Phi}{\Upsilon}$.
 
 \subsubsection{Equality of parametric refinement}
 
-Two refinements are equal when they denote the same PER. That is, will define
+Two refinements are equal when they denote the same PER.\@That is, will define
 the refinement equality judgment $\EqRefines{\Phi}{\phi}{\psi}{\tau}$ as
 follows, presupposing $\RefinesCtx{\Phi}{\Upsilon}$,
 $\Refines{\Phi}{\phi}{\tau}$ and $\Refines{\Phi}{\psi}{\tau}$:
