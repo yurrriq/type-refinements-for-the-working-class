@@ -266,46 +266,52 @@ $\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule of
 thumb, inputs are things which are supplied when checking the correctness of a
 judgment, and outputs are things which are synthesized in the process. \fi
 
-For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ and small worlds
-category $\mathcal{W}$, we may deploy a generic logical framework in which the
-meaning of a judgment is an object in the presheaf category
-$\Define{\mathbb{J}}{\Sets^\mathcal{W}}$ (that is, a judgment is identified
-with the intensional set of its derivations).
+Then, for any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we can
+deploy a generic logical framework. Recall from \cite{sterling-morrison:2015}
+that $\SCtx$ is the category of symbol-contexts and their injective,
+sort-preserving renamings. Then, fix a small category $\mathcal{W}$ of worlds
+along with a map $\Of{\pi_\mathcal{W}}{\mathcal{W}\to\SCtx}$ such that
+$\pi_\mathcal{W}$ is a Grothendieck opfibration. Then, a \emph{judgment} shall
+be interpreted as an object in the presheaf category
+$\Define{\mathbb{J}}{\Sets^\mathcal{W}}$; in other words, a judgment is
+identified with the intensional set of its renaming-sensitive derivations.
 
 \begin{definition}[General Judgment]
-  For a metavariable context $\IsMetaCtx{\Omega}$, we can define the set
-  of its substitutions as the following product:
+  For a metavariable context $\IsMetaCtx{\Omega}$, we can define the presheaf
+  of its substitutions $\Of{\square\Omega}{\Sets^\SCtx}$ as follows:
   \[
-    \Define{\square\Omega}{
-      \prod_{(\MV{m}:v)\in\Omega} \MkSet{E\mid\IsAbtUnmoded{\cdot}{\cdot}{\cdot}{E}{v}}
-    }
-  \]
-  Let $\Discrete{\square\Omega}$ be the discrete category on $\square\Omega$. Then, for
-  any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\Discrete{\square\Omega}}}$, we can
-  define the general judgment $\GenJ{\Omega}{\mathcal{J}}$ as follows:
-  \[
-    \textstyle
-    \Define{
-      \left(\GenJ{\Omega}{\mathcal{J}}\right)(w)
-    }{
-      \Hom{\mathbb{J}}{
-        \Yoneda{w}
-      }{
-        Lan_{\mathbbold{1}}{\mathcal{J}}
-      }
+    \Define{{\square\Omega}\,(\Upsilon)}{
+      \prod_{(\MV{m}:v)\in\Omega}
+        \MkSet{E\mid\IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{E}{v}}
     }
   \]
 
-  Intuitively, the general judgment $\GenJ{\Omega}{\mathcal{J}}$ is evident
-  when the family of judgments $\mathcal{J}$ shall forevermore have a section
-  (i.e.\ for any substitution $\Member{\omega}{\square\Omega}$,
-  $\mathcal{J}(\omega)$ shall be evident). Recall that metavariables have
-  \emph{valences} rather than sorts; as such, the general judgment allows us to
-  quantify over terms of higher type.  However, for clarity we will often write
-  $\GenJ{\MV{m}:\sigma}{\mathcal{J}}$ rather than
-  $\GenJ{\MV{m}:\MkValence{\cdot}{\cdot}{\sigma}}{\mathcal{J}}$; likewise, in
-  the body of $\mathcal{J}$ we will simply write $\MV{m}$ rather than the more
-  proper $\MApp{\MV{m}}{\cdot}{\cdot}$.
+  For any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\square\Omega(\Upsilon)}}$, we can define
+  the general judgment $\GenJ{\Omega}{\mathcal{J}}$ as follows, where
+  $\Of{\Yoneda{-}}{\mathcal{W}\to\mathbb{J}}$ is the Yoneda Embedding:
+   \[
+     \textstyle
+     \Define{
+       \left(\GenJ{\Omega}{\mathcal{J}}\right)(w)
+     }{
+       \Hom{\mathbb{J}}{
+         \Yoneda{w}
+       }{
+         Lan_{\mathbbold{1}}{\mathcal{J}}
+       }
+     }
+   \]
+
+   Intuitively, the general judgment $\GenJ{\Omega}{\mathcal{J}}$ is evident
+   when the family of judgments $\mathcal{J}$ shall forevermore have a section
+   (i.e. for any substitution $\Member{\omega}{\square\Omega(\Upsilon)}$,
+   $\mathcal{J}(\omega)$ shall be evident). Recall that metavariables have
+   \emph{valences} rather than sorts; as such, the general judgment allows us to
+   quantify over terms of higher type.  However, for clarity we will often write
+   $\GenJ{\MV{m}:\sigma}{\mathcal{J}}$ rather than
+   $\GenJ{\MV{m}:\MkValence{\cdot}{\cdot}{\sigma}}{\mathcal{J}}$; likewise, in
+   the body of $\mathcal{J}$ we will simply write $\MV{m}$ rather than the more
+   proper $\MApp{\MV{m}}{\cdot}{\cdot}$.
 
 \end{definition}
 
