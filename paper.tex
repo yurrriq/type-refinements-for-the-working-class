@@ -280,10 +280,10 @@ deploy a generic logical framework. Recall from \cite{sterling-morrison:2015}
 that $\SCtx$ is the category of symbol-contexts and their injective,
 sort-preserving renamings. Then, fix a small category $\mathcal{W}$ of worlds
 along with a map $\Of{\pi_\mathcal{W}}{\mathcal{W}\to\SCtx}$ such that
-$\pi_\mathcal{W}$ is a Grothendieck opfibration. Then, a \emph{judgment} shall
+$\pi_\mathcal{W}$ is a Grothendieck fibration. Then, a \emph{judgment} shall
 be interpreted as an object in the presheaf category
-$\Define{\mathbb{J}}{\Sets^\mathcal{W}}$; in other words, a judgment is
-identified with the intensional set of its renaming-sensitive derivations.
+$\Define{\mathbb{J}}{\Sets^{\OpCat{\mathcal{W}}}}$; in other words, a judgment
+is identified with the intensional set of its renaming-sensitive derivations.
 
 \begin{definition}[General Judgment]
   For a metavariable context $\IsMetaCtx{\Omega}$, we can define the set
@@ -291,7 +291,7 @@ identified with the intensional set of its renaming-sensitive derivations.
   \[
     \Define{{\square\Omega}}{
       \prod_{(\MV{m}:v)\in\Omega}
-        \MkSet{E\mid\IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{E}{v}}
+        \MkSet{E\mid\IsAbtUnmoded{\cdot}{\cdot}{\cdot}{E}{v}}
     }
   \]
 
