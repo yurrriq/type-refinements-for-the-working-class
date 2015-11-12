@@ -21,19 +21,20 @@
 \usepackage{url}
 \usepackage{todonotes}
 
-\usepackage{pxfonts}
-\usepackage{eulervm}
-
 \newif\ifcolored%
 \coloredtrue%
 
-% fonts
+%% fonts
+\usepackage{pxfonts}
+\usepackage{eulervm}
 \usepackage[
   activate={true,nocompatibility},
   kerning=true,
   spacing=true,
   tracking=true
 ]{microtype}
+\DeclareSymbolFont{bbold}{U}{bbold}{m}{n}
+\DeclareSymbolFontAlphabet{\mathbbold}{bbold}
 
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{prop}[thm]{Proposition}
