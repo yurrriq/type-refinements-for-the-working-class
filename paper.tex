@@ -280,10 +280,44 @@ deploy a generic logical framework. Recall from \cite{sterling-morrison:2015}
 that $\SCtx$ is the category of symbol-contexts and their injective,
 sort-preserving renamings. Then, fix a small category $\mathcal{W}$ of worlds
 along with a map $\Of{\pi_\mathcal{W}}{\mathcal{W}\to\SCtx}$ such that
-$\pi_\mathcal{W}$ is a Grothendieck fibration. Then, a \emph{judgment} shall
-be interpreted as an object in the presheaf category
+$\pi_\mathcal{W}$ is a Grothendieck fibration~\cite{jacobs:2001}. Then, a
+\emph{judgment} shall be interpreted as an object in the presheaf category
 $\Define{\mathbb{J}}{\Sets^{\OpCat{\mathcal{W}}}}$; in other words, a judgment
 is identified with the intensional set of its renaming-sensitive derivations.
+
+\begin{definition}[Hypothetical Judgment]
+  For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we can form the
+  hypothetical judgment $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$ using the
+  exponential construction~\cite[p.~46]{maclane-moerdijk:1992}, which expresses the semantic consequence
+  of $\mathcal{J}_2$ from $\mathcal{J}_1$:
+  \begin{align*}
+    \ADefine{
+      \left(\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\right)(w)
+    }{
+      \left({\mathcal{J}_2}^{\mathcal{J}_1}\right)(w)
+    }\\
+    &\cong
+    \OMode{
+      \Hom{\mathbb{J}}{
+        \Yoneda{w}\times\mathcal{J}_1
+      }{
+        \mathcal{J}_2
+      }
+    }\\
+    &\cong
+    \OMode{
+      \int_{w'}{{{w'}\succeq{w}}\Rightarrow{{{\mathcal{J}}_{2}(w')}^{{\mathcal{J}}_{1}(w')}}}
+    }
+  \end{align*}
+
+  In other words, the hypothetical judgment
+  $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$ is evident when there shall forevermore
+  be an effective transformation of evidence for the antecedent into evidence
+  for the consequent. It is important to keep in mind that this is a
+  \emph{semantic} consequence and therefore expresses admissibilities, in
+  contrast to the \emph{logical} consequence which expresses
+  derivabilities~\cite{harper:2016}. We will not have any need for the latter.
+\end{definition}
 
 \begin{definition}[General Judgment]
   For a metavariable context $\IsMetaCtx{\Omega}$, we can define the set
@@ -336,39 +370,6 @@ is identified with the intensional set of its renaming-sensitive derivations.
 
 \end{definition}
 
-\begin{definition}[Hypothetical Judgment]
-
-  For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we can form the
-  hypothetical judgment $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$, which expresses
-  the semantic consequence of $\mathcal{J}_2$ from $\mathcal{J}_1$:
-  \begin{align*}
-    \ADefine{
-      \left(\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\right)(w)
-    }{
-      \left({\mathcal{J}_2}^{\mathcal{J}_1}\right)(w)
-    }\\
-    &\cong
-    \OMode{
-      \Hom{\mathbb{J}}{
-        \Yoneda{w}\times\mathcal{J}_1
-      }{
-        \mathcal{J}_2
-      }
-    }\\
-    &\cong
-    \OMode{
-      \int_{w'}{{{w'}\succeq{w}}\Rightarrow{{{\mathcal{J}}_{2}(w')}^{{\mathcal{J}}_{1}(w')}}}
-    }
-  \end{align*}
-
-  In other words, the hypothetical judgment
-  $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$ is evident when there shall forevermore
-  be an effective transformation of evidence for the antecedent into evidence
-  for the consequent. It is important to keep in mind that this is a
-  \emph{semantic} consequence and therefore expresses admissibilities, in
-  contrast to the \emph{logical} consequence which expresses
-  derivabilities~\cite{harper:2016}. We will not have any need for the latter.
-\end{definition}
 
 After this section, we will define a judgment either by rules, or by an
 informal semantical explanation, in both cases leaving its intensional
