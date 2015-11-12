@@ -448,11 +448,33 @@ follows, presupposing $\RefinesCtx{\Phi}{\Upsilon}$,
 $\Refines{\Phi}{\phi}{\tau}$ and $\Refines{\Phi}{\psi}{\tau}$:
 \begin{definition}
   To know $\EqRefines{\Phi}{\phi}{\psi}{\tau}$ is to know, for any substitution
-  $\Of{\rho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, and for any $M, N$
-  such that $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
-  $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$,
-  $\IMode{M}\sim^\rho_\phi\IMode{N}$ if and only if
-  $\IMode{M}\sim^\rho_\psi\IMode{N}$.
+  $\Of{\rho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, the following judgments:
+  \begin{gather*}
+    \GenJ{
+      \MV{m},\MV{n}:\tau
+    }{
+      \HypJ{
+        \IMode{M}\sim^\rho_\phi\IMode{N}
+      }{
+        \IMode{M}\sim^\rho_\psi\IMode{N}
+      }
+    }\\
+    \GenJ{
+      \MV{m},\MV{n}:\tau
+    }{
+      \HypJ{
+        \IMode{M}\sim^\rho_\psi\IMode{N}
+      }{
+        \IMode{M}\sim^\rho_\phi\IMode{N}
+      }
+    }
+  \end{gather*}
+
+ %% and for any $M, N$
+ %% such that $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
+ %% $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$,
+ %% $\IMode{M}\sim^\rho_\phi\IMode{N}$ if and only if
+ %% $\IMode{M}\sim^\rho_\psi\IMode{N}$.
 \end{definition}
 
 \subsection{Parametric Equality}
@@ -533,15 +555,15 @@ where $\RefinesCtx{\Phi}{\Upsilon}$.
   \infer{
     \HEqRefines{\Phi}{\Psi,x:\chi}{\phi}{\psi}{\tau}
   }{
-    \HPGenJ{\Upsilon}{\Gamma}{y,z:\sigma}{
+    \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
       \HypJ{
         \HEqRefines{\Phi}{\Psi}{
-          \Subst{y}{x}{\phi}
+          \Subst{\MV{m}}{x}{\phi}
         }{
-          \Subst{z}{x}{\psi}
+          \Subst{\MV{n}}{x}{\psi}
         }{\tau}
       }{
-        \HRMemEq{\Phi}{\Psi}{y}{z}{\chi}
+        \HRMemEq{\Phi}{\Psi}{\MV{n}}{\MV{n}}{\chi}
       }
     }
   }
