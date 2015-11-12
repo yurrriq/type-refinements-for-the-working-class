@@ -298,18 +298,21 @@ is identified with the intensional set of its renaming-sensitive derivations.
   For any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\square\Omega}}$, we can define
   the general judgment $\GenJ{\Omega}{\mathcal{J}}$ as follows, where
   $\Of{\Yoneda{-}}{\mathcal{W}\to\mathbb{J}}$ is the Yoneda Embedding:
-   \[
-     \textstyle
-     \Define{
-       \left(\GenJ{\Omega}{\mathcal{J}}\right)(w)
-     }{
-       \Hom{\mathbb{J}}{
-         \Yoneda{w}
-       }{
-         Ran_{\mathbbold{1}}{\mathcal{J}}
-       }
-     }
-   \]
+  \begin{align*}
+    \ADefine{
+      \left(\GenJ{\Omega}{\mathcal{J}}\right)(w)
+    }{
+      \Hom{\mathbb{J}}{
+        \Yoneda{w}
+      }{
+        Ran_{\mathbbold{1}}{\mathcal{J}}
+      }
+    }\\
+    &\cong
+    \OMode{
+      \int_{w':\mathcal{W}}{\Hom{\Sets}{\Hom{\mathcal{W}}{w'}{w}}{\int_{\omega:\square\Omega}{\Hom{\Sets}{\mathbbold{1}}{\mathcal{J}(\omega)(w')}}}}
+    }
+  \end{align*}
 
    Intuitively, the general judgment $\GenJ{\Omega}{\mathcal{J}}$ is evident
    when the family of judgments $\mathcal{J}$ shall forevermore have a section
@@ -351,6 +354,10 @@ is identified with the intensional set of its renaming-sensitive derivations.
       }{
         \mathcal{J}_2
       }
+    }\\
+    &\cong
+    \OMode{
+      \int_{w':\mathcal{W}}{\Hom{\Sets}{\Hom{\mathcal{W}}{w'}{w}}{\mathcal{J}_{2}(w')}}
     }
   \end{align*}
 
