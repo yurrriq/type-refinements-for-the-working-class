@@ -143,7 +143,7 @@
 \newcommand\NotIn[2]{\IMode{#1}\notin\IMode{#2}}
 \newcommand\SortExp{\mathsf{exp}}
 
-\newcommand\Hom[3]{#1\left[#2,#3\right]}
+\newcommand\Hom[3]{#1\!\left[#2,#3\right]}
 
 \newcommand\Rename[2]{%
   #2\upharpoonright#1%
@@ -265,35 +265,79 @@ rules.}
   the process.
 \fi
 
-For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we may
-deploy a generic logical framework, where we interpret a judgment as the set of
-its derivations.
+For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ and a worlds
+category $\mathcal{W}$, we may deploy a general logical framework in which the
+meaning of a judgment is an object of the presheaf category
+$\Define{\mathbb{J}}{\Sets^\mathcal{W}}$ (that is, a judgment is identified
+with the intensional set of its derivations).
 
 \begin{definition}[General Judgment]
-  For a metavariable context $\IsMetaCtx{\Omega}$, let
-  \[\Define{[\Omega]}{\coprod_{\MV{m}:v}
-  \MkSet{E\mid\IsAbtUnmoded{\cdot}{\cdot}{\cdot}{E}{v}}}\] Then for any family of judgments
-  $\Of{\mathcal{J}}{[\Omega]\to\Sets}$ we define the \emph{general judgment}
-  $\GenJ{\Omega}{\mathcal{J}}$ as the section
-  $\prod_{\omega\in[\Omega]}{\mathcal{J}(\omega)}$. Recall that metavariables
-  have \emph{valences} rather than sorts; as such, the general judgment allows
-  us to quantify over terms of higher type. However, for clarity we will often
-  write $\GenJ{\MV{m}:\sigma}{\mathcal{J}}$ rather than
+  For a metavariable context $\IsMetaCtx{\Omega}$, we can define the set
+  of its substitutions as the following product:
+  \[
+    \Define{[\Omega]}{
+      \prod_{\MV{m}:v} \MkSet{E\mid\IsAbtUnmoded{\cdot}{\cdot}{\cdot}{E}{v}}
+    }
+  \]
+  Let $\Discrete{[\Omega]}$ be the discrete category on $[\Omega]$. Then, for
+  any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\Discrete{[\Omega]}}}$, we can
+  define the general judgment $\GenJ{\Omega}{\mathcal{J}}$ as follows:
+  \[
+    \textstyle
+    \Define{
+      \left(\GenJ{\Omega}{\mathcal{J}}\right)(w)
+    }{
+      \Hom{\mathbb{J}}{
+        \Yoneda{w}
+      }{
+        \varinjlim_{\Discrete{[\Omega]}}\mathcal{J}
+      }
+    }\qquad
+    (\Member{w}{\mathcal{W}})
+  \]
+
+  Intuitively, the general judgment $\GenJ{\Omega}{\mathcal{J}}$ is evident
+  when the family of judgments $\mathcal{J}$ shall forevermore have a section
+  (i.e. for any substitution of $\Member{\omega}{[\Omega]}$,
+  $\mathcal{J}(\omega)$ shall be evident). Recall that metavariables have
+  \emph{valences} rather than sorts; as such, the general judgment allows us to
+  quantify over terms of higher type.  However, for clarity we will often write
+  $\GenJ{\MV{m}:\sigma}{\mathcal{J}}$ rather than
   $\GenJ{\MV{m}:\MkValence{\cdot}{\cdot}{\sigma}}{\mathcal{J}}$; likewise, in
   the body of $\mathcal{J}$ we will simply write $\MV{m}$ rather than the more
   proper $\MApp{\MV{m}}{\cdot}{\cdot}$.
+
 \end{definition}
 
 \begin{definition}[Hypothetical Judgment]
-  For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we have the
-  hypothetical judgment
-  $\Define{\HypJ{\mathcal{J}_2}{\mathcal{J}_1}}{\mathcal{J}_1\to\mathcal{J}_2}$.
-  In other words, evidence for a hypothetical judgment is an effective
-  transformation of evidence for the antecedent into evidence for the
-  consequent. Note that this is the \emph{semantic} hypothetical judgment,
-  which expresses admissibilities, rather than the \emph{syntactic}
-  hypothetical judgment, which expresses derivabilities \cite{harper:2016}. We
-  will not have any need for the latter.
+
+  For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we can form the
+  hypothetical judgment $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$, which expresses
+  the semantic consequence of $\mathcal{J}_2$ from $\mathcal{J}_1$:
+  \begin{align*}
+    \ADefine{
+      \left(\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\right)(w)
+    }{
+      \left({\mathcal{J}_2}^{\mathcal{J}_1}\right)(w)
+    }\\
+    &\cong
+    \OMode{
+      \Hom{\mathbb{J}}{
+        \Yoneda{w}\times\mathcal{J}_1
+      }{
+        \mathcal{J}_2
+      }
+    }
+  \end{align*}
+
+  Intuitively, the hypothetical judgment
+  $\Define{\HypJ{\mathcal{J}_2}{\mathcal{J}_1}}{\mathcal{J}_1\to\mathcal{J}_2}$
+  is evident when there shall forevermore be an effective transformation of the
+  evidence into the evidence of the consequent. It is important to keep in mind
+  that this is a \emph{semantic} consequence and therefore expresses
+  admissibilities, in contrast to the the \emph{logical} consequence which
+  expresses derivabilities \cite{harper:2016}. We will not have any need for
+  the latter.
 \end{definition}
 
 \section{Behavioral Refinements}
