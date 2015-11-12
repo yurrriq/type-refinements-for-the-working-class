@@ -275,12 +275,12 @@ with the intensional set of its derivations).
   For a metavariable context $\IsMetaCtx{\Omega}$, we can define the set
   of its substitutions as the following product:
   \[
-    \Define{[\Omega]}{
+    \Define{\square\Omega}{
       \prod_{\MV{m}:v} \MkSet{E\mid\IsAbtUnmoded{\cdot}{\cdot}{\cdot}{E}{v}}
     }
   \]
-  Let $\Discrete{[\Omega]}$ be the discrete category on $[\Omega]$. Then, for
-  any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\Discrete{[\Omega]}}}$, we can
+  Let $\Discrete{\square\Omega}$ be the discrete category on $\square\Omega$. Then, for
+  any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\Discrete{\square\Omega}}}$, we can
   define the general judgment $\GenJ{\Omega}{\mathcal{J}}$ as follows:
   \[
     \textstyle
@@ -290,14 +290,14 @@ with the intensional set of its derivations).
       \Hom{\mathbb{J}}{
         \Yoneda{w}
       }{
-        \varinjlim_{\Discrete{[\Omega]}}\mathcal{J}
+        \varinjlim_{\Discrete{\square\Omega}}\mathcal{J}
       }
     }
   \]
 
   Intuitively, the general judgment $\GenJ{\Omega}{\mathcal{J}}$ is evident
   when the family of judgments $\mathcal{J}$ shall forevermore have a section
-  (i.e. for any substitution $\Member{\omega}{[\Omega]}$,
+  (i.e. for any substitution $\Member{\omega}{\square\Omega}$,
   $\mathcal{J}(\omega)$ shall be evident). Recall that metavariables have
   \emph{valences} rather than sorts; as such, the general judgment allows us to
   quantify over terms of higher type.  However, for clarity we will often write
