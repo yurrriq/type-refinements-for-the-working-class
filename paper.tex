@@ -18,6 +18,7 @@
 \usepackage{stmaryrd}
 \usepackage{supertabular}
 \usepackage{tikz-cd}
+\usepackage{tikzpfeile}
 \usepackage{url}
 \usepackage{todonotes}
 
@@ -98,7 +99,7 @@
 
 \newcommand\Cats{\mathbf{Cat}}
 \newcommand\Discrete[1]{#1_{\equiv}}
-\newcommand\Arr[1]{\mathbf{{#1}^{\rightarrow}}}
+\newcommand\Arr[1]{\mathbf{{#1}^{\ra}}}
 \newcommand\Sets{\mathbf{Set}}
 \newcommand\SCtx{\mathbf{SCtx}}
 \newcommand\Ctx{\mathbf{Ctx}}
@@ -285,7 +286,7 @@ For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we can deploy
 a generic logical framework. Recall from~\cite{sterling-morrison:2015} that
 $\SCtx$ is the category of symbol-contexts and their injective, sort-preserving
 renamings. Then, fix a small category $\mathcal{W}$ of worlds along with a map
-$\Of{\pi}{\mathcal{W}\to\SCtx}$ such that $\pi$ is a Grothendieck
+$\Of{\pi}{\mathcal{W}\ra\SCtx}$ such that $\pi$ is a Grothendieck
 fibration~\cite{jacobs:2001, taylor:1999}:
 \[
   \begin{tikzcd}[cramped, ampersand replacement = \&, row sep = large]
@@ -398,7 +399,7 @@ derivations.
 
   For any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\square\Omega}}$, we can define
   the general judgment $\GenJ{\Omega}{\mathcal{J}}$ as follows, where
-  $\Of{\Yoneda{-}}{\mathcal{W}\to\mathbb{J}}$ is the Yoneda Embedding:
+  $\Of{\Yoneda{-}}{\mathcal{W}\ra\mathbb{J}}$ is the Yoneda Embedding:
   \begin{align*}
     \ADefine{
       \left(\GenJ{\Omega}{\mathcal{J}}\right)(w)
@@ -479,7 +480,7 @@ explanation:
 \begin{definition}[Parametric Refinement]
   To know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
   $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$) is to know, for any renaming
-  $\Of{\varrho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, and for any $M, N$,
+  $\Of{\varrho}{\Upsilon\inj\OMode{\Upsilon'}}$, and for any $M, N$,
   what it means for $M$ and $N$ to be identified under $\phi$, supposing
   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$, requiring that if
@@ -507,7 +508,7 @@ $\Upsilon$ of symbols.
 \end{thm}
 \begin{proof}
   This follows trivially from the rule $\RefinesCtxSnoc$ and the canonical renaming
-  $\Upsilon\hookrightarrow\Upsilon,u:\sigma$.
+  $\Upsilon\inj\Upsilon,u:\sigma$.
 \end{proof}
 
 When we have $\Refines{\cdot}{\phi}{\tau}$, we say that $\phi$ \emph{globally}
@@ -523,7 +524,7 @@ follows, presupposing $\RefinesCtx{\Phi}{\Upsilon}$,
 $\Refines{\Phi}{\phi}{\tau}$ and $\Refines{\Phi}{\psi}{\tau}$:
 \begin{definition}
   To know $\EqRefines{\Phi}{\phi}{\psi}{\tau}$ is to know, for any substitution
-  $\Of{\rho}{\Upsilon\hookrightarrow\OMode{\Upsilon'}}$, the following judgments:
+  $\Of{\rho}{\Upsilon\inj\OMode{\Upsilon'}}$, the following judgments:
   \begin{gather*}
     \GenJ{
       \MV{m},\MV{n}:\tau
@@ -559,7 +560,7 @@ $\RMemEq{\Phi}{M}{N}{\phi}$, which presupposes $\RefinesCtx{\Phi}{\Upsilon}$,
 $\Refines{\Phi}{\phi}{\tau}$, $\IsAbt{\cdot}{\Upsilon}{\cdot}{M}{\tau}$ and
 $\IsAbt{\cdot}{\Upsilon}{\cdot}{N}{\tau}$. The meaning of this judgment is that
 $M$ and $N$ are identified by $\phi$ at the identity renaming
-$\Of{1}{\IMode{\Upsilon}\hookrightarrow\OMode{\Upsilon}}$:
+$\Of{1}{\IMode{\Upsilon}\inj\OMode{\Upsilon}}$:
 \[
   \infer{
     \RMemEq{\Phi}{M}{N}{\phi}
