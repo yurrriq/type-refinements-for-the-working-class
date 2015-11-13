@@ -290,38 +290,56 @@ fibration~\cite{jacobs:2001, taylor:1999}:
 \[
   \begin{tikzcd}[cramped, ampersand replacement = \&, row sep = large]
     {\IMode{\mathcal{W}}}
-      \arrow[dash, d]\&
+      \arrow[dash, d]
+\&
     {\IMode{{w}_{i}}}
       \arrow[drrr]
       \arrow[dotted, dr]
-      \arrow[mapsto, dd]\&
-    \null\&
-    \null\&
-    \null\\
+      \arrow[mapsto, dd]
+\&
+    \null
+\&
+    \null
+\&
+    \null
+\\
     {\IMode{{\pi}}}
-      \arrow[d]\&
-    \null\&
+      \arrow[d]
+\&
+    \null
+\&
     {\OMode{{w}_{j}}}
       \arrow[rr, swap, "\OMode{{\iota}_{\varrho}}"]
       \arrow[mapsto, dd, bend right = 50]
-      \arrow[mapsto, d]\&
-    \null\&
+      \arrow[mapsto, d]
+\&
+    \null
+\&
     |[alias = Wk]|{\IMode{{w}_{k}}}
-      \arrow[mapsto, d]\\
-    {\IMode{\SCtx}}\&
+      \arrow[mapsto, d]
+\\
+    {\IMode{\SCtx}}
+\&
     |[alias = Ui]|{\IMode{{\Upsilon}_{i}}}
-      \arrow[dr]\&
+      \arrow[dr]
+\&
     {\OMode{\scriptstyle{{\pi}({w}_{j})}}}
       \arrow[rr, "\OMode{{\pi}({\iota}_{\varrho})}", ""{name = Msrc, swap}]
-      \arrow[equals, d]\&
-    \null\&
+      \arrow[equals, d]
+\&
+    \null
+\&
     {\IMode{\scriptstyle{{\pi}({w}_{k})}}}
-      \arrow[equals, d]\\
-    \null\&
-    \null\&
+      \arrow[equals, d]
+\\
+    \null
+\&
+    \null
+\&
     {\IMode{{\Upsilon}_{j}}}
       \arrow[rr, swap, "{\IMode{\varrho}}", ""{name = Mtgt, swap}]\&
-    \null\&
+    \null
+\&
     |[alias = Uk]|{\IMode{{\Upsilon}_{k}}}
       \arrow[mapsto, from = Wk, to = Uk, bend right = 50, crossing over]
       \arrow[equals, from = Msrc, to = Mtgt]
