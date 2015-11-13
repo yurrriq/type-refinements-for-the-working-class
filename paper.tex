@@ -200,6 +200,12 @@
 
 \newcommand\Pow[1]{\wp\left(#1\right)}
 
+\tikzset{
+   commutative diagrams/.cd,
+   arrow style = tikz,
+   diagrams={>=latex}
+}
+
 \begin{document}
 
 \title{Type Refinements for the Working Class}
@@ -289,8 +295,8 @@ fibration~\cite{jacobs:2001}:
     \&
     {\IMode{{w}_{i}}}
       \arrow[drrr]
-      \arrow[dr, dotted]
-      \arrow[dd]
+      \arrow[dotted, dr]
+      \arrow[mapsto, dd]
     \&
     {}\&
     {}\&
@@ -301,12 +307,12 @@ fibration~\cite{jacobs:2001}:
     {}\&
     {\OMode{{w}_{j}}}
       \arrow[rr, swap, "\OMode{{\iota}_{\varrho}}"]
-      \arrow[dd, bend right = 50]
-      \arrow[d]
+      \arrow[mapsto, dd, bend right = 50]
+      \arrow[mapsto, d]
     \&
     {}\&
     |[alias = Wk]|{\IMode{{w}_{k}}}
-      \arrow[d]
+      \arrow[mapsto, d]
     \\
     {\IMode{\SCtx}}\&
     |[alias = Ui]|{\IMode{{\Upsilon}_{i}}}
