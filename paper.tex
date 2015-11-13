@@ -275,15 +275,67 @@ $\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule of
 thumb, inputs are things which are supplied when checking the correctness of a
 judgment, and outputs are things which are synthesized in the process. \fi
 
-For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we can
-deploy a generic logical framework. Recall from \cite{sterling-morrison:2015}
-that $\SCtx$ is the category of symbol-contexts and their injective,
-sort-preserving renamings. Then, fix a small category $\mathcal{W}$ of worlds
-along with a map $\Of{\pi_\mathcal{W}}{\mathcal{W}\to\SCtx}$ such that
-$\pi_\mathcal{W}$ is a Grothendieck fibration~\cite{jacobs:2001}. Then, a
-\emph{judgment} shall be interpreted as an object in the presheaf category
-$\Define{\mathbb{J}}{\Sets^{\OpCat{\mathcal{W}}}}$; in other words, a judgment
-is identified with the intensional set of its renaming-sensitive derivations.
+For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we can deploy
+a generic logical framework. Recall from \cite{sterling-morrison:2015} that
+$\SCtx$ is the category of symbol-contexts and their injective, sort-preserving
+renamings. Then, fix a small category $\mathcal{W}$ of worlds along with a map
+$\Of{\pi_\mathcal{W}}{\mathcal{W}\to\SCtx}$ (sometimes with $\mathcal{W}$
+omitted) such that $\pi_\mathcal{W}$ is a Grothendieck
+fibration~\cite{jacobs:2001}:
+\[
+  \begin{tikzcd}[cramped, ampersand replacement = \&, row sep = large]
+    {\IMode{\mathcal{W}}}
+      \arrow[dash, d]
+    \&
+    {\IMode{{w}_{i}}}
+      \arrow[drrr]
+      \arrow[dr, dotted]
+      \arrow[dd]
+    \&
+    {}\&
+    {}\&
+    {}\\
+    {\IMode{{\pi}}}
+      \arrow[d]
+    \&
+    {}\&
+    {\OMode{{w}_{j}}}
+      \arrow[rr, swap, "\OMode{{\iota}_{\varrho}}"]
+      \arrow[dd, bend right = 50]
+      \arrow[d]
+    \&
+    {}\&
+    |[alias = Wk]|{\IMode{{w}_{k}}}
+      \arrow[d]
+    \\
+    {\IMode{\SCtx}}\&
+    |[alias = Ui]|{\IMode{{\Upsilon}_{i}}}
+      \arrow[dr]
+    \&
+    {\OMode{\scriptstyle{{\pi}({w}_{j})}}}
+      \arrow[rr, "\OMode{{\pi}({\iota}_{\varrho})}", ""{name = Msrc, swap}]
+      \arrow[equals, d]
+    \&
+    {}\&
+    {\IMode{\scriptstyle{{\pi}({w}_{k})}}}
+      \arrow[equals, d]
+    \\
+    {}\&
+    {}\&
+    {\IMode{{\Upsilon}_{j}}}
+      \arrow[rr, swap, "{\IMode{\varrho}}", ""{name = Mtgt, swap}]
+    \&
+    {}\&
+    |[alias = Uk]|{\IMode{{\Upsilon}_{k}}}
+    \arrow[from = Wk, to = Uk, bend right = 50, crossing over]
+    \arrow[equals, from = Msrc, to = Mtgt]
+    \arrow[from = Ui, to = Uk, crossing over]
+  \end{tikzcd}
+\]
+Then, a \emph{judgment} shall be interpreted as an object in the presheaf
+category $\Define{\mathbb{J}}{\Sets^{\OpCat{\mathcal{W}}}}$; in other words, a
+judgment is identified with the intensional set of its renaming-sensitive
+derivations.
 
 \begin{definition}[Hypothetical Judgment]
   For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we can form the
