@@ -746,12 +746,12 @@ as PERs on \emph{programs} in addition to values.
 In this section we generalize Howe's notion of lazy computation
 system~\cite{howe:1989} to the multi-sorted, symbol-parameterized setting. An
 \emph{lazy computation language} is an abt signature
-$\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished presheaf
+$\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished copresheaf
 $\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
 \emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
 For a lazy computation language
 $\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
-copresheaves of closed expressions and closed values over symbol contexts as
+copresheaves of closed expressions and closed values over symbol contexts and sorts as
 follows:
 \begin{align*}
   \ADefine{\Exprs_\tau(\Upsilon)}{
