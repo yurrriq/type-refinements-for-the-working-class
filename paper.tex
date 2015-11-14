@@ -88,6 +88,7 @@
 
 \newcommand\ArrId[1]{1_{#1}}
 \newcommand\Match[2]{\IMode{#1}\equiv\OMode{#2}}
+\newcommand\MapsTo[2]{\IMode{#1}\mapsto\OMode{#2}}
 
 \newcommand\Symbols{\mathbf{I}}
 \newcommand\SymSets{\mathbb{F}_\Symbols}
@@ -96,6 +97,7 @@
 \newcommand\Valences{\mathcal{V}}
 \newcommand\Arities{\mathcal{A}}
 \newcommand\Operators{\mathcal{O}}
+\newcommand\CanOperators{\mathcal{K}}
 
 \newcommand\Cats{\mathbf{Cat}}
 \newcommand\Discrete[1]{#1_{\equiv}}
@@ -178,6 +180,7 @@
 
 \newcommand\IsEq[2]{\IMode{#1} = \IMode{#2}}
 \newcommand\IsApart[2]{\IMode{#1} \mathrel{\#} \IMode{#2}}
+\newcommand\IsSubsetEq[2]{\IMode{#1}\subseteq\IMode{#2}}
 
 \newcommand\Define[2]{\IMode{#1}\triangleq\OMode{#2}}
 \newcommand\ADefine[2]{\IMode{#1}&\triangleq\OMode{#2}}
@@ -200,6 +203,15 @@
 \newcommand\HRMemEq[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\in\IMode{#5}}
 
 \newcommand\Pow[1]{\wp\left(#1\right)}
+
+\newcommand\TyBase[1]{\mathtt{Base}_{#1}}
+\newcommand\TyTop[1]{\top_{#1}}
+
+\newcommand\EvalN[5]{\IMode{#1}\parallel\IMode{#4}\Downarrow^{\OMode{#3}}_{\IMode{#2}}\OMode{#5}}
+\newcommand\Exprs{\mathcal{E}}
+\newcommand\Values{\mathcal{V}}
+\newcommand\Naturals{\mathbb{N}}
+\newcommand\NaturalsPsh{\mathcal{N}}
 
 \tikzset{
    commutative diagrams/.cd,
@@ -676,6 +688,59 @@ where $\RefinesCtx{\Phi}{\Upsilon}$.
     }
   }
 \]
+
+\section{Multi-Sorted Computational Type Theory}
+
+Martin-L\"of's type theory is a theory of \emph{value types}: to define a type,
+you specify how to form its equal canonical inhabitants, or values. Then, the
+inhabitants of the types are explained uniformly by extending this relation
+over an operational semantics such that two terms are equal members of a
+type just when they compute to equal values of that type.
+
+More generally, one may wish to consider types which include computations in
+addition to values; an example of such a type would be $\bar{\psi}$ when $\psi$
+is a type, which would include all the members of $\psi$ as well as a divergent
+computation. Another example is the type $\TyTop{\tau}$ which identifies all
+closed terms of sort $\tau$.
+
+In order to ensure that such types are sensible, we must formulate a notion of
+computational equivalence, and then say that a refinement is a \emph{type} just
+when it respects computational equivalence; then, we are able to define types
+as PERs on \emph{programs} in addition to values.
+
+
+\subsection{Lazy Computation Systems}
+
+In this section we generalize Howe's notion of lazy computation
+system~\cite{howe:1989} to the multi-sorted, symbol-parameterized setting. An
+\emph{lazy computation language} is an abt signature
+$\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished presheaf
+$\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
+\emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
+For a lazy computation language
+$\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
+copresheaves of closed expressions and closed values over symbol contexts as
+follows:
+\begin{align*}
+  \ADefine{\Exprs_\tau(\Upsilon)}{
+    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{M}{\tau}}
+  }\\
+  \ADefine{\Values_\tau(\Upsilon)}{
+    \MkSet{
+      M\equiv\App{\vartheta}{\vec{E}}
+      \mid M\in\Exprs_\tau(\Upsilon)\land \exists a. \CanOperators\Pair{\Upsilon}{a}\ni\vartheta
+    }
+  }
+\end{align*}
+
+Then, a \emph{lazy computation system} (lcs) is a lazy computation language
+$\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with an indexed
+$\alpha$-functional relation
+$\Of{\Downarrow}{\Pow{\Exprs\times\Values\times\NaturalsPsh}}$ where
+$\NaturalsPsh$ is the constant presheaf $\MapsTo{(\Upsilon, \tau)}{\Naturals}$.
+We will write $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ when
+$\Member{\Tuple{M,N,n}}{\Downarrow_\tau(\Upsilon)}$, to mean that $M$ evaluates
+to $N$ in $n$ steps.
 
 \ifdraft{}{
   \nocite{maclane:1971}
