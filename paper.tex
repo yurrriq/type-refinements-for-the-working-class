@@ -212,6 +212,7 @@
 \newcommand\TyJoin[1]{\cup_{#1}}
 
 \newcommand\EvalN[5]{\IMode{#1}\parallel\IMode{#4}\Downarrow^{\OMode{#3}}_{\IMode{#2}}\OMode{#5}}
+\newcommand\Eval[4]{\EvalN{#1}{#2}{}{#3}{#4}}
 \newcommand\Exprs{\mathcal{E}}
 \newcommand\Values{\mathcal{V}}
 \newcommand\Naturals{\mathbb{N}}
@@ -371,7 +372,7 @@ fibration~\cite{jacobs:2001, taylor:1999}:
 Then, a \emph{judgment} shall be interpreted as an object in the presheaf
 category $\Define{\mathbb{J}}{\Sets^{\OpCat{\mathcal{W}}}}$; in other words, a
 judgment is identified with the intensional set of its renaming-sensitive
-derivations.
+derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
 
 \begin{definition}[Hypothetical Judgment]
   For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we can form the
@@ -405,6 +406,12 @@ derivations.
   \emph{semantic} consequence and therefore expresses admissibilities, in
   contrast to the \emph{logical} consequence which expresses
   derivabilities~\cite{harper:2016}. We will not have any need for the latter.
+
+  \paragraph{Notation}
+  For a hypothetical judgment with multiple hypotheses, we will write
+  $\HypJ{\mathcal{J}_3}{\mathcal{J}_1, \mathcal{J}_2}$ rather than
+  $\HypJ{\mathcal{J}_3}{\mathcal{J}_1\times\mathcal{J}_2}$ or
+  $\HypJ{(\HypJ{\mathcal{J}_3}{\mathcal{J}_2})}{\mathcal{J}_1}$.
 \end{definition}
 
 \begin{definition}[General Judgment]
@@ -458,6 +465,17 @@ derivations.
 
 \end{definition}
 
+\begin{definition}[Internal Judgments]
+  It often happens that the evidence for a judgment is the knowledge of the
+  meaning of a new form of judgment. This can be neatly expressed in our topos
+  using the power object $\Pow{-}$: for any judgment
+  $\mathcal{J}\in\mathbb{J}$, the derivations of $\Pow{\mathcal{J}}$ shall
+  consist in subsets of the derivations of $\mathcal{J}$. The evidence of
+  $\Pow{\mathcal{J}}$ shall be called an \emph{internal judgment} $J$. In most
+  cases, we will say something like ``To know $\mathcal{J}$ is to have a
+  judgment $\mathcal{J'}$'' rather than appealing directly to the power object
+  or the subobject classifier.
+\end{definition}
 
 After this section, we will define a judgment either by rules, or by an
 informal semantical explanation, in both cases leaving its intensional
@@ -755,28 +773,39 @@ $\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
 \emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
 For a lazy computation language
 $\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
-copresheaves of closed expressions and closed values over symbol contexts and sorts as
+presheaves of closed expressions and closed values over symbol contexts and sorts as
 follows:
 \begin{align*}
-  \ADefine{\Exprs_\tau(\Upsilon)}{
-    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{M}{\tau}}
+  \ADefine{\Exprs_\tau(w)}{
+    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\pi(w)}{\cdot}{M}{\tau}}
   }\\
-  \ADefine{\Values_\tau(\Upsilon)}{
+  \ADefine{\Values_\tau(w)}{
     \MkSet{
       M\equiv\App{\vartheta}{\vec{E}}
-      \mid M\in\Exprs_\tau(\Upsilon)\land \exists a. \CanOperators\Pair{\Upsilon}{a}\ni\vartheta
+      \mid M\in\Exprs_\tau(w)\land \exists a. \CanOperators\Pair{\pi(w)}{a}\ni\vartheta
     }
   }
 \end{align*}
 
+\begin{remark}
+  If read as a judgment, $\Exprs_\tau$ (resp.\ $\Values_\tau$) means ``there is
+  a closed expression (resp.\ value) of sort $\tau$'', and has as its evidence any closed
+  expression (resp.\ value) of sort $\tau$.
+\end{remark}
+
 Then, a \emph{lazy computation system} (lcs) is a lazy computation language
-$\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with an indexed
-$\equiv_\alpha$-functional relation
-$\Of{\Downarrow}{\Pow{\Exprs\times\Values\times\NaturalsPsh}}$ where
-$\NaturalsPsh$ is the constant presheaf $\MapsTo{(\Upsilon, \tau)}{\Naturals}$.
-We will write $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ when
-$\Member{\Tuple{M,N,n}}{\Downarrow_\tau(\Upsilon)}$, to mean that $M$ evaluates
-to $N$ in $n$ steps.
+$\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with a
+$\equiv_\alpha$-functional evaluation relation. Formally, the evaluation
+relation is given in our logical framework by a sort-indexed family of
+intensional sets of evaluation rules
+$\Of{\mathfrak{R}^\tau_\Downarrow}{\mathbb{J}}$, such that the judgment
+$\HypJ{\Pow{\mathfrak{R}^\tau_\Downarrow}}{\Exprs_\tau, \Values_\tau,
+\NaturalsPsh}$ shall be evident by means of some internal family of judgments
+$[\Downarrow_\tau]$, where $\NaturalsPsh$ is the constant presheaf
+$\MapsTo{w}{\Naturals}$. In other words, we shall forevermore know what it
+means to know that some expression evaluates to some value in $n$ steps.  By
+this token, we write $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ to mean the judgment
+whose derivations at $w$ are the set $[\Downarrow_\tau](w,M,N,n)$.
 
 \ifdraft{}{
   \nocite{maclane:1971}
