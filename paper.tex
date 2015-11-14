@@ -218,10 +218,14 @@
 \newcommand\NaturalsPsh{\mathcal{N}}
 
 \tikzset{
-   commutative diagrams/.cd,
-   arrow style = tikz,
-   diagrams={>=latex}
+  commutative diagrams/.cd,
+  arrow style = tikz,
+  diagrams = {>=latex},
 }
+\tikzstyle{displays} = [
+  ->,
+  >=open triangle 45,
+]
 
 \begin{document}
 
@@ -321,7 +325,7 @@ fibration~\cite{jacobs:2001, taylor:1999}:
     \null
 \\
     {\IMode{{\pi}}}
-      \arrow[d]
+      \arrow[displays, d]
 \&
     \null
 \&
