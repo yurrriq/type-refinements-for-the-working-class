@@ -410,13 +410,16 @@ derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
   meaning of a new form of judgment. This can be neatly expressed in our topos
   using the subobject classifier $\Omega$, where the evidence of $\Omega$ at
   $\Upsilon$ gives rise to an \emph{internal judgment} which is defined at all
-  $\Upsilon'$ for which we have $\Of{\rho}{\Upsilon\inj\Upsilon'}$.  A
-  \emph{global internal judgment} is a section
-  $\Of{J}{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\Omega}}$, which can
+  $\Upsilon'$ for which we have $\Of{\rho}{\Upsilon\inj\Upsilon'}$.
+
+  A \emph{global internal judgment} is a section
+  $\Of{J}{\int_\Upsilon{\Omega^{\mathbbold{1}}}(\Upsilon)}\cong
+  \IMode{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\Omega}}$, which can
   be externalized as a judgment $\Of{\Embed{J}}{\mathbb{J}}$ whose derivations
   at $\Upsilon$ are the arrows
   $\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbbold{1}}}$ such that the
   following diagram commutes:
+
   \[
     \begin{tikzcd}
       \IMode{\Yoneda{\Upsilon}}
