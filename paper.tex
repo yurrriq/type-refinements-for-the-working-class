@@ -755,44 +755,18 @@ $\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with an $\SCtx$-indexed
 $\equiv_\alpha$-functional evaluation relation
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ presupposing $\Member{n}{\Naturals}$,
 $\Member{M}{\Exprs_\tau(\Upsilon)}$ and $\Member{N}{\Values_\tau(\Upsilon)}$,
-expressing that $M$ evaluates to $N$ in $n$ steps.
+expressing that $M$ evaluates to $N$ in $n$ steps.  We will write
+$\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$ such that
+$\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 
-%% \begin{remark}
-%%
-%%   Formally, the evaluation relation is given in our logical framework by a
-%%   presheaf of evaluation rules $\Of{\mathfrak{R}^\tau_\Downarrow}{\mathbb{J}}$,
-%%   such that the judgment
-%%   $\HypJ{\Pow{\mathfrak{R}^\tau_\Downarrow}}{\Exprs_\tau, \Values_\tau,
-%%   \NaturalsPsh}$ is globally evident where $\NaturalsPsh$ is the constant
-%%   presheaf $\MapsTo{\Upsilon}{\Naturals}$. In other words, we have a family of
-%%   internal judgments $\Of{[\Downarrow_\tau](\Upsilon)}{\int_{\Upsilon'}
-%%   \Upsilon\inj\Upsilon'\Rightarrow\Pow{\mathfrak{R}^\tau_\Downarrow}}$
-%%
-%%
-%% shall be evident by means of some internal
-%% family of judgments $[\Downarrow_\tau]$, where $\NaturalsPsh$ is the constant
-%% presheaf $\MapsTo{\Upsilon}{\Naturals}$. In other words, we shall forevermore know
-%% what it means to know that some expression evaluates to some value in $n$
-%% steps.
-%% \end{remark}
-%%
-%% We will write $\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$
-%% such that $\EvalN{\Upsilon}{\tau}{n}{M}{N}$; in other words, the judgment is
-%% interpreted as the following presheaf:
-%% \[
-%%   \Define{
-%%     \left(\Upsilon\parallel M\Downarrow_\tau N\right)(w)
-%%   }{
-%%     \int^n[\Downarrow_\tau](w,M,N,n)
-%%   }
-%% \]
-%%
-%%
-%% By this token, the derivations of $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ at
-%% $w$ are the set $[\Downarrow_\tau](w,M,N,n)$; we write
-%% $\Eval{\Upsilon}{\tau}{M}{N}$ for the judgment
-%% $\int^n[\Downarrow_\tau](-,M,N,n)$
-%
+ \begin{remark}
+   Formally, the evaluation relation is given in our logical framework by a
+   global internal judgment $\Of{\Downarrow_\tau}{\int_\SCtx
+   \Omega^{\Exprs_\tau\times\Values_\tau\times\NaturalsPsh}}$, where
+   $\NaturalsPsh$ is the constant presheaf $\MapsTo{\Upsilon}{\Naturals}$.
+   Then, we know $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ just when the
+   externalization $\Embed{\Downarrow_\tau}(M,N,n)$ is evident at $\Upsilon$.
+ \end{remark}
 
 \ifdraft{}{
   \nocite{maclane:1971}
