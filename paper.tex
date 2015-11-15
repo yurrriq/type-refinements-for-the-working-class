@@ -412,27 +412,30 @@ derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
   $\Upsilon$ gives rise to an \emph{internal judgment} which is defined at all
   $\Upsilon'$ for which we have $\Of{\rho}{\Upsilon\inj\Upsilon'}$.
 
-  A \emph{global internal judgment} is a section
-  $\Of{J}{\int_\Upsilon{\Omega^{\mathbbold{1}}}(\Upsilon)}\cong
-  \IMode{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\Omega}}$, which can
-  be externalized as a judgment $\Of{\Embed{J}}{\mathbb{J}}$ whose derivations
-  at $\Upsilon$ are the arrows
-  $\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbbold{1}}}$ such that the
-  following diagram commutes:
-
+  A \emph{global internal (family of) judgments} is a section
+  $\Of{J}{\int_\SCtx {\Omega^{\mathcal{J}}}}\cong
+  \IMode{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}\times\mathcal{J}}{\Omega}}$,
+  which can be externalized as a ``total'' judgment $\Of{\Embed{J}}{\mathbb{J}}$
+  for whose derivations at $\Upsilon$ are the arrows
+  $\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbbold{1}\times\mathcal{J}}}$
+  such that the following diagram commutes:
   \[
-    \begin{tikzcd}
+    \begin{tikzcd}[cramped,sep=huge]
       \IMode{\Yoneda{\Upsilon}}
         \arrow[r, dashed, "\OMode{\phi}"]
-        \arrow[rd, "\IMode{J_\Upsilon}"']
-      & \IMode{\mathbbold{1}} \arrow[d, "\IMode{\mathbf{true}}"] \\
+        \arrow[rd, "\IMode{J_\Upsilon\Pair{1}{\pi_2\circ\phi}}"']
+      & \IMode{\mathbbold{1}\times\mathcal{J}} \arrow[d, "\IMode{\mathbf{true}\circ\pi_1}"] \\
       & \IMode{\Omega}
     \end{tikzcd}
   \]
 
-  In most cases, we will say something like ``To know $\mathcal{J}$ is to have
-  a judgment $\mathcal{J'}$'' rather than appealing directly to the subobject
-  classifier.
+  Then, to say $\IMode{\Upsilon}\parallel\Embed{J}(E)$ where
+  $\Member{E}{\mathcal{J}(\Upsilon)}$ is to assert that we have evidence
+  $\Member{F}{\Embed{J}(\Upsilon)}$ such that $\IsEq{\pi_2(F)}{E}$.
+
+  When asserting the existence of an internal judgment, in most cases we will
+  say something like ``To know $\mathcal{J}$ is to have a judgment
+  $\mathcal{J'}$'' rather than appealing directly to the subobject classifier.
 \end{definition}
 
 After this section, we will define a judgment either by rules, or by an
@@ -764,8 +767,6 @@ $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
    global internal judgment $\Of{\Downarrow_\tau}{\int_\SCtx
    \Omega^{\Exprs_\tau\times\Values_\tau\times\NaturalsPsh}}$, where
    $\NaturalsPsh$ is the constant presheaf $\MapsTo{\Upsilon}{\Naturals}$.
-   Then, we know $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ just when the
-   externalization $\Embed{\Downarrow_\tau}(M,N,n)$ is evident at $\Upsilon$.
  \end{remark}
 
 \ifdraft{}{
