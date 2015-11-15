@@ -158,7 +158,7 @@
 \newcommand\NotIn[2]{\IMode{#1}\notin\IMode{#2}}
 \newcommand\SortExp{\mathsf{exp}}
 
-\newcommand\Hom[3]{#1\!\left[#2,\,#3\right]\!}
+\newcommand\Hom[3]{#1\!\left[#2,\,#3\right]}
 
 \newcommand\Rename[2]{%
   #2\upharpoonright#1%
@@ -188,6 +188,7 @@
 \newcommand\SigFun[1]{\mathcal{F}_{#1}}
 
 \newcommand\SemBrackets[1]{\left\llbracket#1\right\rrbracket}
+\newcommand\Embed[1]{\left\lfloor#1\right\rfloor}
 \newcommand\Yoneda[1]{\boldsymbol{y} (#1)}
 
 \newcommand\Refines[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset\OMode{#3}}
@@ -306,96 +307,34 @@ judgment, and outputs are things which are synthesized in the process. \fi
 For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we can deploy
 a generic logical framework. Recall from~\cite{sterling-morrison:2015} that
 $\SCtx$ is the category of symbol-contexts and their injective, sort-preserving
-renamings. Then, fix a small category $\mathcal{W}$ of worlds along with a map
-$\Of{\pi}{\mathcal{W}\ra\SCtx}$ such that $\pi$ is a Grothendieck
-fibration~\cite{jacobs:2001, taylor:1999}:
-\[
-  \begin{tikzcd}[cramped, ampersand replacement = \&, row sep = large]
-    {\IMode{\mathcal{W}}}
-      \arrow[dash, d]
-\&
-    {\IMode{{w}_{i}}}
-      \arrow[drrr]
-      \arrow[dotted, dr]
-      \arrow[mapsto, dd]
-\&
-    \null
-\&
-    \null
-\&
-    \null
-\\
-    {\IMode{{\pi}}}
-      \arrow[displays, d]
-\&
-    \null
-\&
-    {\OMode{{w}_{j}}}
-      \arrow[rr, swap, "\OMode{{\iota}_{\varrho}}"]
-      \arrow[mapsto, dd, bend right = 50]
-      \arrow[mapsto, d]
-\&
-    \null
-\&
-    |[alias = Wk]|{\IMode{{w}_{k}}}
-      \arrow[mapsto, d]
-\\
-    {\IMode{\SCtx}}
-\&
-    |[alias = Ui]|{\IMode{{\Upsilon}_{i}}}
-      \arrow[dr]
-\&
-    {\OMode{\scriptstyle{{\pi}({w}_{j})}}}
-      \arrow[rr, "\OMode{{\pi}({\iota}_{\varrho})}", ""{name = Msrc, swap}]
-      \arrow[equals, d]
-\&
-    \null
-\&
-    {\IMode{\scriptstyle{{\pi}({w}_{k})}}}
-      \arrow[equals, d]
-\\
-    \null
-\&
-    \null
-\&
-    {\IMode{{\Upsilon}_{j}}}
-      \arrow[rr, swap, "{\IMode{\varrho}}", ""{name = Mtgt, swap}]
-\&
-    \null
-\&
-    |[alias = Uk]|{\IMode{{\Upsilon}_{k}}}
-      \arrow[mapsto, from = Wk, to = Uk, bend right = 50, crossing over]
-      \arrow[equals, from = Msrc, to = Mtgt]
-      \arrow[from = Ui, to = Uk, crossing over]
-  \end{tikzcd}
-\]
-Then, a \emph{judgment} shall be interpreted as an object in the presheaf
-category $\Define{\mathbb{J}}{\Sets^{\OpCat{\mathcal{W}}}}$; in other words, a
+renamings. Then, a \emph{judgment} shall be interpreted as an object in the presheaf
+category $\Define{\mathbb{J}}{\Sets^\SCtx}$; in other words, a
 judgment is identified with the intensional set of its renaming-sensitive
 derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
 
 \begin{definition}[Hypothetical Judgment]
   For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we can form the
   hypothetical judgment $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$ using the
-  exponential construction~\cite[p.~46]{maclane-moerdijk:1992}, which expresses the semantic consequence
-  of $\mathcal{J}_2$ from $\mathcal{J}_1$:
+  exponential construction~\cite[p.~46]{maclane-moerdijk:1992}, which expresses
+  the semantic consequence of $\mathcal{J}_2$ from $\mathcal{J}_1$:
   \begin{align*}
     \ADefine{
-      \left(\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\right)(w)
+      \left(\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\right)(\Upsilon)
     }{
-      \left({\mathcal{J}_2}^{\mathcal{J}_1}\right)(w)
+      \left({\mathcal{J}_2}^{\mathcal{J}_1}\right)(\Upsilon)
     }\\
     &\cong
     \OMode{
       \Hom{\mathbb{J}}{
-        \Yoneda{w}\times\mathcal{J}_1
+        \Yoneda{\Upsilon}\times\mathcal{J}_1
       }{
         \mathcal{J}_2
       }
     }\\
     &\cong
     \OMode{
-      \int_{w'}{{{w'}\succeq{w}}\Rightarrow{{{\mathcal{J}}_{2}(w')}^{{\mathcal{J}}_{1}(w')}}}
+      \int_{\Upsilon'}{{\Upsilon\inj\Upsilon'}
+        \Rightarrow{{{\mathcal{J}}_{2}(\Upsilon')}^{{\mathcal{J}}_{1}(\Upsilon')}}}
     }
   \end{align*}
 
@@ -415,47 +354,47 @@ derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
 \end{definition}
 
 \begin{definition}[General Judgment]
-  For a metavariable context $\IsMetaCtx{\Omega}$, we can define the set
+  For a metavariable context $\IsMetaCtx{\Theta}$, we can define the set
   of its substitutions as follows:
   \[
-    \Define{{\square\Omega}}{
-      \prod_{(\MV{m}:v)\in\Omega}
+    \Define{{\square\Theta}}{
+      \prod_{(\MV{m}:v)\in\Theta}
         \MkSet{E\mid\IsAbtUnmoded{\cdot}{\cdot}{\cdot}{E}{v}}
     }
   \]
 
-  For any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\square\Omega}}$, we can define
-  the general judgment $\GenJ{\Omega}{\mathcal{J}}$ as follows, where
-  $\Of{\Yoneda{-}}{\mathcal{W}\ra\mathbb{J}}$ is the Yoneda Embedding:
+  For any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\square\Theta}}$, we can define
+  the general judgment $\GenJ{\Theta}{\mathcal{J}}$ as follows, where
+  $\Of{\Yoneda{-}}{\OpCat{\SCtx}\ra\mathbb{J}}$ is the Yoneda Embedding:
   \begin{align*}
     \ADefine{
-      \left(\GenJ{\Omega}{\mathcal{J}}\right)(w)
+      \left(\GenJ{\Theta}{\mathcal{J}}\right)(\Upsilon)
     }{
       \Hom{\mathbb{J}}{
-        \Yoneda{w}
+        \Yoneda{\Upsilon}
       }{
         \varprojlim\mathcal{J}
       }
     }\\
     &\cong
     \OMode{
-      \int_{(w',\,\vec{E})}{{w'}\succeq{w}\Rightarrow{\mathcal{J}(\vec{E})(w')}}
+      \int_{(\Upsilon',\,\vec{E})}{\Upsilon\inj\Upsilon'\Rightarrow{\mathcal{J}(\vec{E})(\Upsilon')}}
     }
   \end{align*}
 
-   Intuitively, the general judgment $\GenJ{\Omega}{\mathcal{J}}$ is evident
+   Intuitively, the general judgment $\GenJ{\Theta}{\mathcal{J}}$ is evident
    when the family of judgments $\mathcal{J}$ shall forevermore have a global
-   section (i.e.\ for any substitution $\Member{\vec{E}}{\square\Omega}$,
+   section (i.e.\ for any substitution $\Member{\vec{E}}{\square\Theta}$,
    $\mathcal{J}(\vec{E})$ shall be evident). Recall that metavariables have
    \emph{valences} rather than sorts; as such, the general judgment allows us
    to quantify over terms of higher type.
 
    \paragraph{Notation}
 
-   We will write $\HPGenJ{\Upsilon}{\Gamma}{\Omega}{\mathcal{J}}$ for
-   $\GenJ{\Omega'}{\mathcal{J}}$, where
-   $\Lookup{\Omega'}{\MV{m}}{\MkValence{\Upsilon,\vec{\sigma}}{\Gamma,\vec{\tau}}{\tau}}$
-   if $\Lookup{\Omega}{\MV{m}}{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}$.
+   We will write $\HPGenJ{\Upsilon}{\Gamma}{\Theta}{\mathcal{J}}$ for
+   $\GenJ{\Theta'}{\mathcal{J}}$, where
+   $\Lookup{\Theta'}{\MV{m}}{\MkValence{\Upsilon,\vec{\sigma}}{\Gamma,\vec{\tau}}{\tau}}$
+   if $\Lookup{\Theta}{\MV{m}}{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}$.
    Additionally, for clarity we will often write
    $\GenJ{\MV{m}:\sigma}{\mathcal{J}}$ rather than
    $\GenJ{\MV{m}:\MkValence{\cdot}{\cdot}{\sigma}}{\mathcal{J}}$; likewise, in
@@ -466,15 +405,31 @@ derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
 \end{definition}
 
 \begin{definition}[Internal Judgments]
+
   It often happens that the evidence for a judgment is the knowledge of the
   meaning of a new form of judgment. This can be neatly expressed in our topos
-  using the power object $\Pow{-}$: for any judgment
-  $\mathcal{J}\in\mathbb{J}$, the derivations of $\Pow{\mathcal{J}}$ shall
-  consist in subsets of the derivations of $\mathcal{J}$. The evidence of
-  $\Pow{\mathcal{J}}$ shall be called an \emph{internal judgment} $J$. In most
-  cases, we will say something like ``To know $\mathcal{J}$ is to have a
-  judgment $\mathcal{J'}$'' rather than appealing directly to the power object
-  or the subobject classifier.
+  using the subobject classifier $\Omega$, where the evidence of $\Omega$ at
+  $\Upsilon$ gives rise to an \emph{internal judgment} which is defined at all
+  $\Upsilon'$ for which we have $\Of{\rho}{\Upsilon\inj\Upsilon'}$.  A
+  \emph{global internal judgment} is a section
+  $\Of{J}{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\Omega}}$, which can
+  be externalized as a judgment $\Of{\Embed{J}}{\mathbb{J}}$ whose derivations
+  at $\Upsilon$ are the arrows
+  $\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbbold{1}}}$ such that the
+  following diagram commutes:
+  \[
+    \begin{tikzcd}
+      \IMode{\Yoneda{\Upsilon}}
+        \arrow[r, dashed, "\OMode{\phi}"]
+        \arrow[rd, "\IMode{J_\Upsilon}"']
+      & \IMode{\mathbbold{1}} \arrow[d, "\IMode{\mathbf{true}}"] \\
+      & \IMode{\Omega}
+    \end{tikzcd}
+  \]
+
+  In most cases, we will say something like ``To know $\mathcal{J}$ is to have
+  a judgment $\mathcal{J'}$'' rather than appealing directly to the subobject
+  classifier.
 \end{definition}
 
 After this section, we will define a judgment either by rules, or by an
@@ -775,13 +730,13 @@ For a lazy computation language
 $\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
 presheaves of closed expressions and closed values as follows:
 \begin{align*}
-  \ADefine{\Exprs_\tau(w)}{
-    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\pi(w)}{\cdot}{M}{\tau}}
+  \ADefine{\Exprs_\tau(\Upsilon)}{
+    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{M}{\tau}}
   }\\
-  \ADefine{\Values_\tau(w)}{
+  \ADefine{\Values_\tau(\Upsilon)}{
     \MkSet{
       M\equiv\App{\vartheta}{\vec{E}}
-      \mid M\in\Exprs_\tau(w)\land \exists a. \CanOperators\Pair{\pi(w)}{a}\ni\vartheta
+      \mid M\in\Exprs_\tau(\Upsilon)\land \exists a. \CanOperators\Pair{\Upsilon}{a}\ni\vartheta
     }
   }
 \end{align*}
@@ -793,18 +748,48 @@ presheaves of closed expressions and closed values as follows:
 \end{remark}
 
 Then, a \emph{lazy computation system} (lcs) is a lazy computation language
-$\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with a
-$\equiv_\alpha$-functional evaluation relation. Formally, the evaluation
-relation is given in our logical framework by a sort-indexed family of
-intensional sets of evaluation rules
-$\Of{\mathfrak{R}^\tau_\Downarrow}{\mathbb{J}}$, such that the judgment
-$\HypJ{\Pow{\mathfrak{R}^\tau_\Downarrow}}{\Exprs_\tau, \Values_\tau,
-\NaturalsPsh}$ shall be evident by means of some internal family of judgments
-$[\Downarrow_\tau]$, where $\NaturalsPsh$ is the constant presheaf
-$\MapsTo{w}{\Naturals}$. In other words, we shall forevermore know what it
-means to know that some expression evaluates to some value in $n$ steps.  By
-this token, we write $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ to mean the judgment
-whose derivations at $w$ are the set $[\Downarrow_\tau](w,M,N,n)$.
+$\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with an $\SCtx$-indexed
+$\equiv_\alpha$-functional evaluation relation
+$\EvalN{\Upsilon}{\tau}{n}{M}{N}$ presupposing $\Member{n}{\Naturals}$,
+$\Member{M}{\Exprs_\tau(\Upsilon)}$ and $\Member{N}{\Values_\tau(\Upsilon)}$,
+expressing that $M$ evaluates to $N$ in $n$ steps.
+
+%% \begin{remark}
+%%
+%%   Formally, the evaluation relation is given in our logical framework by a
+%%   presheaf of evaluation rules $\Of{\mathfrak{R}^\tau_\Downarrow}{\mathbb{J}}$,
+%%   such that the judgment
+%%   $\HypJ{\Pow{\mathfrak{R}^\tau_\Downarrow}}{\Exprs_\tau, \Values_\tau,
+%%   \NaturalsPsh}$ is globally evident where $\NaturalsPsh$ is the constant
+%%   presheaf $\MapsTo{\Upsilon}{\Naturals}$. In other words, we have a family of
+%%   internal judgments $\Of{[\Downarrow_\tau](\Upsilon)}{\int_{\Upsilon'}
+%%   \Upsilon\inj\Upsilon'\Rightarrow\Pow{\mathfrak{R}^\tau_\Downarrow}}$
+%%
+%%
+%% shall be evident by means of some internal
+%% family of judgments $[\Downarrow_\tau]$, where $\NaturalsPsh$ is the constant
+%% presheaf $\MapsTo{\Upsilon}{\Naturals}$. In other words, we shall forevermore know
+%% what it means to know that some expression evaluates to some value in $n$
+%% steps.
+%% \end{remark}
+%%
+%% We will write $\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$
+%% such that $\EvalN{\Upsilon}{\tau}{n}{M}{N}$; in other words, the judgment is
+%% interpreted as the following presheaf:
+%% \[
+%%   \Define{
+%%     \left(\Upsilon\parallel M\Downarrow_\tau N\right)(w)
+%%   }{
+%%     \int^n[\Downarrow_\tau](w,M,N,n)
+%%   }
+%% \]
+%%
+%%
+%% By this token, the derivations of $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ at
+%% $w$ are the set $[\Downarrow_\tau](w,M,N,n)$; we write
+%% $\Eval{\Upsilon}{\tau}{M}{N}$ for the judgment
+%% $\int^n[\Downarrow_\tau](-,M,N,n)$
+%
 
 \ifdraft{}{
   \nocite{maclane:1971}
