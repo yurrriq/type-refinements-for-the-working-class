@@ -744,8 +744,8 @@ Now, we can extend $R_\tau$ to a new relation $[R_\tau]$ on closed expressions
 which respects a single ``layer'' of computation. We will say
 $\SBinRel{[R_\tau]}{\Upsilon}{M}{N}$ when, supposing
 $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}}$ such that
-$\Lookup{\CanOperators}{\vartheta}{\MkArity{\vec{v}}{\tau}}$, for any
-$\Of{\rho}{\Upsilon\inj\Upsilon'}$, we have
+$\IMode{\Upsilon}\Vdash_{\IMode{\CanOperators}}\IMode{\vartheta}:\OMode{\MkArity{\vec{v}}{\tau}}$,
+for any $\Of{\rho}{\Upsilon\inj\Upsilon'}$, we have
 $\Eval{\Upsilon'}{\tau}{N\rho}{\App{\vartheta\rho}{\Vec{F}\rho}}$ and
 $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\vec{E}\rho}{\vec{F}\rho}$.
 
