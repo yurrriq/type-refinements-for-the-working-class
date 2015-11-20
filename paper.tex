@@ -307,9 +307,9 @@ judgment, and outputs are things which are synthesized in the process. \fi
 
 For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we can
 deploy a generic logical framework equipped with higher-order judgments. A
-judgment is defined by giving it a \emph{meaning explanation}, which is a
+judgment is always defined using a \emph{meaning explanation}, which is a
 specification of the conditions under which it may be asserted (sc.\ its
-evidence).
+evidence) \cite{martin-lof:1996}.
 
 \paragraph{Renaming convention} Because the evidence of a judgment will often
 contain symbols $u,v,\dots$ we informally adopt the convention that the
@@ -319,11 +319,6 @@ This apparatus is developed formally in Appendix~\ref{appendix:lf}, where the
 logical framework is cast as a topos of covariant presheaves on symbol contexts
 $\SCtx$.
 
-%% Then, a \emph{judgment} shall be interpreted as an object in the presheaf
-%% category $\Define{\mathbb{J}}{\Sets^\SCtx}$; in other words, a
-%% judgment is identified with the intensional set of its renaming-sensitive
-%% derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
-
 \begin{definition}[Hypothetical Judgment]
   For two judgments $\mathcal{J}_1$ and $\mathcal{J}_2$, we can form the
   hypothetical judgment $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$, whose evidence
@@ -332,36 +327,6 @@ $\SCtx$.
   \emph{semantic} consequence and therefore expresses admissibilities, in
   contrast to the \emph{logical} consequence which expresses
   derivabilities~\cite{harper:2016}. We will not have any need for the latter.
-
-
-  %% using the
-  %% exponential construction~\cite[p.~46]{maclane-moerdijk:1992}, which expresses
-  %% the semantic consequence of $\mathcal{J}_2$ from $\mathcal{J}_1$:
-  %% \begin{align*}
-  %%   \ADefine{
-  %%     \left(\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\right)(\Upsilon)
-  %%   }{
-  %%     \left({\mathcal{J}_2}^{\mathcal{J}_1}\right)(\Upsilon)
-  %%   }\\
-  %%   &\cong
-  %%   \OMode{
-  %%     \Hom{\mathbb{J}}{
-  %%       \Yoneda{\Upsilon}\times\mathcal{J}_1
-  %%     }{
-  %%       \mathcal{J}_2
-  %%     }
-  %%   }\\
-  %%   &\cong
-  %%   \OMode{
-  %%     \int_{\Upsilon'}{{\Upsilon\inj\Upsilon'}
-  %%       \Rightarrow{{{\mathcal{J}}_{2}(\Upsilon')}^{{\mathcal{J}}_{1}(\Upsilon')}}}
-  %%   }
-  %% \end{align*}
-
-  %% In other words, the hypothetical judgment
-  %% $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$ is evident when there shall forevermore
-  %% be an effective transformation of evidence for the antecedent into evidence
-  %% for the consequent.
 
   \paragraph{Notation}
   For a hypothetical judgment with multiple hypotheses, we will write
@@ -389,31 +354,6 @@ $\SCtx$.
   rather than sorts; as such, the general judgment allows us to quantify over
   terms of higher type.
 
-%%
-%%  For any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\square\Theta}}$, we can define
-%%  the general judgment $\GenJ{\Theta}{\mathcal{J}}$ as follows, where
-%%  $\Of{\Yoneda{-}}{\OpCat{\SCtx}\ra\mathbb{J}}$ is the Yoneda Embedding:
-%%  \begin{align*}
-%%    \ADefine{
-%%      \left(\GenJ{\Theta}{\mathcal{J}}\right)(\Upsilon)
-%%    }{
-%%      \Hom{\mathbb{J}}{
-%%        \Yoneda{\Upsilon}
-%%      }{
-%%        \varprojlim\mathcal{J}
-%%      }
-%%    }\\
-%%    &\cong
-%%    \OMode{
-%%      \int_{(\Upsilon',\,\vec{E})}{\Upsilon\inj\Upsilon'\Rightarrow{\mathcal{J}(\vec{E})(\Upsilon')}}
-%%    }
-%%  \end{align*}
-%%
-%%   Intuitively, the general judgment $\GenJ{\Theta}{\mathcal{J}}$ is evident
-%%   when the family of judgments $\mathcal{J}$ shall forevermore have a global
-%%   section (i.e.\ for any substitution $\Member{\vec{E}}{\square\Theta}$,
-%%   $\mathcal{J}(\vec{E})$ shall be evident).
-
    \paragraph{Notation}
 
    We will write $\HPGenJ{\Upsilon}{\Gamma}{\Theta}{\mathcal{J}}$ for
@@ -428,40 +368,6 @@ $\SCtx$.
    $\MApp{\MV{m}}{\vec{u}}{\vec{x}}$.
 
 \end{definition}
-
-%% \begin{definition}[Internal Judgments]
-%%
-%%   It often happens that the evidence for a judgment is the knowledge of the
-%%   meaning of a new form of judgment. This can be neatly expressed in our topos
-%%   using the subobject classifier $\Omega$, where the evidence of $\Omega$ at
-%%   $\Upsilon$ gives rise to an \emph{internal judgment} which is defined at all
-%%   $\Upsilon'$ for which we have $\Of{\rho}{\Upsilon\inj\Upsilon'}$.
-%%
-%%   A \emph{global internal (family of) judgments} is a section
-%%   $\Of{J}{\int_\SCtx {\Omega^{\mathcal{J}}}}\cong
-%%   \IMode{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}\times\mathcal{J}}{\Omega}}$,
-%%   which can be externalized as a ``total'' judgment $\Of{\Embed{J}}{\mathbb{J}}$
-%%   for whose derivations at $\Upsilon$ are the arrows
-%%   $\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbbold{1}\times\mathcal{J}}}$
-%%   such that the following diagram commutes:
-%%   \[
-%%     \begin{tikzcd}[cramped,sep=huge]
-%%       \IMode{\Yoneda{\Upsilon}}
-%%         \arrow[r, dashed, "\OMode{\phi}"]
-%%         \arrow[rd, "\IMode{J_\Upsilon\Pair{1}{\pi_2\circ\phi}}"']
-%%       & \IMode{\mathbbold{1}\times\mathcal{J}} \arrow[d, "\IMode{\mathbf{true}\circ\pi_1}"] \\
-%%       & \IMode{\Omega}
-%%     \end{tikzcd}
-%%   \]
-%%
-%%   Then, to say $\IMode{\Upsilon}\parallel\Embed{J}(E)$ where
-%%   $\Member{E}{\mathcal{J}(\Upsilon)}$ is to assert that we have evidence
-%%   $\Member{F}{\Embed{J}(\Upsilon)}$ such that $\IsEq{\pi_2(F)}{E}$.
-%%
-%%   When asserting the existence of an internal judgment, in most cases we will
-%%   say something like ``To know $\mathcal{J}$ is to have a judgment
-%%   $\mathcal{J'}$'' rather than appealing directly to the subobject classifier.
-%% \end{definition}
 
 After this section, we will define a judgment either by rules, or by an
 informal semantical explanation, in both cases leaving its intensional
@@ -791,6 +697,107 @@ $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 \begin{appendices}
 \section{Formal Definition of the Logical Framework}
 \label{appendix:lf}
+
+As noted earlier, we must be cautious in the definitions of both atomic and
+higher-order judgments that their evidence shall always respect the
+\emph{renaming convention}. We do so explicitly in this appendix by developing
+our logical framework as a presheaf topos over symbol contexts.
+
+A judgment is, then, an object in the presheaf category
+$\Define{\mathbb{J}}{\Sets^\SCtx}$; in other words, judgments are identified
+with the intensional set of its renameable evidence. $\mathbb{J}$, like all
+presheaf categories, is a topos. The task at hand, then, is to show how to
+replace the informal meaning explanations that we gave in
+section~\ref{section:ambient-lf} with precise definitions in the topos
+$\mathbb{J}$.
+
+\subsection{Hypothetical Judgment}
+
+Hypothetical judgment $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$ is defined using the
+exponential construction~\cite[p.~46]{maclane-moerdijk:1992}, which expresses
+the semantic consequence of $\mathcal{J}_2$ from $\mathcal{J}_1$:
+\begin{align*}
+  \ADefine{
+    \left(\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\right)(\Upsilon)
+  }{
+    \left({\mathcal{J}_2}^{\mathcal{J}_1}\right)(\Upsilon)
+  }\\
+  &\cong
+  \OMode{
+    \Hom{\mathbb{J}}{
+      \Yoneda{\Upsilon}\times\mathcal{J}_1
+    }{
+      \mathcal{J}_2
+    }
+  }\\
+  &\cong
+  \OMode{
+    \int_{\Upsilon'}{{\Upsilon\inj\Upsilon'}
+      \Rightarrow{{{\mathcal{J}}_{2}(\Upsilon')}^{{\mathcal{J}}_{1}(\Upsilon')}}}
+  }
+\end{align*}
+
+In other words, the hypothetical judgment $\HypJ{\mathcal{J}_2}{\mathcal{J}_1}$
+is evident when there shall ``forevermore'' (i.e. for any applicable renaming
+of symbols) be an effective transformation of evidence for the antecedent into
+evidence for the consequent.
+
+\subsection{General Judgment}
+
+For any diagram $\Of{\mathcal{J}}{\mathbb{J}^{\square\Theta}}$, we can define
+the general judgment $\GenJ{\Theta}{\mathcal{J}}$ as follows:
+\begin{align*}
+  \ADefine{
+    \left(\GenJ{\Theta}{\mathcal{J}}\right)(\Upsilon)
+  }{
+    \Hom{\mathbb{J}}{
+      \Yoneda{\Upsilon}
+    }{
+      \varprojlim\mathcal{J}
+    }
+  }\\
+  &\cong
+  \OMode{
+    \int_{(\Upsilon',\,\vec{E})}{\Upsilon\inj\Upsilon'\Rightarrow{\mathcal{J}(\vec{E})(\Upsilon')}}
+  }
+\end{align*}
+
+ Intuitively, the general judgment $\GenJ{\Theta}{\mathcal{J}}$ is evident
+ when the family of judgments $\mathcal{J}$ shall forevermore have a global
+ section (i.e.\ for any substitution $\Member{\vec{E}}{\square\Theta}$,
+ $\mathcal{J}(\vec{E})$ shall be evident).
+
+
+\subsection{Internal Judgments}
+It often happens that the evidence for a judgment is the knowledge of the
+meaning of a new form of judgment; this is the case when we say ``To know
+$\mathcal{J}$ is to know \emph{the meaning of} another judgment
+$\mathcal{J}'$.'' This can be neatly expressed in our topos using the subobject
+classifier $\Omega$, where the evidence of $\Omega$ at $\Upsilon$ gives rise to
+an \emph{internal judgment} which is defined at all $\Upsilon'$ for which we
+have $\Of{\rho}{\Upsilon\inj\Upsilon'}$.
+
+A \emph{global internal (family of) judgments} is a section
+$\Of{J}{\int_\SCtx {\Omega^{\mathcal{J}}}}\cong
+\IMode{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}\times\mathcal{J}}{\Omega}}$,
+which can be externalized as a ``total'' judgment $\Of{\Embed{J}}{\mathbb{J}}$
+for whose derivations at $\Upsilon$ are the arrows
+$\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbbold{1}\times\mathcal{J}}}$
+such that the following diagram commutes:
+\[
+  \begin{tikzcd}[cramped,sep=huge]
+    \IMode{\Yoneda{\Upsilon}}
+      \arrow[r, dashed, "\OMode{\phi}"]
+      \arrow[rd, "\IMode{J_\Upsilon\Pair{1}{\pi_2\circ\phi}}"']
+    & \IMode{\mathbbold{1}\times\mathcal{J}} \arrow[d, "\IMode{\mathbf{true}\circ\pi_1}"] \\
+    & \IMode{\Omega}
+  \end{tikzcd}
+\]
+
+Then, to say $\IMode{\Upsilon}\parallel\Embed{J}(E)$ where
+$\Member{E}{\mathcal{J}(\Upsilon)}$ is to assert that we have evidence
+$\Member{F}{\Embed{J}(\Upsilon)}$ such that $\IsEq{\pi_2(F)}{E}$.
+
 \end{appendices}
 
 \ifdraft{}{
