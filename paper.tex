@@ -20,6 +20,7 @@
 \usepackage{tikz-cd}
 \usepackage{tikzpfeile}
 \usepackage{url}
+\usepackage[titletoc,title]{appendix}
 \usepackage{todonotes}
 
 \newif\ifcolored%
@@ -310,9 +311,15 @@ judgment is defined by giving it a \emph{meaning explanation}, which is a
 specification of the conditions under which it may be asserted (sc.\ its
 evidence).
 
-%% Recall from~\cite{sterling-morrison:2015} that
-%% $\SCtx$ is the category of symbol-contexts and their injective, sort-preserving
-%% renamings. Then, a \emph{judgment} shall be interpreted as an object in the presheaf
+\paragraph{Renaming convention} Because the evidence of a judgment will often
+contain symbols $u,v,\dots$ we informally adopt the convention that the
+evidence of a judgment shall always be subject to fresh renamings of its free
+symbols (i.e.\ the validity of a judgment shall not depend on choice of names).
+This apparatus is developed formally in Appendix~\ref{appendix:lf}, where the
+logical framework is cast as a topos of covariant presheaves on symbol contexts
+$\SCtx$.
+
+%% Then, a \emph{judgment} shall be interpreted as an object in the presheaf
 %% category $\Define{\mathbb{J}}{\Sets^\SCtx}$; in other words, a
 %% judgment is identified with the intensional set of its renaming-sensitive
 %% derivations. $\mathbb{J}$, like all presheaf categories, is a topos.
@@ -780,7 +787,14 @@ expressing that $M$ evaluates to $N$ in $n$ steps.  We will write
 $\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$ such that
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 
+\newpage
+\begin{appendices}
+\section{Formal Definition of the Logical Framework}
+\label{appendix:lf}
+\end{appendices}
+
 \ifdraft{}{
+  \newpage
   \nocite{maclane:1971}
   \bibliographystyle{abbrv}
   \bibliography{refs}
