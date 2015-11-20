@@ -60,7 +60,7 @@
 \newcommand\IMode[1]{{\color{\IModeColorName}{#1}}}
 \newcommand\OMode[1]{{\color{\OModeColorName}{#1}}}
 
-\newcommand\HypJ[2]{#1\ \ (#2)}
+\newcommand\HypJ[2]{#1\ \ \left(#2\right)}
 \newcommand\GenJ[2]{\vert_{\IMode{#1}}\; #2}
 \newcommand\HPGenJ[4]{\vert^{\IMode{#1}\parallel\IMode{#2}}_{\IMode{#3}}\; #4}
 
@@ -693,10 +693,12 @@ expressing that $M$ evaluates to $N$ in $n$ steps.  We will write
 $\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$ such that
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 
-In any topos $\mathcal{E}$, for an object $X$ we can define the object of
-relations on $X$ as the exponential $\Define{\Pow{X}}{\Omega^X}$. Then, the
-data of such a relation is contained in a natural transformation
-$\Of{R}{\Hom{\mathcal{E}}{\mathbb{1}}{\Pow{X}}}$.
+\begin{remark}
+  In any topos $\mathcal{E}$, for an object $X$ we can define the object of
+  relations on $X$ as the exponential $\Define{\Pow{X}}{\Omega^X}$. Then, the
+  data of such a relation is contained in a natural transformation
+  $\Of{R}{\Hom{\mathcal{E}}{\mathbb{1}}{\Pow{X}}}$.
+\end{remark}
 
 \newcommand\SBinRel[4]{\IMode{#2}\parallel\IMode{#3}\mathrel{#1}\IMode{#4}}
 
@@ -728,7 +730,7 @@ follows:
   }
 \]
 
-As a convenience, we'll also define this judgment over vectors of bound terms and valences:
+As a matter of convenience, we'll also define this judgment over vectors of bound terms and valences:
 \[
   \infer{
     \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
@@ -744,17 +746,37 @@ which respects a single ``layer'' of computation, defined pointwise in the follo
   \infer{
     \SBinRel{[R_\tau]}{\Upsilon}{M}{N}
   }{
-    \Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}} &
-    \Eval{\Upsilon}{\tau}{N}{\App{\vartheta}{\Vec{F}}} &
-    \Lookup{\CanOperators}{\vartheta}{\MkArity{\vec{v}}{\tau}} &
-    \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
+    \left(\Eval{\Upsilon}{\tau}{N}{\App{\vartheta}{\Vec{F}}}
+    \quad
+    \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}\right)
+    \quad
+    \text{supposing}
+    \quad
+    \left(
+      \Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}},
+      \Lookup{\CanOperators}{\vartheta}{\MkArity{\vec{v}}{\tau}}
+    \right)
   }
 \end{gather*}
 
+\begin{definition}[Computational Approximation]
 Because $[-_\tau]$ is monotonic, it has a greatest fixed point, which we will
-call \emph{applicative approximation},
-$\Of{\preceq_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
-written pointwise as $\SBinRel{\preceq_\tau}{\Upsilon}{M}{N}$.
+call \emph{computational approximation},
+$\Of{\preccurlyeq_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
+written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
+\end{definition}
+
+\begin{definition}[Computational Equivalence]
+  Two terms are said to be \emph{computationally equivalent} when they approximate each other:
+  \[
+    \infer{
+      \SBinRel{\sim_\tau}{\Upsilon}{M}{N}
+    }{
+      \SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N} &
+      \SBinRel{\preccurlyeq_\tau}{\Upsilon}{N}{M}
+    }
+  \]
+\end{definition}
 
 %%% Now, let us consider relations on open terms; in general, it will be easiest
 %%% for us to situate our constructions on relations in the presheaf topos
