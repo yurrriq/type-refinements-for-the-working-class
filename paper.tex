@@ -35,8 +35,7 @@
   spacing=true,
   tracking=true
 ]{microtype}
-\DeclareSymbolFont{bbold}{U}{bbold}{m}{n}
-\DeclareSymbolFontAlphabet{\mathbbold}{bbold}
+\usepackage{bbold}
 
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{prop}[thm]{Proposition}
@@ -80,7 +79,7 @@
     [#2]%
   }.\, #3%
 }
-\newcommand\MkBTm[3]{\{#1\}[#2].\, #3}
+\newcommand\MkBTm[3]{\mathbb{\lambda}\{#1\}[#2].\, #3}
 \newcommand\MkArity[2]{(#1)\, #2}
 \newcommand\IsArity[1]{\IMode{#1}\ \textit{arity}}
 \newcommand\IsValence[1]{\IMode{#1}\ \textit{valence}}
@@ -161,13 +160,8 @@
 
 \newcommand\Hom[3]{#1\!\left[#2,\,#3\right]}
 
-\newcommand\Rename[2]{%
-  #2\upharpoonright#1%
-}
-
-\newcommand\IsRenaming[3]{%
-  \Rename{\IMode{#1}}{\IMode{#2}}%
-  \leadsto\OMode{#3}%
+\newcommand\Rename[3]{%
+  \left\{#1\, /\, #2\right\}#3%
 }
 
 \newcommand\Subst[3]{%
@@ -215,8 +209,9 @@
 
 \newcommand\EvalN[5]{\IMode{#1}\parallel\IMode{#4}\Downarrow^{\OMode{#3}}_{\IMode{#2}}\OMode{#5}}
 \newcommand\Eval[4]{\EvalN{#1}{#2}{}{#3}{#4}}
-\newcommand\Exprs{\mathcal{E}}
-\newcommand\Values{\mathcal{V}}
+\newcommand\Exprs{\mathbf{E}}
+\newcommand\Values{\mathbf{V}}
+\newcommand\BTms{\mathbf{B}}
 \newcommand\Naturals{\mathbb{N}}
 \newcommand\NaturalsPsh{\mathcal{N}}
 
@@ -661,31 +656,35 @@ as PERs on \emph{programs} in addition to values.
 In this section we generalize Howe's notion of lazy computation
 system~\cite{howe:1989} to the multi-sorted, symbol-parameterized setting. An
 \emph{lazy computation language} is an abt signature
-$\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished copresheaf
-$\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
+$\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished
+copresheaf $\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
 \emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
 For a lazy computation language
 $\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
-presheaves of closed expressions and closed values as follows:
+covariant presheaves on $\SCtx\times\Ctx$ of open expressions, open values, and open bound terms
+as follows:
 \begin{align*}
-  \ADefine{\Exprs_\tau(\Upsilon)}{
-    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{M}{\tau}}
+  \ADefine{\Exprs_\tau(\Upsilon\parallel\Gamma)}{
+    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\Gamma}{M}{\tau}}
   }\\
-  \ADefine{\Values_\tau(\Upsilon)}{
+  \ADefine{\Values_\tau(\Upsilon\parallel\Gamma)}{
     \MkSet{
       M\equiv\App{\vartheta}{\vec{E}}
-      \mid M\in\Exprs_\tau(\Upsilon)\land \exists a. \CanOperators\Pair{\Upsilon}{a}\ni\vartheta
+      \mid M\in\Exprs_\tau(\Upsilon\parallel\Gamma)\land \exists a. \CanOperators\Pair{\Upsilon}{a}\ni\vartheta
     }
+  }\\
+  \ADefine{
+    \BTms_{v}(\Upsilon\parallel\Gamma)
+  }{
+    \MkSet{E \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\Gamma}{E}{v}}
   }
 \end{align*}
 
-\begin{remark}
-  If read as a judgment, $\Exprs_\tau$ (resp.\ $\Values_\tau$) means ``there is
-  a closed expression (resp.\ value) of sort $\tau$'', and has as its evidence any closed
-  expression (resp.\ value) of sort $\tau$.
-\end{remark}
-
-Then, a \emph{lazy computation system} (lcs) is a lazy computation language
+We'll write $\Exprs_\tau(\Upsilon)$, $\Values_\tau(\Upsilon)$ and
+$\BTms_v(\Upsilon)$ for $\Exprs_\tau(\Upsilon\parallel\cdot)$,
+$\Values_\tau(\Upsilon\parallel\cdot)$ and $\BTms_v(\Upsilon\parallel\cdot)$
+respectively, viewed as covariant presheaves on $\SCtx$. Then, a \emph{lazy
+computation system} (lcs) is a lazy computation language
 $\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with an $\SCtx$-indexed
 $\equiv_\alpha$-functional evaluation relation
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ presupposing $\Member{n}{\Naturals}$,
@@ -693,6 +692,81 @@ $\Member{M}{\Exprs_\tau(\Upsilon)}$ and $\Member{N}{\Values_\tau(\Upsilon)}$,
 expressing that $M$ evaluates to $N$ in $n$ steps.  We will write
 $\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$ such that
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
+
+In any topos $\mathcal{E}$, for an object $X$ we can define the object of
+relations on $X$ as the exponential $\Define{\Pow{X}}{\Omega^X}$. Then, the
+data of such a relation is contained in a natural transformation
+$\Of{R}{\Hom{\mathcal{E}}{\mathbb{1}}{\Pow{X}}}$.
+
+\newcommand\SBinRel[4]{\IMode{#2}\parallel\IMode{#3}\mathrel{#1}\IMode{#4}}
+
+Fix a sort-indexed family of binary relations on closed expressions
+$\Of{R_\tau}{\Hom{\Sets^{\SCtx}}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$; we will
+also write the relation as a judgment scheme
+$\SBinRel{R_\tau}{\Upsilon}{M}{N}$. Now, we can always extend $R_\tau$ to a new
+family of relations
+$\Of{R_v}{\Hom{\Sets^{\SCtx}}{\mathbb{1}}{\Pow{\BTms_v^2}}}$ for any valence
+$\Match{v}{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}$, defined pointwise as
+follows:
+\[
+  \infer{
+    \SBinRel{R_{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}}{\Upsilon}{
+      \MkBTm{\vec{u}}{\vec{x}}{M}
+    }{
+      \MkBTm{\vec{v}}{\vec{y}}{N}
+    }
+  }{
+    \begin{array}{l}
+      \forall\IMode{\vec{w}}\mathrel{\#}\IMode{\Dom{\Upsilon}\cup\vec{u}\cup\vec{v}}.\quad
+      \forall\Of{\vec{X}}{\Exprs_\tau^{[\vec{\tau}]}(\Upsilon,\vec{w}:\vec{\sigma})}.\\
+      \SBinRel{R_\tau}{\Upsilon,\vec{w}:\vec{\sigma}}{
+        \Subst{\vec{X}}{\vec{x}}{\Rename{\vec{w}}{\vec{u}}{M}}
+      }{
+        \Subst{\vec{X}}{\vec{y}}{\Rename{\vec{w}}{\vec{v}}{N}}
+      }
+    \end{array}
+  }
+\]
+
+As a convenience, we'll also define this judgment over vectors of bound terms and valences:
+\[
+  \infer{
+    \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
+  }{
+    \forall\Member{(E,F,v)}{(\vec{E},\vec{F},\vec{v})}.\
+    \SBinRel{R_v}{\Upsilon}{E}{F}
+  }
+\]
+
+Now, we can extend $R_\tau$ to a new relation $[R_\tau]$ on closed expressions
+which respects a single ``layer'' of computation, defined pointwise in the following way:
+\begin{gather*}
+  \infer{
+    \SBinRel{[R_\tau]}{\Upsilon}{M}{N}
+  }{
+    \Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}} &
+    \Eval{\Upsilon}{\tau}{N}{\App{\vartheta}{\Vec{F}}} &
+    \Lookup{\CanOperators}{\vartheta}{\MkArity{\vec{v}}{\tau}} &
+    \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
+  }
+\end{gather*}
+
+Because $[-_\tau]$ is monotonic, it has a greatest fixed point, which we will
+call \emph{applicative approximation},
+$\Of{\preceq_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
+written pointwise as $\SBinRel{\preceq_\tau}{\Upsilon}{M}{N}$.
+
+%%% Now, let us consider relations on open terms; in general, it will be easiest
+%%% for us to situate our constructions on relations in the presheaf topos
+%%% $\Define{\widehat{\HypCat}}{\Sets^{\SCtx\times\Ctx}}$. Then, for any two
+%%% objects objects $\Of{X,Y}{\widehat{\HypCat}}$, we can form the object of
+%%% relations between them as $\Define{\Pow{X\times Y}}{\Omega^{X\times Y}}$.
+%%%
+%% . A binary relation $R_\tau$
+%% between open expressions of sort $\tau$ can be thought of as a global section
+%% of the exponential object
+%% $\Match{\Pow{\Exprs_\tau\times\Exprs_\tau}}{\Omega^{\Exprs_\tau\times\Exprs_\tau}}$
+%% of the presheaf topos $\Define{\widehat{\HypCat}}{\Sets^{\SCtx\times\Ctx}}$
 
 \newpage
 \begin{appendices}
@@ -783,14 +857,14 @@ $\Of{J}{\int_\SCtx {\Omega^{\mathcal{J}}}}\cong
 \IMode{\int_\Upsilon\Hom{\mathbb{J}}{\Yoneda{\Upsilon}\times\mathcal{J}}{\Omega}}$,
 which can be externalized as a ``total'' judgment $\Of{\Embed{J}}{\mathbb{J}}$
 for whose derivations at $\Upsilon$ are the arrows
-$\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbbold{1}\times\mathcal{J}}}$
+$\Of{\phi}{\Hom{\mathbb{J}}{\Yoneda{\Upsilon}}{\mathbb{1}\times\mathcal{J}}}$
 such that the following diagram commutes:
 \[
   \begin{tikzcd}[cramped,sep=huge]
     \IMode{\Yoneda{\Upsilon}}
       \arrow[r, dashed, "\OMode{\phi}"]
       \arrow[rd, "\IMode{J_\Upsilon\Pair{1}{\pi_2\circ\phi}}"']
-    & \IMode{\mathbbold{1}\times\mathcal{J}} \arrow[d, "\IMode{\mathbf{true}\circ\pi_1}"] \\
+    & \IMode{\mathbb{1}\times\mathcal{J}} \arrow[d, "\IMode{\mathbf{true}\circ\pi_1}"] \\
     & \IMode{\Omega}
   \end{tikzcd}
 \]
@@ -798,6 +872,8 @@ such that the following diagram commutes:
 Then, to say $\IMode{\Upsilon}\parallel\Embed{J}(E)$ where
 $\Member{E}{\mathcal{J}(\Upsilon)}$ is to assert that we have evidence
 $\Member{F}{\Embed{J}(\Upsilon)}$ such that $\IsEq{\pi_2(F)}{E}$.
+
+
 
 \end{appendices}
 
