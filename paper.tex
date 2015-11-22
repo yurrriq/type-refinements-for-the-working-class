@@ -374,9 +374,37 @@ just in case it is globally inhabited.
 
 Fixing a signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ in the abt
 framework, we will define the notion of behavioral refinement by propounding
-several judgments and their semantical explanations.
+several judgments and their semantical explanations. Let us first define the
+presheaf of $\tau$-sorted expressions, $\Exprs_\tau$ as follows
+\[
+  \Define{
+    \Exprs_\tau(\Upsilon\parallel\Gamma)
+  }{
+    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\Gamma}{M}{\tau}}
+  }
+\]
+
+We will also write $\Exprs_\tau$ for the presheaf $\Exprs_\tau(-\parallel\cdot)$ on $\SCtx$.
 
 \subsection{Parametric Refinement}
+
+The first judgment that will concern us is called \emph{parametric refinement},
+$\Refines{\Upsilon}{\phi}{\tau}$, which means that $\phi$ refines the sort
+$\tau$ under the symbolic parameters $\Upsilon$. We define this judgment
+through a meaning explanation in the style of Martin-L\"of as follows:
+
+\newcommand\RefEquate[4]{#1\{\IMode{#2}\}\left(\IMode{#3},\IMode{#4}\right)}
+
+\begin{definition}
+  To know $\Refines{\Upsilon}{\phi}{\tau}$ (presupposing $\IsSymCtx{\Upsilon}$
+  and $\IsSort{\tau}$) is to know, for any $\Of{\rho}{\Upsilon\inj\Upsilon'}$,
+  what it means for any $\Member{M,N}{\Exprs_\tau(\Upsilon')}$ to be equated by
+  $\phi$ (written $\RefEquate{\phi}{\rho}{M}{N}$), such that
+  $\RefEquate{\phi}{\rho}{\cdot}{\cdot}$ is a partial equivalence relation on
+  $\Exprs_\tau(\Upsilon')$. Morever, that for any
+  $\Of{\rho'}{\Upsilon'\inj\Upsilon''}$, from $\RefEquate{\phi}{\rho}{M}{N}$ we
+  may conclude $\RefEquate{\phi}{\rho'\circ\rho}{M\rho'}{N\rho'}$.
+\end{definition}
 
 \todo[inline]{%
   Restore definitions of the refinement framework after they have been fixed!!
