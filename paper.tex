@@ -513,7 +513,24 @@ induction on the evidence for its first presupposition.
   and closed terms $\Member{M,N}{\Exprs_\sigma(\Upsilon')}$, that from
   $\HRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}$, you can conclude
   $\HRMemEq{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}$.
+  In other words:
 
+  \[
+    \infer[\PFunRefSnoc]{
+      \HEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}
+    }{
+      \begin{array}{l}
+        \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+          \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}.\
+        \forall \Member{M,N}{\Exprs_\sigma(\Upsilon')}.\\
+        \left(\HRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}\right)
+        \Rightarrow
+        \left(\HRMemEq{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}\right)
+      \end{array}
+    }
+  \]
 \end{quote}
 
 %%
