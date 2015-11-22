@@ -413,8 +413,13 @@ through a meaning explanation in the style of Martin-L\"of as follows:
 \end{definition}
 
 Then, we say that $\phi$ \emph{globally refines} $\tau$ (written
-$\GRefines{\phi}{\tau}$) when for all $\Upsilon$, we have
-$\Refines{\Upsilon}{\phi}{\tau}$.
+$\GRefines{\phi}{\tau}$) when we have $\Refines{\cdot}{\phi}{\tau}$.
+Furthermore, when $\Refines{\Upsilon}{\phi}{\tau}$, for any renaming
+\begin{tikzcd}[cramped]
+  \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+\end{tikzcd}
+we can define a new refinement $\phi\rho$ such that
+$\Refines{\Upsilon'}{\phi\rho}{\tau}$ in the obvious way.
 
 \begin{remark}
 
@@ -548,6 +553,14 @@ $\IsVarCtx{\Gamma}$:
   \DefPRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\phi}{\Gamma}{\tau}
 \end{gather*}
 
+For a context refinement $\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and a renaming
+\begin{tikzcd}[cramped]
+  \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+\end{tikzcd},
+we can define a new context refinement
+$\PRefinesCtx{\Upsilon'}{\Psi\rho}{\Gamma}$ by applying $\rho$ pointwise at
+each of the sort refinements in the context.
+
 Functional refinement $\HEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ presupposes
 $\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and $\IsSort{\tau}$, and is explained by
 induction on the evidence for its first presupposition.
@@ -563,30 +576,16 @@ induction on the evidence for its first presupposition.
 
 \paragraph{Case} $\DefPRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\chi}{\Gamma}{\sigma}$.
 
-\begin{gather*}
-  \infer[\PFunRefSnoc]{
-    \HEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}
-  }{
-    \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
-      \HypJ{
-        \HEqRefines{\Upsilon}{\Psi}{
-          \Subst{\MV{m}}{x}{\phi}
-        }{
-          \Subst{\MV{n}}{x}{\psi}
-        }{\tau}
-      }{
-        \HRMemEq{\Upsilon}{\Psi}{\MV{n}}{\MV{n}}{\chi}
-      }
-    }
-  }
-\end{gather*}
+\begin{quote}
+  To know $\HEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}$ is to know, for any renaming
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}
+  and closed terms $\Member{M,N}{\Exprs_\sigma(\Upsilon')}$, that from
+  $\HRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}$, you can conclude
+  $\HRMemEq{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}$.
 
-\todo[inline]{%
-  Is the above a correct rule? I think that it might be good to be explicit
-  here rather than using the hypothetico-general judgment. In fact, if we are
-  explicit about everything, we can get away with not even explaining the
-  higher-order judgments.
-}
+\end{quote}
 
 %%
 %% \subsection{Functional Equality}
