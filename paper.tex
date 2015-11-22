@@ -496,13 +496,17 @@ $\SubRefines{\Upsilon}{\psi}{\phi}{\tau}$.
 
 The primary judgment concerning refinements is the parametric equality,
 $\RMemEq{\Upsilon}{M}{N}{\phi}$, which presupposes
-$\Refines{\Upsilon}{\phi}{\tau}$, and $\Member{M,N}{\Exprs_\tau(\Upsilon)}$.
-The meaning of this judgment is that $M$ and $N$ are identified by $\phi$ at $\Upsilon$:
+$\Refines{\Upsilon'}{\phi}{\tau}$ for some $\Upsilon'$ such that we have
+\begin{tikzcd}[cramped, sep = small]
+  \IMode{\Upsilon'} \arrow[r, hook, "\IMode{\rho}"] &\IMode{\Upsilon}
+\end{tikzcd},
+and $\Member{M,N}{\Exprs_\tau(\Upsilon)}$. The meaning of this judgment is
+that $M$ and $N$ are identified by $\phi$ at $\Upsilon$:
 \[
   \infer{
     \RMemEq{\Upsilon}{M}{N}{\phi}
   }{
-    \RefEquate{\phi}{1}{M}{N}
+    \RefEquate{\phi}{\rho}{M}{N}
   }
 \]
 
