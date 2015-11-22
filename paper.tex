@@ -512,8 +512,10 @@ that $M$ and $N$ are identified by $\phi$ at $\Upsilon$:
 
 \subsection{Functional Refinement}
 
-\newcommand\PRefinesCtxNil{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{nil}}}}
-\newcommand\PRefinesCtxSnoc{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{snoc}}}}
+\newcommand\PRefinesCtxNil{\sqsubset^\star_{\mathtt{nil}}}
+\newcommand\PRefinesCtxSnoc{\sqsubset^\star_{\mathtt{snoc}}}
+\newcommand\PFunRefNil{\vDash^\sqsubset_{\mathtt{nil}}}
+\newcommand\PFunRefSnoc{\vDash^\sqsubset_{\mathtt{snoc}}}
 
 Next, we define functional refinement
 $\HEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ in terms of parametric refinement,
@@ -552,7 +554,7 @@ induction on the evidence for its first presupposition.
 
 \paragraph{Case} $\DefPRefinesCtxNil{\Upsilon}$.
 \[
-  \infer{
+  \infer[\PFunRefNil]{
     \HEqRefines{\Upsilon}{\cdot}{\phi}{\psi}{\tau}
   }{
     \EqRefines{\Upsilon}{\phi}{\psi}{\tau}
@@ -562,7 +564,7 @@ induction on the evidence for its first presupposition.
 \paragraph{Case} $\DefPRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\chi}{\Gamma}{\sigma}$.
 
 \begin{gather*}
-  \infer{
+  \infer[\PFunRefSnoc]{
     \HEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}
   }{
     \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
