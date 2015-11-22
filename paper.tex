@@ -406,6 +406,60 @@ through a meaning explanation in the style of Martin-L\"of as follows:
   may conclude $\RefEquate{\phi}{\rho'\circ\rho}{M\rho'}{N\rho'}$.
 \end{definition}
 
+Then, we say that $\phi$ \emph{globally refines} $\tau$ (written
+$\GRefines{\phi}{\tau}$) when for all $\Upsilon$, we have
+$\Refines{\Upsilon}{\phi}{\tau}$.
+
+\begin{remark}
+
+  At this point, it should be noted that this is very similar to the semantical
+  explanation of typehood given in \cite{martin-lof:1979}, except that we have
+  generalized it to a multi-sorted setting, and that we have fibred the entire
+  apparatus over collections $\Upsilon$ of symbols.
+
+  In fact, the complexity of the above meaning explanation is an artifact of
+  the pointwise style in which we have expressed it. Considered internally to
+  the presheaf topos $\Sets^\SCtx$, a refinement is merely a section of the
+  object of $\mathfrak{per}(\Exprs_\tau)$, defined internally as a subobject of
+  $\Omega^{\Exprs_\tau\times\Exprs_\tau}$:
+  \[
+    \Define{
+      \mathfrak{per}(X)
+    }{
+      \{ \phi : \Omega^{X\times X}
+         \mid
+         symmetric(\phi)
+         \land transitive(\phi)
+      \}
+    }
+  \]
+
+  So, $\Refines{\Upsilon}{\phi}{\tau}$ obtains just when we have
+  $\Member{\phi}{\mathfrak{per}(\Exprs_\tau)(\Upsilon)}$. The benefit of
+  explaining such judgments in terms of the presheaf topos is that we do not
+  need to deal with the complexities of quantifying over renamings, since this
+  is implicit in the definition of the exponential of presheaves,
+  \begin{align*}
+    \ADefine{
+      B^A(\Upsilon)
+    }{
+      \Hom{\Sets^\SCtx}{
+        \Yoneda{\Upsilon}\times A
+      }{
+        B
+      }
+    }\\
+    &\cong
+    \OMode{
+      \int_{\Upsilon'}
+      (\Upsilon\inj\Upsilon')
+      \Rightarrow
+      {B(\Upsilon')}^{A(\Upsilon')}
+    }
+  \end{align*}
+
+\end{remark}
+
 \todo[inline]{%
   Restore definitions of the refinement framework after they have been fixed!!
 }
