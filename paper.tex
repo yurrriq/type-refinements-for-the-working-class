@@ -492,96 +492,96 @@ $\EqRefines{\Upsilon}{\phi}{\psi}{\tau}$ just when both
 $\SubRefines{\Upsilon}{\phi}{\psi}{\tau}$ and
 $\SubRefines{\Upsilon}{\psi}{\phi}{\tau}$.
 
-\todo[inline]{%
-  Restore definitions of the refinement framework after they have been fixed!!
+\subsection{Parametric Equality}
+
+The primary judgment concerning refinements is the parametric equality,
+$\RMemEq{\Upsilon}{M}{N}{\phi}$, which presupposes
+$\Refines{\Upsilon}{\phi}{\tau}$, and $\Member{M,N}{\Exprs_\tau(\Upsilon)}$.
+The meaning of this judgment is that $M$ and $N$ are identified by $\phi$ at $\Upsilon$:
+\[
+  \infer{
+    \RMemEq{\Upsilon}{M}{N}{\phi}
+  }{
+    \RefEquate{\phi}{1}{M}{N}
+  }
+\]
+
+\subsection{Functional Refinement}
+
+\newcommand\PRefinesCtxNil{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{nil}}}}
+\newcommand\PRefinesCtxSnoc{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{snoc}}}}
+
+Next, we define functional refinement
+$\HEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ in terms of parametric refinement,
+simultaneously with parametric context refinement
+$\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and functional equality
+$\HRMemEq{\Upsilon}{\Psi}{M}{N}{\phi}$. We will write
+$\HRefines{\Upsilon}{\Psi}{\phi}{\tau}$ as a shorthand for
+$\HEqRefines{\Upsilon}{\Psi}{\phi}{\phi}{\tau}$.
+
+\newcommand\DefPRefinesCtxNil[1]{
+  \infer[\PRefinesCtxNil]{
+    \PRefinesCtx{#1}{\cdot}{\cdot}
+  }{
+  }
+}
+\newcommand\DefPRefinesCtxSnoc[6]{
+  \infer[\PRefinesCtxSnoc]{
+    \PRefinesCtx{#1}{#2,#3:#4}{#5,#3:#6}
+  }{
+    \PRefinesCtx{#1}{#2}{#5} &
+    \HRefines{#1}{#2}{#4}{#6}
+  }
 }
 
-%%
-%% \subsection{Parametric Equality}
-%%
-%% The primary judgment concerning refinements is the parametric equality,
-%% $\RMemEq{\Phi}{M}{N}{\phi}$, which presupposes $\RefinesCtx{\Phi}{\Upsilon}$,
-%% $\Refines{\Phi}{\phi}{\tau}$, $\IsAbt{\cdot}{\Upsilon}{\cdot}{M}{\tau}$ and
-%% $\IsAbt{\cdot}{\Upsilon}{\cdot}{N}{\tau}$. The meaning of this judgment is that
-%% $M$ and $N$ are identified by $\phi$ at the identity renaming
-%% $\Of{1}{\IMode{\Upsilon}\inj\OMode{\Upsilon}}$:
-%% \[
-%%   \infer{
-%%     \RMemEq{\Phi}{M}{N}{\phi}
-%%   }{
-%%     \IMode{M}\sim^1_\phi\IMode{N}
-%%   }
-%% \]
-%%
-%% \subsection{Functional Refinement}
-%%
-%% \newcommand\PRefinesCtxNil{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{nil}}}}
-%% \newcommand\PRefinesCtxSnoc{\leftidx{^\parallel}{\!\!\sqsubset}{^\star_{\mathtt{snoc}}}}
-%%
-%% Next, we define functional refinement
-%% $\HEqRefines{\Phi}{\Psi}{\phi}{\psi}{\tau}$ in terms of parametric refinement,
-%% simultaneously with parametric context refinement
-%% $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$ and functional equality
-%% $\HRMemEq{\Phi}{\Psi}{M}{N}{\phi}$. We will write
-%% $\HRefines{\Phi}{\Psi}{\phi}{\tau}$ as a shorthand for
-%% $\HEqRefines{\Phi}{\Psi}{\phi}{\phi}{\tau}$.
-%%
-%% \newcommand\DefPRefinesCtxNil[1]{
-%%   \infer[\PRefinesCtxNil]{
-%%     \PRefinesCtx{#1}{\cdot}{\cdot}
-%%   }{
-%%   }
-%% }
-%% \newcommand\DefPRefinesCtxSnoc[6]{
-%%   \infer[\PRefinesCtxSnoc]{
-%%     \PRefinesCtx{#1}{#2,#3:#4}{#5,#3:#6}
-%%   }{
-%%     \PRefinesCtx{#1}{#2}{#5} &
-%%     \HRefines{#1}{#2}{#4}{#6}
-%%   }
-%% }
-%%
-%% Parametric context refinement $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$ shall be
-%% defined as follows, presupposing $\RefinesCtx{\Phi}{\Upsilon}$ and
-%% $\IsVarCtx{\Gamma}$:
-%% \begin{gather*}
-%%   \DefPRefinesCtxNil{\Phi}\qquad
-%%   \DefPRefinesCtxSnoc{\Phi}{\Psi}{x}{\phi}{\Gamma}{\tau}
-%% \end{gather*}
-%%
-%% Functional refinement $\HEqRefines{\Phi}{\Psi}{\phi}{\psi}{\tau}$ presupposes
-%% $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$ and $\IsSort{\tau}$, and is explained by
-%% induction on the evidence for its first presupposition.
-%%
-%% \paragraph{Case} $\DefPRefinesCtxNil{\Phi}$.
-%% \[
-%%   \infer{
-%%     \HEqRefines{\Phi}{\cdot}{\phi}{\psi}{\tau}
-%%   }{
-%%     \EqRefines{\Phi}{\phi}{\psi}{\tau}
-%%   }
-%% \]
-%%
-%% \paragraph{Case} $\DefPRefinesCtxSnoc{\Phi}{\Psi}{x}{\chi}{\Gamma}{\sigma}$,
-%% where $\RefinesCtx{\Phi}{\Upsilon}$.
-%%
-%% \begin{gather*}
-%%   \infer{
-%%     \HEqRefines{\Phi}{\Psi,x:\chi}{\phi}{\psi}{\tau}
-%%   }{
-%%     \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
-%%       \HypJ{
-%%         \HEqRefines{\Phi}{\Psi}{
-%%           \Subst{\MV{m}}{x}{\phi}
-%%         }{
-%%           \Subst{\MV{n}}{x}{\psi}
-%%         }{\tau}
-%%       }{
-%%         \HRMemEq{\Phi}{\Psi}{\MV{n}}{\MV{n}}{\chi}
-%%       }
-%%     }
-%%   }
-%% \end{gather*}
+Parametric context refinement $\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ shall be
+defined as follows, presupposing $\IsSymCtx{\Upsilon}$ and
+$\IsVarCtx{\Gamma}$:
+\begin{gather*}
+  \DefPRefinesCtxNil{\Upsilon}\qquad
+  \DefPRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\phi}{\Gamma}{\tau}
+\end{gather*}
+
+Functional refinement $\HEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ presupposes
+$\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and $\IsSort{\tau}$, and is explained by
+induction on the evidence for its first presupposition.
+
+\paragraph{Case} $\DefPRefinesCtxNil{\Upsilon}$.
+\[
+  \infer{
+    \HEqRefines{\Upsilon}{\cdot}{\phi}{\psi}{\tau}
+  }{
+    \EqRefines{\Upsilon}{\phi}{\psi}{\tau}
+  }
+\]
+
+\paragraph{Case} $\DefPRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\chi}{\Gamma}{\sigma}$.
+
+\begin{gather*}
+  \infer{
+    \HEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}
+  }{
+    \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
+      \HypJ{
+        \HEqRefines{\Upsilon}{\Psi}{
+          \Subst{\MV{m}}{x}{\phi}
+        }{
+          \Subst{\MV{n}}{x}{\psi}
+        }{\tau}
+      }{
+        \HRMemEq{\Upsilon}{\Psi}{\MV{n}}{\MV{n}}{\chi}
+      }
+    }
+  }
+\end{gather*}
+
+\todo[inline]{%
+  Is the above a correct rule? I think that it might be good to be explicit
+  here rather than using the hypothetico-general judgment. In fact, if we are
+  explicit about everything, we can get away with not even explaining the
+  higher-order judgments.
+}
+
 %%
 %% \subsection{Functional Equality}
 %%
