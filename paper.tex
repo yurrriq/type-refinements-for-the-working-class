@@ -397,13 +397,19 @@ through a meaning explanation in the style of Martin-L\"of as follows:
 
 \begin{definition}
   To know $\Refines{\Upsilon}{\phi}{\tau}$ (presupposing $\IsSymCtx{\Upsilon}$
-  and $\IsSort{\tau}$) is to know, for any $\Of{\rho}{\Upsilon\inj\Upsilon'}$,
+  and $\IsSort{\tau}$) is to know, for any
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd},
   what it means for any $\Member{M,N}{\Exprs_\tau(\Upsilon')}$ to be equated by
   $\phi$ (written $\RefEquate{\phi}{\rho}{M}{N}$), such that
   $\RefEquate{\phi}{\rho}{\cdot}{\cdot}$ is a partial equivalence relation on
   $\Exprs_\tau(\Upsilon')$. Morever, that for any
-  $\Of{\rho'}{\Upsilon'\inj\Upsilon''}$, from $\RefEquate{\phi}{\rho}{M}{N}$ we
-  may conclude $\RefEquate{\phi}{\rho'\circ\rho}{M\rho'}{N\rho'}$.
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon'}\arrow[r,hook,"\IMode{\rho'}"] &\IMode{\Upsilon''}
+  \end{tikzcd},
+  from $\RefEquate{\phi}{\rho}{M}{N}$ we may conclude
+  $\RefEquate{\phi}{\rho'\circ\rho}{M\rho'}{N\rho'}$.
 \end{definition}
 
 Then, we say that $\phi$ \emph{globally refines} $\tau$ (written
@@ -460,100 +466,36 @@ $\Refines{\Upsilon}{\phi}{\tau}$.
 
 \end{remark}
 
+\subsubsection{Order and Equality of Parametric Refinements}
+
+We will write $\SubRefines{\Upsilon}{\phi}{\psi}{\tau}$ to mean that $\phi$ is
+a \emph{subrefinement} of $\psi$.
+
+\begin{definition}
+
+  To know $\SubRefines{\Upsilon}{\phi}{\psi}{\tau}$ (presupposing
+  $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$) , is
+  to know, for any renamings
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon} \arrow[r, hook, "\IMode{\rho}"]
+    & \IMode{\Upsilon'} \arrow[r, hook, "\IMode{\rho'}"]
+    & \IMode{\Upsilon''}
+  \end{tikzcd},
+  that from $\RefEquate{\phi}{\rho}{M}{N}$ you can conclude
+  $\RefEquate{\psi}{\rho'\circ\rho}{M\rho'}{N\rho'}$ for any
+  $\Member{M,N}{\Exprs_\tau(\Upsilon')}$.
+
+\end{definition}
+
+Two refinements are equal when they denote the same PER. That is, we have
+$\EqRefines{\Upsilon}{\phi}{\psi}{\tau}$ just when both
+$\SubRefines{\Upsilon}{\phi}{\psi}{\tau}$ and
+$\SubRefines{\Upsilon}{\psi}{\phi}{\tau}$.
+
 \todo[inline]{%
   Restore definitions of the refinement framework after they have been fixed!!
 }
 
-%% \subsection{Parametric Refinement}
-%%
-%% We will require two judgments, defined mutually: $\RefinesCtx{\Phi}{\Upsilon}$,
-%% which means that $\Phi$ is a symbol context which refines the symbol context
-%% $\Upsilon$ (presupposing $\IsSymCtx{\Upsilon}$), and parametric refinement
-%% $\Refines{\Phi}{\phi}{\tau}$ (which shall presuppose
-%% $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$).
-%%
-%% \newcommand\RefinesCtxNil{\sqsubset^\star_{\mathtt{nil}}}
-%% \newcommand\RefinesCtxSnoc{\sqsubset^\star_{\mathtt{snoc}}}
-%%
-%% The first judgment we define inductively:
-%% \begin{gather*}
-%%   \infer[\RefinesCtxNil]{
-%%     \RefinesCtx{\cdot}{\cdot}
-%%   }{
-%%   }\qquad
-%%   \infer[\RefinesCtxSnoc]{
-%%     \RefinesCtx{\Phi,u:\phi}{\Upsilon,u:\tau}
-%%   }{
-%%     \RefinesCtx{\Phi}{\Upsilon} &
-%%     \Refines{\Phi}{\phi}{\tau}
-%%   }
-%% \end{gather*}
-%%
-%% The second judgment is defined coinductively via the following meaning
-%% explanation:
-%% \begin{definition}[Parametric Refinement]
-%%   To know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
-%%   $\RefinesCtx{\Phi}{\Upsilon}$ and $\IsSort{\tau}$) is to know, for any renaming
-%%   $\Of{\varrho}{\Upsilon\inj\OMode{\Upsilon'}}$, and for any $M, N$,
-%%   what it means for $M$ and $N$ to be identified under $\phi$, supposing
-%%   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{M}{\tau}$ and
-%%   $\IsAbt{\cdot}{\Upsilon'}{\cdot}{N}{\tau}$, requiring that if
-%%   $\IMode{M}\sim^\rho_\phi\IMode{N}$ then $\IMode{N}\sim^\rho_\phi\IMode{M}$, and if
-%%   $\IMode{M}\sim^\rho_\phi\IMode{N}$ and $\IMode{N}\sim^\rho_\phi\IMode{O}$, then
-%%   $\IMode{M}\sim^\rho_\phi\IMode{O}$.
-%% \end{definition}
-%%
-%% In other words, to know $\Refines{\Phi}{\phi}{\tau}$ (presupposing
-%% $\RefinesCtx{\Phi}{\Upsilon}$) is to know, for any renaming of $\Upsilon$ to
-%% $\Upsilon'$, which partial equivalence relation on the closed $\tau$-sorted
-%% $\Upsilon'$-terms $\phi$ denotes. At this point, it should be remarked that
-%% this is very similar to the semantical explanation of typehood given in
-%% \cite{martin-lof:1979}, except that we have generalized it to a multi-sorted
-%% setting, and that we have fibred the entire apparatus over collections
-%% $\Upsilon$ of symbols.
-%%
-%% \todo[inline]{%
-%%   define maps of refined contexts, then change weakening lemma to
-%%   monotonicity, which is stronger and more useful.
-%% }
-%% \begin{thm}[Weakening]
-%%   If $\Refines{\Phi}{\phi}{\tau}$, then $\Refines{\Phi,u:\psi}{\phi}{\tau}$ (supposing
-%%   $\NotIn{u}{\Dom\Phi}$ and $\Refines{\Phi}{\psi}{\sigma}$).
-%% \end{thm}
-%% \begin{proof}
-%%   This follows trivially from the rule $\RefinesCtxSnoc$ and the canonical renaming
-%%   $\Upsilon\inj\Upsilon,u:\sigma$.
-%% \end{proof}
-%%
-%% When we have $\Refines{\cdot}{\phi}{\tau}$, we say that $\phi$ \emph{globally}
-%% refines $\tau$ and may simply write $\GRefines{\phi}{\tau}$. By weakening, if
-%% $\GRefines{\phi}{\tau}$ then for all $\Phi$, we have
-%% $\Refines{\Phi}{\phi}{\tau}$ supposing $\RefinesCtx{\Phi}{\Upsilon}$.
-%%
-%% \subsubsection{Ordering and Equality of Parametric Refinement}
-%%
-%% We will write $\SubRefines{\Phi}{\phi}{\psi}{\tau}$ to mean that $\phi$ is a
-%% \emph{subrefinement} of $\psi$, presupposing $\RefinesCtx{\Phi}{\Upsilon}$,
-%% $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$:
-%% \begin{definition}
-%%   To know $\SubRefines{\Phi}{\phi}{\psi}{\tau}$ is to know, for any substitution
-%%   $\Of{\rho}{\Upsilon\inj\OMode{\Upsilon'}}$, the following judgments:
-%%   \[
-%%     \GenJ{
-%%       \MV{m},\MV{n}:\tau
-%%     }{
-%%       \HypJ{
-%%         \IMode{M}\sim^\rho_\psi\IMode{N}
-%%       }{
-%%         \IMode{M}\sim^\rho_\phi\IMode{N}
-%%       }
-%%     }
-%%   \]
-%% \end{definition}
-%%
-%% Two refinements are equal when they denote the same PER. That is, we have
-%% $\EqRefines{\Phi}{\phi}{\psi}{\tau}$ just when both
-%% $\SubRefines{\Phi}{\phi}{\psi}{\tau}$ and $\SubRefines{\Phi}{\psi}{\phi}{\tau}$.
 %%
 %% \subsection{Parametric Equality}
 %%
@@ -833,8 +775,11 @@ which respects a single ``layer'' of computation. We will say
 $\SBinRel{[R_\tau]}{\Upsilon}{M}{N}$ when, supposing
 $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}}$ such that
 $\IMode{\Upsilon}\Vdash_{\IMode{\CanOperators}}\IMode{\vartheta}:\OMode{\MkArity{\vec{v}}{\tau}}$,
-for any $\Of{\rho}{\Upsilon\inj\Upsilon'}$, we have
-$\Eval{\Upsilon'}{\tau}{N\rho}{\App{\vartheta\rho}{\Vec{F}\rho}}$ and
+for any
+\begin{tikzcd}[cramped]
+  \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+\end{tikzcd},
+we have $\Eval{\Upsilon'}{\tau}{N\rho}{\App{\vartheta\rho}{\Vec{F}\rho}}$ and
 $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\vec{E}\rho}{\vec{F}\rho}$.
 
 \begin{definition}[Computational Approximation]
