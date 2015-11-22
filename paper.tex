@@ -291,7 +291,7 @@ See~\cite{sterling-morrison:2015} for the development of abstract binding trees
 with symbols. \todo[inline]{give a brief description of the framework, and present its
 rules.}
 
-\section{The Ambient Logical Framework}
+\section{The Ambient Judgmental Framework}
 \label{section:ambient-lf}
 
 \ifcolored%
@@ -302,7 +302,7 @@ thumb, inputs are things which are supplied when checking the correctness of a
 judgment, and outputs are things which are synthesized in the process. \fi
 
 For any abt signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$, we can
-deploy a generic logical framework equipped with higher-order judgments. A
+deploy a generic judgmental framework equipped with higher-order judgments. A
 judgment is always defined using a \emph{meaning explanation}, which is a
 specification of the conditions under which it may be asserted (sc.\ its
 evidence) \cite{martin-lof:1996}.
@@ -312,7 +312,7 @@ contain symbols $u,v,\dots$ we informally adopt the convention that the
 evidence of a judgment shall always be subject to fresh renamings of its free
 symbols (i.e.\ the validity of a judgment shall not depend on choice of names).
 This apparatus is developed formally in Appendix~\ref{appendix:lf}, where the
-logical framework is cast as a topos of covariant presheaves on symbol contexts
+judgmental framework is cast as a topos of covariant presheaves on symbol contexts
 $\SCtx$.
 
 \begin{definition}[Hypothetical Judgment]
@@ -782,13 +782,13 @@ written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
 
 \newpage
 \begin{appendices}
-\section{Formal Definition of the Logical Framework}
+\section{Formal Definition of the Judgmental Framework}
 \label{appendix:lf}
 
 As noted earlier, we must be cautious in the definitions of both atomic and
 higher-order judgments that their evidence shall always respect the
 \emph{renaming convention}. We do so explicitly in this appendix by developing
-our logical framework as a presheaf topos over symbol contexts.
+our judgmental framework as a presheaf topos over symbol contexts.
 
 A judgment is, then, an object in the presheaf category
 $\Define{\mathbb{J}}{\Sets^\SCtx}$; in other words, judgments are identified
