@@ -384,9 +384,9 @@ induction on the evidence for its first presupposition.
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
   \end{tikzcd}
-  and closed terms $\Member{M,N}{\Exprs_\sigma(\Upsilon')}$, that from
-  $\FRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}$, you can conclude
-  $\FEqRefines{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}$.
+  and closed terms $\Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}$, that from
+  $\FRMemEq{\Upsilon'}{\Psi\rho}{M_0}{M_1}{\chi\rho}$, you can conclude
+  $\FEqRefines{\Upsilon'}{\Psi\rho}{\Subst{M_0}{x}{\phi\rho}}{\Subst{M_1}{x}{\psi\rho}}{\tau}$.
   In other words:
   %
   \[
@@ -398,53 +398,69 @@ induction on the evidence for its first presupposition.
         \begin{tikzcd}[cramped, ampersand replacement = \&]
           \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
         \end{tikzcd}.\
-        \forall \Member{M,N}{\Exprs_\sigma(\Upsilon')}.\\
-        \left(\FRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}\right)
+        \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
+        \left(\FRMemEq{\Upsilon'}{\Psi\rho}{M_0}{M_1}{\chi\rho}\right)
         \Rightarrow
-        \left(\FEqRefines{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}\right)
+        \left(\FEqRefines{\Upsilon'}{\Psi\rho}{\Subst{M_0}{x}{\phi\rho}}{\Subst{M_1}{x}{\psi\rho}}{\tau}\right)
       \end{array}
     }
   \]
 \end{quote}
 
-%%
-%% \subsection{Functional Equality}
-%%
-%% Functional equality $\FRMemEq{\Phi}{\Psi}{M}{N}{\phi}$ presupposes
-%% $\RefinesCtx{\Phi}{\Upsilon}$, $\RefinesCtx{\Phi}{\Psi}{\Gamma}$,
-%% $\FRefines{\Phi}{\Psi}{\phi}{\tau}$, $\IsAbt{\cdot}{\Upsilon}{\Gamma}{M}{\tau}$
-%% and $\IsAbt{\cdot}{\Upsilon}{\Gamma}{N}{\tau}$; the judgment is defined by
-%% induction on the evidence for the second presupposition
-%% $\RefinesCtx{\Phi}{\Psi}{\Gamma}$:
-%%
-%% \paragraph{Case} $\DefRefinesCtxNil{\Phi}$.
-%% \[
-%%   \infer{
-%%     \FRMemEq{\Phi}{\cdot}{M}{N}{\phi}
-%%   }{
-%%     \RMemEq{\Phi}{M}{N}{\phi}
-%%   }
-%% \]
-%%
-%% \paragraph{Case} $\DefRefinesCtxSnoc{\Phi}{\Psi}{x}{\psi}{\Gamma}{\sigma}$,
-%% where $\RefinesCtx{\Phi}{\Upsilon}$.
-%% \[
-%%   \infer{
-%%     \FRMemEq{\Phi}{\Psi,x:\psi}{M}{N}{\phi}
-%%   }{
-%%     \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
-%%       \HypJ{
-%%         \FRMemEq{\Phi}{\Psi}{
-%%           \Subst{\MV{m}}{x}{\phi}
-%%         }{
-%%           \Subst{\MV{n}}{x}{\psi}
-%%         }{\phi}
-%%       }{
-%%         \FRMemEq{\Phi}{\Psi}{\MV{m}}{\MV{n}}{\psi}
-%%       }
-%%     }
-%%   }
-%% \]
+
+\subsection{Functional Equality}
+
+Functional equality $\FRMemEq{\Upsilon}{\Psi}{M}{N}{\phi}$ presupposes
+$\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$, $\FRefines{\Upsilon}{\Psi}{\phi}{\tau}$,
+and $\Member{M,N}{\Exprs_\tau(\Upsilon)}$; this judgment is defined by
+induction on the evidence for the first presupposition
+$\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
+
+
+\paragraph{Case} $\DefRefinesCtxNil{\Upsilon}$.
+\[
+  \infer{
+    \FRMemEq{\Upsilon}{\cdot}{N_0}{N_1}{\phi}
+  }{
+    \RMemEq{\Upsilon}{N_0}{N_1}{\phi}
+  }
+\]
+
+\paragraph{Case} $\DefRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\chi}{\Gamma}{\sigma}$.
+\begin{quote}
+  To know $\FRMemEq{\Upsilon}{\Psi,x:\chi}{N_0}{N_1}{\phi}$ is to know, for any renaming
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}
+  and closed terms $\Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}$, that from
+  $\FRMemEq{\Upsilon'}{\Psi\rho}{M_0}{M_1}{\chi\rho}$, you can conclude
+  $\FRMemEq{\Upsilon'}{\Psi\rho}{\Subst{M_0}{x}{N_0\rho}}{\Subst{M_1}{x}{N_1\rho}}{\Subst{M_0}{x}{\phi\rho}}$.
+  In other words:
+  %
+  \[
+    \infer{
+      \FRMemEq{\Upsilon}{\Psi,x:\psi}{N_0}{N_1}{\phi}
+    }{
+      \begin{array}{l}
+        \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+          \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}.\
+        \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
+        \left(\FRMemEq{\Upsilon'}{\Psi\rho}{M_0}{M_1}{\chi\rho}\right)
+        \Rightarrow
+        \left(%
+          \FRMemEq{\Upsilon'}{\Psi\rho}{%
+            \Subst{M_0}{x}{N_0\rho}
+          }{%
+            \Subst{M_1}{x}{N_1\rho}%
+          }{\Subst{M_0}{x}{\phi\rho}
+          }%
+        \right)
+      \end{array}
+    }
+  \]
+\end{quote}
 %%
 %% \section{Constructions on Refinements}
 %%
