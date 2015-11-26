@@ -1,0 +1,43 @@
+\ProvidesPackage{refinements}
+\RequirePackage{notation/modes}
+\ExecuteOptions{}
+\ProcessOptions\relax
+
+% parametric refinement
+\newcommand\Refines[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset\OMode{#3}}
+
+% global parametric refinement
+\newcommand\GloballyRefines[2]{\IMode{#1}\sqsubset\OMode{#2}}
+
+% equality of parametric refinement
+\newcommand\EqRefines[4]{\IMode{#1}\parallel\IMode{#2}=\IMode{#3}\sqsubset\OMode{#4}}
+
+% parametric context refinement
+\newcommand\RefinesCtx[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset^\star\OMode{#3}}
+
+% functional refinement
+\newcommand\FRefines[4]{%
+  \IMode{#1}\parallel\IMode{#2}%
+  \vDash\IMode{#3}\sqsubset\OMode{#4}%
+}
+
+% equality of functional refinement
+\newcommand\FEqRefines[5]{%
+  \IMode{#1}\parallel\IMode{#2}%
+  \vDash\IMode{#3}=\IMode{#4}
+  \sqsubset\OMode{#5}%
+}
+
+% parametric equality of refinement members
+\newcommand\RMemEq[4]{\IMode{#1}\parallel\IMode{#2}=\IMode{#3}\in\IMode{#4}}
+
+% functional equality of refinement members
+\newcommand\FRMemEq[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\in\IMode{#5}}
+
+% parametric subrefinement
+\newcommand\IsSubrefinement[4]{%
+  \IMode{#1}\parallel\IMode{#2}%
+  \subseteq\IMode{#3}\sqsubset\OMode{#4}%
+}
+
+\endinput
