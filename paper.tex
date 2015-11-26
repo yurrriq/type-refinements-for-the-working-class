@@ -532,12 +532,9 @@ presheaf $\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
 \emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
 For a lazy computation language
 $\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
-covariant presheaves on $\SCtx\times\Ctx$ of open expressions, open values, and open bound terms
+covariant presheaves on $\SCtx\times\Ctx$ of open values, and open bound terms
 as follows:
 \begin{align*}
-  \ADefine{\Exprs_\tau(\Upsilon\parallel\Gamma)}{
-    \MkSet{M \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\Gamma}{M}{\tau}}
-  }\\
   \ADefine{\Values_\tau(\Upsilon\parallel\Gamma)}{
     \MkSet{
       M\equiv\App{\vartheta}{\vec{E}}
@@ -551,8 +548,7 @@ as follows:
   }
 \end{align*}
 
-We'll write $\Exprs_\tau(\Upsilon)$, $\Values_\tau(\Upsilon)$ and
-$\BTms_v(\Upsilon)$ for $\Exprs_\tau(\Upsilon\parallel\cdot)$,
+We'll write $\Values_\tau(\Upsilon)$ and $\BTms_v(\Upsilon)$ for
 $\Values_\tau(\Upsilon\parallel\cdot)$ and $\BTms_v(\Upsilon\parallel\cdot)$
 respectively, viewed as covariant presheaves on $\SCtx$. Then, a \emph{lazy
 computation system} (lcs) is a lazy computation language
