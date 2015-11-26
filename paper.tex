@@ -76,21 +76,46 @@
 
 \newcommand\Embed[1]{\left\lfloor#1\right\rfloor}
 
+% parametric refinement
 \newcommand\Refines[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset\OMode{#3}}
-\newcommand\GRefines[2]{\IMode{#1}\sqsubset\OMode{#2}}
-\newcommand\RefinesCtx[2]{\IMode{#1}\sqsubset^\star\OMode{#2}}
+
+% global parametric refinement
+\newcommand\GloballyRefines[2]{\IMode{#1}\sqsubset\OMode{#2}}
+
+% equality of parametric refinement
 \newcommand\EqRefines[4]{\IMode{#1}\parallel\IMode{#2}=\IMode{#3}\sqsubset\OMode{#4}}
 
-\newcommand\HRefines[4]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}\sqsubset\OMode{#4}}
-\newcommand\HEqRefines[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\sqsubset\OMode{#5}}
-\newcommand\PRefinesCtx[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset^\star\OMode{#3}}
+% parametric context refinement
+\newcommand\RefinesCtx[3]{\IMode{#1}\parallel\IMode{#2}\sqsubset^\star\OMode{#3}}
 
+% functional refinement
+\newcommand\FRefines[4]{%
+  \IMode{#1}\parallel\IMode{#2}%
+  \vDash\IMode{#3}\sqsubset\OMode{#4}%
+}
+
+% equality of functional refinement
+\newcommand\FEqRefines[5]{%
+  \IMode{#1}\parallel\IMode{#2}%
+  \vDash\IMode{#3}=\IMode{#4}
+  \sqsubset\OMode{#5}%
+}
+
+% parametric equality of refinement members
 \newcommand\RMemEq[4]{\IMode{#1}\parallel\IMode{#2}=\IMode{#3}\in\IMode{#4}}
-\newcommand\HRMemEq[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\in\IMode{#5}}
 
+% functional equality of refinement members
+\newcommand\FRMemEq[5]{\IMode{#1}\parallel\IMode{#2}\vDash\IMode{#3}=\IMode{#4}\in\IMode{#5}}
+
+% parametric subrefinement
+\newcommand\IsSubrefinement[4]{%
+  \IMode{#1}\parallel\IMode{#2}%
+  \subseteq\IMode{#3}\sqsubset\OMode{#4}%
+}
+
+% power object
 \newcommand\Pow[1]{\wp\left(#1\right)}
 
-\newcommand\SubRefines[4]{\IMode{#1}\parallel\IMode{#2}\subseteq\IMode{#3}\sqsubset\OMode{#4}}
 \newcommand\TyBase[1]{\mathtt{Base}_{#1}}
 \newcommand\TyTop[1]{\top_{#1}}
 \newcommand\TyBot[1]{\bot_{#1}}
@@ -156,7 +181,7 @@ relations on only closed terms, and the meaning of the hypothetical judgment is
 defined separately and uniformly in the logical relations style.
 
 Our position is that these views of type theory are not in conflict, but rather
-merely describe two distinct layers in a single, harmonious system. From this
+describe two distinct layers in a single, harmonious system. From this
 perspective, formal type theories can do little more than negotiate matters of
 grammar, and therefore may serve as a linguistic framework for mathematical
 expression, being responsible for the management of variable binding and
@@ -231,7 +256,7 @@ through a meaning explanation in the style of Martin-L\"of as follows:
 \end{definition}
 
 Then, we say that $\phi$ \emph{globally refines} $\tau$ (written
-$\GRefines{\phi}{\tau}$) when we have $\Refines{\cdot}{\phi}{\tau}$.
+$\GloballyRefines{\phi}{\tau}$) when we have $\Refines{\cdot}{\phi}{\tau}$.
 Furthermore, when $\Refines{\Upsilon}{\phi}{\tau}$, for any renaming
 \begin{tikzcd}[cramped]
   \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
@@ -290,12 +315,12 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\phi\rho}{\tau}$.
 
 \subsubsection{Order and Equality of Parametric Refinements}
 
-We will write $\SubRefines{\Upsilon}{\phi}{\psi}{\tau}$ to mean that $\phi$ is
+We will write $\IsSubrefinement{\Upsilon}{\phi}{\psi}{\tau}$ to mean that $\phi$ is
 a \emph{subrefinement} of $\psi$.
 
 \begin{definition}
 
-  To know $\SubRefines{\Upsilon}{\phi}{\psi}{\tau}$ (presupposing
+  To know $\IsSubrefinement{\Upsilon}{\phi}{\psi}{\tau}$ (presupposing
   $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$) , is
   to know, for any renamings
   \begin{tikzcd}[cramped]
@@ -311,8 +336,8 @@ a \emph{subrefinement} of $\psi$.
 
 Two refinements are equal when they denote the same PER. That is, we have
 $\EqRefines{\Upsilon}{\phi}{\psi}{\tau}$ just when both
-$\SubRefines{\Upsilon}{\phi}{\psi}{\tau}$ and
-$\SubRefines{\Upsilon}{\psi}{\phi}{\tau}$.
+$\IsSubrefinement{\Upsilon}{\phi}{\psi}{\tau}$ and
+$\IsSubrefinement{\Upsilon}{\psi}{\phi}{\tau}$.
 
 \subsection{Parametric Equality}
 
@@ -334,78 +359,78 @@ that $M$ and $N$ are identified by $\phi$ at $\Upsilon$:
 
 \subsection{Functional Refinement}
 
-\newcommand\PRefinesCtxNil{\sqsubset^\star_{\mathtt{nil}}}
-\newcommand\PRefinesCtxSnoc{\sqsubset^\star_{\mathtt{snoc}}}
+\newcommand\RefinesCtxNil{\sqsubset^\star_{\mathtt{nil}}}
+\newcommand\RefinesCtxSnoc{\sqsubset^\star_{\mathtt{snoc}}}
 \newcommand\PFunRefNil{\vDash^\sqsubset_{\mathtt{nil}}}
 \newcommand\PFunRefSnoc{\vDash^\sqsubset_{\mathtt{snoc}}}
 
 Next, we define functional refinement
-$\HEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ in terms of parametric refinement,
+$\FEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ in terms of parametric refinement,
 simultaneously with parametric context refinement
-$\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and functional equality
-$\HRMemEq{\Upsilon}{\Psi}{M}{N}{\phi}$. We will write
-$\HRefines{\Upsilon}{\Psi}{\phi}{\tau}$ as a shorthand for
-$\HEqRefines{\Upsilon}{\Psi}{\phi}{\phi}{\tau}$.
+$\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and functional equality
+$\FRMemEq{\Upsilon}{\Psi}{M}{N}{\phi}$. We will write
+$\FRefines{\Upsilon}{\Psi}{\phi}{\tau}$ as a shorthand for
+$\FEqRefines{\Upsilon}{\Psi}{\phi}{\phi}{\tau}$.
 
-\newcommand\DefPRefinesCtxNil[1]{
-  \infer[\PRefinesCtxNil]{
-    \PRefinesCtx{#1}{\cdot}{\cdot}
+\newcommand\DefRefinesCtxNil[1]{
+  \infer[\RefinesCtxNil]{
+    \RefinesCtx{#1}{\cdot}{\cdot}
   }{
   }
 }
-\newcommand\DefPRefinesCtxSnoc[6]{
-  \infer[\PRefinesCtxSnoc]{
-    \PRefinesCtx{#1}{#2,#3:#4}{#5,#3:#6}
+\newcommand\DefRefinesCtxSnoc[6]{
+  \infer[\RefinesCtxSnoc]{
+    \RefinesCtx{#1}{#2,#3:#4}{#5,#3:#6}
   }{
-    \PRefinesCtx{#1}{#2}{#5} &
-    \HRefines{#1}{#2}{#4}{#6}
+    \RefinesCtx{#1}{#2}{#5} &
+    \FRefines{#1}{#2}{#4}{#6}
   }
 }
 
-Parametric context refinement $\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ shall be
+Parametric context refinement $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$ shall be
 defined as follows, presupposing $\IsSymCtx{\Upsilon}$ and
 $\IsVarCtx{\Gamma}$:
 \begin{gather*}
-  \DefPRefinesCtxNil{\Upsilon}\qquad
-  \DefPRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\phi}{\Gamma}{\tau}
+  \DefRefinesCtxNil{\Upsilon}\qquad
+  \DefRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\phi}{\Gamma}{\tau}
 \end{gather*}
 
-For a context refinement $\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and a renaming
+For a context refinement $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and a renaming
 \begin{tikzcd}[cramped]
   \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
 \end{tikzcd},
 we can define a new context refinement
-$\PRefinesCtx{\Upsilon'}{\Psi\rho}{\Gamma}$ by applying $\rho$ pointwise at
+$\RefinesCtx{\Upsilon'}{\Psi\rho}{\Gamma}$ by applying $\rho$ pointwise at
 each of the sort refinements in the context.
 
-Functional refinement $\HEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ presupposes
-$\PRefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and $\IsSort{\tau}$, and is explained by
+Functional refinement $\FEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$ presupposes
+$\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and $\IsSort{\tau}$, and is explained by
 induction on the evidence for its first presupposition.
 
-\paragraph{Case} $\DefPRefinesCtxNil{\Upsilon}$.
+\paragraph{Case} $\DefRefinesCtxNil{\Upsilon}$.
 \[
   \infer[\PFunRefNil]{
-    \HEqRefines{\Upsilon}{\cdot}{\phi}{\psi}{\tau}
+    \FEqRefines{\Upsilon}{\cdot}{\phi}{\psi}{\tau}
   }{
     \EqRefines{\Upsilon}{\phi}{\psi}{\tau}
   }
 \]
 
-\paragraph{Case} $\DefPRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\chi}{\Gamma}{\sigma}$.
+\paragraph{Case} $\DefRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\chi}{\Gamma}{\sigma}$.
 
 \begin{quote}
-  To know $\HEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}$ is to know, for any renaming
+  To know $\FEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}$ is to know, for any renaming
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
   \end{tikzcd}
   and closed terms $\Member{M,N}{\Exprs_\sigma(\Upsilon')}$, that from
-  $\HRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}$, you can conclude
-  $\HEqRefines{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}$.
+  $\FRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}$, you can conclude
+  $\FEqRefines{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}$.
   In other words:
   %
   \[
     \infer[\PFunRefSnoc]{
-      \HEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}
+      \FEqRefines{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}
     }{
       \begin{array}{l}
         \forall
@@ -413,9 +438,9 @@ induction on the evidence for its first presupposition.
           \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
         \end{tikzcd}.\
         \forall \Member{M,N}{\Exprs_\sigma(\Upsilon')}.\\
-        \left(\HRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}\right)
+        \left(\FRMemEq{\Upsilon}{\Psi\rho}{M}{N}{\chi\rho}\right)
         \Rightarrow
-        \left(\HEqRefines{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}\right)
+        \left(\FEqRefines{\Upsilon}{\Psi\rho}{\Subst{M}{x}{\phi\rho}}{\Subst{N}{x}{\psi\rho}}{\tau}\right)
       \end{array}
     }
   \]
@@ -424,37 +449,37 @@ induction on the evidence for its first presupposition.
 %%
 %% \subsection{Functional Equality}
 %%
-%% Functional equality $\HRMemEq{\Phi}{\Psi}{M}{N}{\phi}$ presupposes
-%% $\RefinesCtx{\Phi}{\Upsilon}$, $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$,
-%% $\HRefines{\Phi}{\Psi}{\phi}{\tau}$, $\IsAbt{\cdot}{\Upsilon}{\Gamma}{M}{\tau}$
+%% Functional equality $\FRMemEq{\Phi}{\Psi}{M}{N}{\phi}$ presupposes
+%% $\RefinesCtx{\Phi}{\Upsilon}$, $\RefinesCtx{\Phi}{\Psi}{\Gamma}$,
+%% $\FRefines{\Phi}{\Psi}{\phi}{\tau}$, $\IsAbt{\cdot}{\Upsilon}{\Gamma}{M}{\tau}$
 %% and $\IsAbt{\cdot}{\Upsilon}{\Gamma}{N}{\tau}$; the judgment is defined by
 %% induction on the evidence for the second presupposition
-%% $\PRefinesCtx{\Phi}{\Psi}{\Gamma}$:
+%% $\RefinesCtx{\Phi}{\Psi}{\Gamma}$:
 %%
-%% \paragraph{Case} $\DefPRefinesCtxNil{\Phi}$.
+%% \paragraph{Case} $\DefRefinesCtxNil{\Phi}$.
 %% \[
 %%   \infer{
-%%     \HRMemEq{\Phi}{\cdot}{M}{N}{\phi}
+%%     \FRMemEq{\Phi}{\cdot}{M}{N}{\phi}
 %%   }{
 %%     \RMemEq{\Phi}{M}{N}{\phi}
 %%   }
 %% \]
 %%
-%% \paragraph{Case} $\DefPRefinesCtxSnoc{\Phi}{\Psi}{x}{\psi}{\Gamma}{\sigma}$,
+%% \paragraph{Case} $\DefRefinesCtxSnoc{\Phi}{\Psi}{x}{\psi}{\Gamma}{\sigma}$,
 %% where $\RefinesCtx{\Phi}{\Upsilon}$.
 %% \[
 %%   \infer{
-%%     \HRMemEq{\Phi}{\Psi,x:\psi}{M}{N}{\phi}
+%%     \FRMemEq{\Phi}{\Psi,x:\psi}{M}{N}{\phi}
 %%   }{
 %%     \HPGenJ{\Upsilon}{\Gamma}{\MV{m},\MV{n}:\sigma}{
 %%       \HypJ{
-%%         \HRMemEq{\Phi}{\Psi}{
+%%         \FRMemEq{\Phi}{\Psi}{
 %%           \Subst{\MV{m}}{x}{\phi}
 %%         }{
 %%           \Subst{\MV{n}}{x}{\psi}
 %%         }{\phi}
 %%       }{
-%%         \HRMemEq{\Phi}{\Psi}{\MV{m}}{\MV{n}}{\psi}
+%%         \FRMemEq{\Phi}{\Psi}{\MV{m}}{\MV{n}}{\psi}
 %%       }
 %%     }
 %%   }
@@ -463,11 +488,11 @@ induction on the evidence for its first presupposition.
 %% \section{Constructions on Refinements}
 %%
 %% Refinements can be arranged in a partial order via the
-%% $\SubRefines{\Phi}{\phi}{\psi}{\tau}$ judgment, and admit a lattice structure
+%% $\IsSubrefinement{\Phi}{\phi}{\psi}{\tau}$ judgment, and admit a lattice structure
 %% at any sort $\tau$.
 %%
-%% We have the bottom refinement $\GRefines{\TyBot{\tau}}{\tau}$, which simply
-%% contains no elements. Next, the top refinement $\GRefines{\TyTop{\tau}}{\tau}$
+%% We have the bottom refinement $\GloballyRefines{\TyBot{\tau}}{\tau}$, which simply
+%% contains no elements. Next, the top refinement $\GloballyRefines{\TyTop{\tau}}{\tau}$
 %% identifies all terms $M,N$ such that $\IsAbt{\cdot}{\Upsilon}{\cdot}{M}{\tau}$
 %% and $\IsAbt{\cdot}{\Upsilon}{\cdot}{N}{\tau}$. The join
 %% $\Refines{\Phi}{\phi\TyJoin{\tau}\psi}{\tau}$ of two refinements
