@@ -410,9 +410,9 @@ induction on the evidence for its first presupposition.
 
 \subsection{Functional Equality}
 
-Functional equality $\FRMemEq{\Upsilon}{\Psi}{M}{N}{\phi}$ presupposes
+Functional equality $\FRMemEq{\Upsilon}{\Psi}{N_0}{N_1}{\phi}$ presupposes
 $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$, $\FRefines{\Upsilon}{\Psi}{\phi}{\tau}$,
-and $\Member{M,N}{\Exprs_\tau(\Upsilon)}$; this judgment is defined by
+and $\Member{N_0,N_1}{\Exprs_\tau(\Upsilon\parallel\Gamma)}$; this judgment is defined by
 induction on the evidence for the first presupposition
 $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
 
