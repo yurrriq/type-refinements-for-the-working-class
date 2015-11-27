@@ -201,14 +201,15 @@ through a meaning explanation in the style of Martin-L\"of as follows:
   and $\IsSort{\tau}$) is to know, for any
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
-  \end{tikzcd},
-  what it means for any $\Member{M,N}{\Exprs_\tau(\Upsilon')}$ to be equated by
+  \end{tikzcd}
+, what it means for any $\Member{M,N}{\Exprs_\tau(\Upsilon')}$ to be equated by
   $\phi$ (written $\RefEquate{\phi}{\rho}{M}{N}$), such that
   $\RefEquate{\phi}{\rho}{-}{-}$ is a partial equivalence relation (PER) on
   $\Exprs_\tau(\Upsilon')$. Morever, that for any
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon'}\arrow[r,hook,"\IMode{\rho'}"] &\IMode{\Upsilon''}
-  \end{tikzcd},
+  \end{tikzcd}
+,
   from $\RefEquate{\phi}{\rho}{M}{N}$ we may conclude
   $\RefEquate{\phi}{\rho'\circ\rho}{M\rho'}{N\rho'}$.
 \end{definition}
@@ -224,7 +225,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\phi\rho}{\tau}$.
 \begin{remark}
 
   At this point, it should be noted that this is very similar to the semantical
-  explanation of typehood given in \cite{martin-lof:1979}, except that we have
+  explanation of typehood given in~\cite{martin-lof:1979}, except that we have
   generalized it to a multi-sorted setting, and that we have fibred the entire
   apparatus over collections $\Upsilon$ of symbols.
 
@@ -276,7 +277,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\phi\rho}{\tau}$.
   down'' are not sets but setoids (i.e., groupoids sans coherence). Thus, a PER
   can formally be thought of as a kind of partial setoid that facilitates
   constructions on subsets in addition to quotients. \todo[inline]{Say something
-    about internal (semi)groupoids?}
+    about internal (semi)-groupoids?}
 
 \end{remark}
 
@@ -288,20 +289,20 @@ a \emph{subrefinement} of $\psi$.
 \begin{definition}
 
   To know $\IsSubrefinement{\Upsilon}{\phi}{\psi}{\tau}$ (presupposing
-  $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$) , is
+  $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$), is
   to know, for any renamings
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon} \arrow[r, hook, "\IMode{\rho}"]
     & \IMode{\Upsilon'} \arrow[r, hook, "\IMode{\rho'}"]
     & \IMode{\Upsilon''}
-  \end{tikzcd},
-  that from $\RefEquate{\phi}{\rho}{M}{N}$ you can conclude
+  \end{tikzcd}
+, that from $\RefEquate{\phi}{\rho}{M}{N}$ you can conclude
   $\RefEquate{\psi}{\rho'\circ\rho}{M\rho'}{N\rho'}$ for any
   $\Member{M,N}{\Exprs_\tau(\Upsilon')}$.
 
 \end{definition}
 
-Two refinements are equal when they denote the same PER. That is, we have
+Two refinements are equal when they denote the same PER.\@That is, we have
 $\EqRefines{\Upsilon}{\phi}{\psi}{\tau}$ just when both
 $\IsSubrefinement{\Upsilon}{\phi}{\psi}{\tau}$ and
 $\IsSubrefinement{\Upsilon}{\psi}{\phi}{\tau}$.
@@ -313,8 +314,8 @@ $\RMemEq{\Upsilon}{M}{N}{\phi}$, which presupposes
 $\Refines{\Upsilon'}{\phi}{\tau}$ for some $\Upsilon'$ such that we have
 \begin{tikzcd}[cramped, sep = small]
   \IMode{\Upsilon'} \arrow[r, hook, "\IMode{\rho}"] &\IMode{\Upsilon}
-\end{tikzcd},
-and $\Member{M,N}{\Exprs_\tau(\Upsilon)}$. The meaning of this judgment is
+\end{tikzcd}
+, and $\Member{M,N}{\Exprs_\tau(\Upsilon)}$. The meaning of this judgment is
 that $M$ and $N$ are identified by $\phi$ at $\Upsilon$:
 \[
   \infer{
@@ -365,8 +366,8 @@ $\IsVarCtx{\Gamma}$:
 For a context refinement $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$ and a renaming
 \begin{tikzcd}[cramped]
   \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
-\end{tikzcd},
-we can define a new context refinement
+\end{tikzcd}
+, we can define a new context refinement
 $\RefinesCtx{\Upsilon'}{\Psi\rho}{\Gamma}$ by applying $\rho$ pointwise at
 each of the sort refinements in the context.
 
@@ -403,8 +404,8 @@ induction on the evidence for its first presupposition.
         \forall
         \begin{tikzcd}[cramped, ampersand replacement = \&]
           \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
-        \end{tikzcd}.\
-        \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
+        \end{tikzcd}
+        .\ \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
         \left(\FRMemEq{\Upsilon'}{\Psi\rho}{M_0}{M_1}{\chi\rho}\right)
         \Rightarrow
         \left(\FEqRefines{\Upsilon'}{\Psi\rho}{\Subst{M_0}{x}{\phi\rho}}{\Subst{M_1}{x}{\psi\rho}}{\tau}\right)
@@ -451,8 +452,8 @@ $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
         \forall
         \begin{tikzcd}[cramped, ampersand replacement = \&]
           \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
-        \end{tikzcd}.\
-        \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
+        \end{tikzcd}
+        .\ \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
         \left(\FRMemEq{\Upsilon'}{\Psi\rho}{M_0}{M_1}{\chi\rho}\right)
         \Rightarrow
         \left(%
@@ -621,8 +622,8 @@ $\IMode{\Upsilon}\Vdash_{\IMode{\CanOperators}}\IMode{\vartheta}:\OMode{\MkArity
 for any
 \begin{tikzcd}[cramped]
   \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
-\end{tikzcd},
-we have $\Eval{\Upsilon'}{\tau}{N\rho}{\App{\vartheta\rho}{\Vec{F}\rho}}$ and
+\end{tikzcd}
+, we have $\Eval{\Upsilon'}{\tau}{N\rho}{\App{\vartheta\rho}{\Vec{F}\rho}}$ and
 $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\vec{E}\rho}{\vec{F}\rho}$.
 
 \begin{definition}[Computational Approximation]
