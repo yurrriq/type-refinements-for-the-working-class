@@ -468,65 +468,67 @@ $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
     }
   \]
 \end{quote}
-%%
-%% \section{Constructions on Refinements}
-%%
-%% Refinements can be arranged in a partial order via the
-%% $\IsSubrefinement{\Phi}{\phi}{\psi}{\tau}$ judgment, and admit a lattice structure
-%% at any sort $\tau$.
-%%
-%% We have the bottom refinement $\GloballyRefines{\TyBot{\tau}}{\tau}$, which simply
-%% contains no elements. Next, the top refinement $\GloballyRefines{\TyTop{\tau}}{\tau}$
-%% identifies all terms $M,N$ such that $\IsAbt{\cdot}{\Upsilon}{\cdot}{M}{\tau}$
-%% and $\IsAbt{\cdot}{\Upsilon}{\cdot}{N}{\tau}$. The join
-%% $\Refines{\Phi}{\phi\TyJoin{\tau}\psi}{\tau}$ of two refinements
-%% $\Refines{\Phi}{\phi}{\tau}$ and $\Refines{\Phi}{\psi}{\tau}$ is defined as follows:
-%% \begin{gather*}
-%%   \infer{
-%%     \RMemEq{\Phi}{M}{N}{\phi\TyJoin{\tau}\psi}
-%%   }{
-%%     \RMemEq{\Phi}{M}{N}{\phi}
-%%   }\qquad
-%%   \infer{
-%%     \RMemEq{\Phi}{M}{N}{\phi\TyJoin{\tau}\psi}
-%%   }{
-%%     \RMemEq{\Phi}{M}{N}{\psi}
-%%   }
-%% \end{gather*}
-%%
-%% Finally the meet $\Refines{\Phi}{\phi\TyMeet{\tau}\psi}{\tau}$ of two refinements
-%% $\Refines{\Phi}{\phi}{\tau}$ and $\Refines{\Phi}{\psi}{\tau}$ is defined
-%% dually:
-%% \[
-%%   \infer{
-%%     \RMemEq{\Phi}{M}{N}{\phi\TyMeet{\tau}\psi}
-%%   }{
-%%     \RMemEq{\Phi}{M}{N}{\phi} &
-%%     \RMemEq{\Phi}{M}{N}{\psi}
-%%   }
-%% \]
-%%
-%% It is trivial to verify that these constructions on refinements give rise to a
-%% lattice.
-%%
-%% \section{Multi-Sorted Computational Type Theory}
-%%
-%% Martin-L\"of's type theory is a theory of \emph{value types}: to define a type,
-%% you specify how to form its equal canonical inhabitants, or values. Then, the
-%% inhabitants of the types are explained uniformly by extending this relation
-%% over an operational semantics such that two terms are equal members of a
-%% type just when they compute to equal values of that type.
-%%
-%% More generally, one may wish to consider types which include computations in
-%% addition to values; an example of such a type would be $\bar{\psi}$ when $\psi$
-%% is a type, which would include all the members of $\psi$ as well as a divergent
-%% computation. Another example is the type $\TyTop{\tau}$ which identifies all
-%% closed terms of sort $\tau$.
-%%
-%% In order to ensure that such types are sensible, we must formulate a notion of
-%% computational equivalence, and then say that a refinement is a \emph{type} just
-%% when it respects computational equivalence; then, we are able to define types
-%% as PERs on \emph{programs} in addition to values.
+
+\section{Constructions on Refinements}
+
+Refinements can be arranged in a partial order via the
+$\IsSubrefinement{\Upsilon}{\phi}{\psi}{\tau}$ judgment, and admit a lattice structure
+at any sort $\tau$.
+
+We have the bottom refinement $\GloballyRefines{\TyBot{\tau}}{\tau}$, which
+simply contains no elements. Next, the top refinement
+$\GloballyRefines{\TyTop{\tau}}{\tau}$ identifies all terms
+$\Member{M,N}{\Exprs_\tau(\Upsilon)}$.  The join
+$\Refines{\Upsilon}{\phi\TyJoin{\tau}\psi}{\tau}$ of two refinements
+$\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$ is defined as
+follows:
+
+\begin{gather*}
+  \infer{
+    \RMemEq{\Upsilon}{M}{N}{\phi\TyJoin{\tau}\psi}
+  }{
+    \RMemEq{\Upsilon}{M}{N}{\phi}
+  }\qquad
+  \infer{
+    \RMemEq{\Upsilon}{M}{N}{\phi\TyJoin{\tau}\psi}
+  }{
+    \RMemEq{\Upsilon}{M}{N}{\psi}
+  }
+\end{gather*}
+
+Finally the meet $\Refines{\Upsilon}{\phi\TyMeet{\tau}\psi}{\tau}$ of two refinements
+$\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$ is defined
+dually:
+\[
+  \infer{
+    \RMemEq{\Upsilon}{M}{N}{\phi\TyMeet{\tau}\psi}
+  }{
+    \RMemEq{\Upsilon}{M}{N}{\phi} &
+    \RMemEq{\Upsilon}{M}{N}{\psi}
+  }
+\]
+
+It is trivial to verify that these constructions on refinements give rise to a
+lattice.
+
+\section{Multi-Sorted Computational Type Theory}
+
+Martin-L\"of's type theory is a theory of \emph{value types}: to define a type,
+you specify how to form its equal canonical inhabitants, or values. Then, the
+inhabitants of the types are explained uniformly by extending this relation
+over an operational semantics such that two terms are equal members of a
+type just when they compute to equal values of that type.
+
+More generally, one may wish to consider types which include computations in
+addition to values; an example of such a type would be $\psi_\bot$ when $\psi$
+is a type, which would include all the members of $\psi$ as well as a divergent
+computation. Another example is the type $\TyTop{\tau}$ which identifies all
+closed terms of sort $\tau$.
+
+In order to ensure that such types are sensible, we must formulate a notion of
+computational equivalence, and then say that a refinement is a \emph{type} just
+when it respects computational equivalence; then, we are able to define types
+as PERs on \emph{programs} in addition to values.
 
 
 \subsection{Lazy Computation Systems}
