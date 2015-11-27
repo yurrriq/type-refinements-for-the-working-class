@@ -135,8 +135,8 @@ types, in contrast to the state of affairs in formal type theory where
 functionality is a metatheorem which must be shown to obtain, based on the
 (somewhat arbitrary) equational theory which has been imposed. Furthermore,
 models for behavioral type theory interpret the types as partial equivalence
-relations on only closed terms, and the meaning of the hypothetical judgment is
-defined separately and uniformly in the logical relations style.
+relations (PER) on only closed terms, and the meaning of the hypothetical
+judgment is defined separately and uniformly in the logical relations style.
 
 Our position is that these views of type theory are not in conflict, but rather
 describe two distinct layers in a single, harmonious system. From this
@@ -204,7 +204,7 @@ through a meaning explanation in the style of Martin-L\"of as follows:
   \end{tikzcd},
   what it means for any $\Member{M,N}{\Exprs_\tau(\Upsilon')}$ to be equated by
   $\phi$ (written $\RefEquate{\phi}{\rho}{M}{N}$), such that
-  $\RefEquate{\phi}{\rho}{-}{-}$ is a partial equivalence relation on
+  $\RefEquate{\phi}{\rho}{-}{-}$ is a partial equivalence relation (PER) on
   $\Exprs_\tau(\Upsilon')$. Morever, that for any
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon'}\arrow[r,hook,"\IMode{\rho'}"] &\IMode{\Upsilon''}
