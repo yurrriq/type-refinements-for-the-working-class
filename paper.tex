@@ -700,50 +700,82 @@ simple case, where we have a global refinement $\GloballyRefines{\phi}{\tau}$,
 we will say $\GlobalIsValueType{\phi}{\tau}$ when there exists a PER $\psi$ on
 \emph{values} that factors uniquely through $\phi$.
 
-In general, we must explain typehood for parametric refinements
-$\Refines{\Upsilon}{\phi}{\tau}$ as well, however; recall from
-Remark~\ref{rem:internal} that the definition of $\phi$ consists in a natural
-transformation
-$\Of{\phi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Exprs_\tau}}}$.
-Therefore, we say that $\IsValueType{\Upsilon}{\phi}{\tau}$ obtains when there
-is a unique $\psi$ such that the following diagram commutes, where
-$\lambda(\chi)$ is the exponential transpose of $\chi$:
-\[
-  \IsValueType{\Upsilon}{\phi}{\tau}
-  \triangleq
-  \begin{tikzcd}[sep=huge]
-    \IMode{\Yoneda{\Upsilon}\times\Values_\tau^2}
-      \arrow[r, dotted, "\OMode{\lambda(\psi)}"]
-      \arrow[d, swap, hook, "\Pair{\ArrId{}}{\IMode{\iota}}"] &
-    \IMode{\Omega}\\
-    \IMode{\Yoneda{\Upsilon}\times\Exprs_\tau^2}
-      \arrow[swap, ur, "\IMode{\lambda(\phi)}"]
-  \end{tikzcd}
-\]
-
-Contrary to Martin-L\"of, however, we wish to consider a full range of
-\emph{computational types}, including those which are not necessarily defined
-by their values; a general apparatus for computation-respecting refinements will
-allow us to define, for instance, a type for partial functions.
-
-Then, for any refinement $\Refines{\Upsilon}{\phi}{\tau}$, we say
-$\IsType{\Upsilon}{\phi}{\tau}$ just when for any
-\begin{tikzcd}[cramped]
-  \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
-\end{tikzcd}%
-, and for all $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$, from
-$\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$ we
-can conclude $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
-Stated internally in the topos, the meaning of parametric typehood for
-$\phi$ is perhaps a bit more clear:
-\[
-  \Define{
-    \IsType{-}{\phi}{\tau}
-  }{
-    \prod_{L,M,N\in\Exprs_\tau}
-    {\phi(L,N)}^{L\sim_\tau M \times \phi(M,N)}
-  }
-\]
+%% In general, we must explain typehood for parametric refinements
+%% $\Refines{\Upsilon}{\phi}{\tau}$ as well, however; recall from
+%% Remark~\ref{rem:internal} that the definition of $\phi$ consists in a natural
+%% transformation
+%% $\Of{\phi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Exprs_\tau}}}$.
+%% Therefore, we say that $\IsValueType{\Upsilon}{\phi}{\tau}$ obtains when there
+%% is a unique $\psi$ such that the following diagram commutes, where
+%% $\lambda(\chi)$ is the exponential transpose of $\chi$:
+%% \[
+%%   \IsValueType{\Upsilon}{\phi}{\tau}
+%%   \triangleq
+%%   \begin{tikzcd}[sep=huge]
+%%     \IMode{\Yoneda{\Upsilon}\times\Values_\tau^2}
+%%       \arrow[r, dotted, "\OMode{\lambda(\psi)}"]
+%%       \arrow[d, swap, hook, "\Pair{\ArrId{}}{\IMode{\iota}}"] &
+%%     \IMode{\Omega}\\
+%%     \IMode{\Yoneda{\Upsilon}\times\Exprs_\tau^2}
+%%       \arrow[swap, ur, "\IMode{\lambda(\phi)}"]
+%%   \end{tikzcd}
+%% \]
+%%
+%% Equivalently, and perhaps more simply, we can express value typehood internally
+%% in our topos as a presheaf:
+%% \[
+%%   \Define{
+%%     \IsValueType{-}{\phi}{\tau}
+%%   }{
+%%     \sum_{\psi\in\Pow{\Values_\tau^2}}
+%%     \prod_{M,N\in\Values_\tau}
+%%     {\phi(M,N)}^{\psi(M,N)}
+%%   }
+%% \]
+%%
+%% Contrary to Martin-L\"of, however, we wish to consider a full range of
+%% \emph{computational types}, including those which are not necessarily defined
+%% by their values; a general apparatus for computation-respecting refinements will
+%% allow us to define, for instance, a type for partial functions.
+%%
+%% Then, for any refinement $\Refines{\Upsilon}{\phi}{\tau}$, we say
+%% $\IsType{\Upsilon}{\phi}{\tau}$ just when for any
+%% \begin{tikzcd}[cramped]
+%%   \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+%% \end{tikzcd}%
+%% , and for all $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$, from
+%% $\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$ we
+%% can conclude $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
+%% Stated internally as a presheaf in the topos, the meaning of parametric typehood for
+%% $\phi$ is perhaps a bit more clear:
+%% \[
+%%   \Define{
+%%     \IsType{-}{\phi}{\tau}
+%%   }{
+%%     \prod_{L,M,N\in\Exprs_\tau}
+%%     {\phi(L,N)}^{L\sim_\tau M \times \phi(M,N)}
+%%   }
+%% \]
+%%
+%% \begin{thm}
+%%   For any refinement $\Refines{\Upsilon}{\phi}{\tau}$, from
+%%   $\IsValueType{\Upsilon}{\phi}{\tau}$ we may conclude
+%%   $\IsType{\Upsilon}{\phi}{\tau}$.
+%% \end{thm}
+%% \begin{proof}
+%%   Fix a renaming
+%%   \begin{tikzcd}[cramped]
+%%     \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+%%   \end{tikzcd}%
+%%   , terms $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$ such that
+%%   $\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$;
+%%   by hypothesis, we also have some
+%%   $\Of{\psi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Values_\tau^2}}}$,
+%%   factoring through $\phi$.
+%%
+%%   We need to show that $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
+%%
+%% \end{proof}
 
 \ifdraft{}{
   \newpage
