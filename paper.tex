@@ -456,7 +456,7 @@ $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
   \end{tikzcd}
   and closed terms $\Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}$, that from
   $\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{M_0}{M_1}{\Rename{\rho}{\chi}}$, you can conclude
-  $\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{\Subst{M_0}{x}{\Rename{\rho}{N_0}}}{\Subst{M_1}{x}{\Rename{\rho}{N_1}}}{\Subst{M_0}{x}{\phi\rho}}$.
+  $\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{\Subst{M_0}{x}{\Rename{\rho}{N_0}}}{\Subst{M_1}{x}{\Rename{\rho}{N_1}}}{\Subst{M_0}{x}{\Rename{\rho}{\phi}}}$.
   In other words:
   %
   \[
@@ -469,14 +469,14 @@ $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
           \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
         \end{tikzcd}
         .\ \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
-        \left(\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{M_0}{M_1}{\Rename{\rho}{\chi}}\right)
-        \Rightarrow
+        \left(\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{M_0}{M_1}{\Rename{\rho}{\chi}}\right)\\
+        \quad\Rightarrow
         \left(%
           \FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{%
             \Subst{M_0}{x}{\Rename{\rho}{N_0}}
           }{%
             \Subst{M_1}{x}{\Rename{\rho}{N_1}}%
-          }{\Subst{M_0}{x}{\phi\rho}
+          }{\Subst{M_0}{x}{\Rename{\rho}{\phi}}
           }%
         \right)
       \end{array}
