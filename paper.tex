@@ -694,47 +694,6 @@ generalization of Martin-L\"of's explanation of types
 in~\cite{martin-lof:1979}, except that we have not required an operational
 semantics to be present prior to the definition of refinements.
 
-% In order
-% to make this concrete, let us first define what it takes for a refinement to be
-% a type, in the sense of Martin-L\"of---that is, a \emph{value type}. In the
-% simple case, where we have a global refinement $\GloballyRefines{\phi}{\tau}$,
-% we will say $\GlobalIsValueType{\phi}{\tau}$ when there exists a PER $\psi$ on
-% \emph{values} that factors uniquely through $\phi$.
-
-%% In general, we must explain typehood for parametric refinements
-%% $\Refines{\Upsilon}{\phi}{\tau}$ as well, however; recall from
-%% Remark~\ref{rem:internal} that the definition of $\phi$ consists in a natural
-%% transformation
-%% $\Of{\phi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Exprs_\tau}}}$.
-%% Therefore, we say that $\IsValueType{\Upsilon}{\phi}{\tau}$ obtains when there
-%% is a unique $\Of{\psi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Values_\tau}}}$ such that
-%% the following diagram commutes, where
-%% $\lambda(\chi)$ is the exponential transpose of $\chi$:
-%% \[
-%%   \IsValueType{\Upsilon}{\phi}{\tau}
-%%   \triangleq
-%%   \begin{tikzcd}[sep=huge]
-%%     \IMode{\Coyoneda{\Upsilon}\times\Values_\tau^2}
-%%       \arrow[r, dotted, "\OMode{\lambda(\psi)}"]
-%%       \arrow[d, swap, hook, "\Pair{\ArrId{}}{\IMode{\iota}}"] &
-%%     \IMode{\Omega}\\
-%%     \IMode{\Coyoneda{\Upsilon}\times\Exprs_\tau^2}
-%%       \arrow[swap, ur, "\IMode{\lambda(\phi)}"]
-%%   \end{tikzcd}
-%% \]
-%%
-%% Equivalently, and perhaps more simply, we can express value typehood internally
-%% in our topos as a presheaf:
-%% \[
-%%   \Define{
-%%     \IsValueType{-}{\phi}{\tau}
-%%   }{
-%%     \sum_{\psi\in\Pow{\Values_\tau^2}}
-%%     \prod_{M,N\in\Values_\tau}
-%%     {\phi(M,N)}^{\psi(M,N)}
-%%   }
-%% \]
-
 Following Martin-L\"of, a type is a refinement which behaves well with respect
 to computation, in some specified sense; contrary to Martin-L\"of, however, we wish to
 consider a full range of \emph{computational types}, including those which are
