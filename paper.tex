@@ -693,12 +693,12 @@ generalization of Martin-L\"of's explanation of types
 in~\cite{martin-lof:1979}, except that we have not required an operational
 semantics to be present prior to the definition of refinements.
 
-Types, on the other hand, are intrinsically tied up with computation.  In order
-to make this concrete, let us first define what it takes for a refinement to be
-a type, in the sense of Martin-L\"of---that is, a \emph{value type}. In the
-simple case, where we have a global refinement $\GloballyRefines{\phi}{\tau}$,
-we will say $\GlobalIsValueType{\phi}{\tau}$ when there exists a PER $\psi$ on
-\emph{values} that factors uniquely through $\phi$.
+% In order
+% to make this concrete, let us first define what it takes for a refinement to be
+% a type, in the sense of Martin-L\"of---that is, a \emph{value type}. In the
+% simple case, where we have a global refinement $\GloballyRefines{\phi}{\tau}$,
+% we will say $\GlobalIsValueType{\phi}{\tau}$ when there exists a PER $\psi$ on
+% \emph{values} that factors uniquely through $\phi$.
 
 %% In general, we must explain typehood for parametric refinements
 %% $\Refines{\Upsilon}{\phi}{\tau}$ as well, however; recall from
@@ -706,7 +706,8 @@ we will say $\GlobalIsValueType{\phi}{\tau}$ when there exists a PER $\psi$ on
 %% transformation
 %% $\Of{\phi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Exprs_\tau}}}$.
 %% Therefore, we say that $\IsValueType{\Upsilon}{\phi}{\tau}$ obtains when there
-%% is a unique $\psi$ such that the following diagram commutes, where
+%% is a unique $\Of{\psi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Values_\tau}}}$ such that
+%% the following diagram commutes, where
 %% $\lambda(\chi)$ is the exponential transpose of $\chi$:
 %% \[
 %%   \IsValueType{\Upsilon}{\phi}{\tau}
@@ -732,31 +733,36 @@ we will say $\GlobalIsValueType{\phi}{\tau}$ when there exists a PER $\psi$ on
 %%     {\phi(M,N)}^{\psi(M,N)}
 %%   }
 %% \]
-%%
-%% Contrary to Martin-L\"of, however, we wish to consider a full range of
-%% \emph{computational types}, including those which are not necessarily defined
-%% by their values; a general apparatus for computation-respecting refinements will
-%% allow us to define, for instance, a type for partial functions.
-%%
-%% Then, for any refinement $\Refines{\Upsilon}{\phi}{\tau}$, we say
-%% $\IsType{\Upsilon}{\phi}{\tau}$ just when for any
-%% \begin{tikzcd}[cramped]
-%%   \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
-%% \end{tikzcd}%
-%% , and for all $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$, from
-%% $\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$ we
-%% can conclude $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
-%% Stated internally as a presheaf in the topos, the meaning of parametric typehood for
-%% $\phi$ is perhaps a bit more clear:
-%% \[
-%%   \Define{
-%%     \IsType{-}{\phi}{\tau}
-%%   }{
-%%     \prod_{L,M,N\in\Exprs_\tau}
-%%     {\phi(L,N)}^{L\sim_\tau M \times \phi(M,N)}
-%%   }
-%% \]
-%%
+
+Following Martin-L\"of, a type is a refinement which behaves well with respect
+to computation, in some specified sense; contrary to Martin-L\"of, however, we wish to
+consider a full range of \emph{computational types}, including those which are
+not necessarily defined by their values; a general apparatus for
+computation-respecting refinements will allow us to define, for instance, a
+type for partial functions.
+
+\begin{definition}[Typehood]
+  For any refinement $\Refines{\Upsilon}{\phi}{\tau}$, we say
+  $\IsType{\Upsilon}{\phi}{\tau}$ just when for any
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}%
+  , and for all $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$, from
+  $\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$ we
+  can conclude $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
+\end{definition}
+
+Stated internally as a presheaf in the topos, the meaning of parametric typehood for
+$\phi$ is perhaps a bit more clear:
+\[
+  \Define{
+    \IsType{-}{\phi}{\tau}
+  }{
+    \prod_{L,M,N\in\Exprs_\tau}
+    {\phi(L,N)}^{L\sim_\tau M \times \phi(M,N)}
+  }
+\]
+
 %% \begin{thm}
 %%   For any refinement $\Refines{\Upsilon}{\phi}{\tau}$, from
 %%   $\IsValueType{\Upsilon}{\phi}{\tau}$ we may conclude
