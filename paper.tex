@@ -539,26 +539,23 @@ presheaf $\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
 \emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
 For a lazy computation language
 $\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
-covariant presheaves on $\SCtx\times\Ctx$ of open values, and open bound terms
+covariant presheaves on $\SCtx$ of closed values, and closed bound terms
 as follows:
 \begin{align*}
-  \ADefine{\Values_\tau(\Upsilon\parallel\Gamma)}{
+  \ADefine{\Values_\tau(\Upsilon)}{
     \MkSet{
       M\equiv\App{\vartheta}{\vec{E}}
-      \mid M\in\Exprs_\tau(\Upsilon\parallel\Gamma)\land \exists a. \CanOperators\Pair{\Upsilon}{a}\ni\vartheta
+      \mid M\in\Exprs_\tau(\Upsilon)\land \exists a. \CanOperators\Pair{\Upsilon}{a}\ni\vartheta
     }
   }\\
   \ADefine{
-    \BTms_{v}(\Upsilon\parallel\Gamma)
+    \BTms_{v}(\Upsilon)
   }{
-    \MkSet{E \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\Gamma}{E}{v}}
+    \MkSet{E \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{E}{v}}
   }
 \end{align*}
 
-We'll write $\Values_\tau(\Upsilon)$ and $\BTms_v(\Upsilon)$ for
-$\Values_\tau(\Upsilon\parallel\cdot)$ and $\BTms_v(\Upsilon\parallel\cdot)$
-respectively, viewed as covariant presheaves on $\SCtx$. Then, a \emph{lazy
-computation system} (lcs) is a lazy computation language
+Then, a \emph{lazy computation system} (lcs) is a lazy computation language
 $\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with an $\SCtx$-indexed
 $\equiv_\alpha$-functional evaluation relation
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ presupposing $\Member{n}{\Naturals}$,
