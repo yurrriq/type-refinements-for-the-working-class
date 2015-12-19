@@ -537,10 +537,11 @@ system~\cite{howe:1989} to the multi-sorted, symbol-parameterized setting. An
 $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished
 presheaf $\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
 \emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
+
 For a lazy computation language
-$\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define the
-covariant presheaves on $\SCtx$ of closed values, and closed bound terms
-as follows:
+$\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define
+sort-indexed (resp.\ valence-indexed) copresheaves on $\SCtx$ of closed values
+(resp\. bound terms) as follows:
 \begin{align*}
   \ADefine{\Values_\tau(\Upsilon)}{
     \MkSet{
