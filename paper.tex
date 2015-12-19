@@ -261,16 +261,17 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
   \]
 
   So, $\Refines{\Upsilon}{\phi}{\tau}$ obtains just when we have
-  $\Member{\phi}{\PERs{\Exprs_\tau}(\Upsilon)}$. The benefit of
-  explaining such judgments in terms of the presheaf topos is that we do not
-  need to deal with the complexities of quantifying over renamings, since this
-  is implicit in the definition of the exponential of presheaves,
+  $\Member{\phi}{\PERs{\Exprs_\tau}(\Upsilon)}$. The benefit of explaining such
+  judgments in terms of the presheaf topos is that we do not need to deal with
+  the complexities of quantifying over renamings, since this is implicit in the
+  definition of the exponential of presheaves, where
+  $\Define{\Coyoneda{\Upsilon}}{\Upsilon\inj-}$ is the co-yoneda embedding:
   \begin{align*}
     \ADefine{
       B^A(\Upsilon)
     }{
       \Hom{\Sets^\SCtx}{
-        \Yoneda{\Upsilon}\times A
+        \Coyoneda{\Upsilon}\times A
       }{
         B
       }
@@ -704,20 +705,20 @@ semantics to be present prior to the definition of refinements.
 %% $\Refines{\Upsilon}{\phi}{\tau}$ as well, however; recall from
 %% Remark~\ref{rem:internal} that the definition of $\phi$ consists in a natural
 %% transformation
-%% $\Of{\phi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Exprs_\tau}}}$.
+%% $\Of{\phi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Exprs_\tau}}}$.
 %% Therefore, we say that $\IsValueType{\Upsilon}{\phi}{\tau}$ obtains when there
-%% is a unique $\Of{\psi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Values_\tau}}}$ such that
+%% is a unique $\Of{\psi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Values_\tau}}}$ such that
 %% the following diagram commutes, where
 %% $\lambda(\chi)$ is the exponential transpose of $\chi$:
 %% \[
 %%   \IsValueType{\Upsilon}{\phi}{\tau}
 %%   \triangleq
 %%   \begin{tikzcd}[sep=huge]
-%%     \IMode{\Yoneda{\Upsilon}\times\Values_\tau^2}
+%%     \IMode{\Coyoneda{\Upsilon}\times\Values_\tau^2}
 %%       \arrow[r, dotted, "\OMode{\lambda(\psi)}"]
 %%       \arrow[d, swap, hook, "\Pair{\ArrId{}}{\IMode{\iota}}"] &
 %%     \IMode{\Omega}\\
-%%     \IMode{\Yoneda{\Upsilon}\times\Exprs_\tau^2}
+%%     \IMode{\Coyoneda{\Upsilon}\times\Exprs_\tau^2}
 %%       \arrow[swap, ur, "\IMode{\lambda(\phi)}"]
 %%   \end{tikzcd}
 %% \]
@@ -766,17 +767,17 @@ $\phi$ is perhaps a bit more clear:
 Now, let us return briefly to Martin-L\"of's notion of type, which we call a
 \emph{value type}. The minimal data of such a type's definition consists in a
 partial equivalence relation on values,
-$\Of{\phi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Values_\tau}}}$.
+$\Of{\phi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Values_\tau}}}$.
 It is easy to turn such a relation into a computational type
 $\IsType{\Upsilon}{\VToCType(\phi)}{\tau}$, as follows:
 \[
   \begin{tikzcd}[sep=huge]
-    \IMode{\Yoneda{\Upsilon}\times\Values_\tau^2}
+    \IMode{\Coyoneda{\Upsilon}\times\Values_\tau^2}
       \arrow[r, "\IMode{\lambda(\phi)}"]
       \arrow[d, swap, "\IMode{\Pair{\ArrId{}}{\iota}}"]
       &
     \IMode{\Omega}\\
-    \IMode{\Yoneda{\Upsilon}\times\Exprs_\tau^2}
+    \IMode{\Coyoneda{\Upsilon}\times\Exprs_\tau^2}
     \arrow[ur, swap, dotted, "\OMode{\lambda(\VToCType(\phi))}"]
   \end{tikzcd}
 \]
