@@ -47,6 +47,9 @@
 \theoremstyle{definition}
 \newtheorem{definition}[thm]{Definition}
 \newtheorem{example}[thm]{Example}
+\theoremstyle{notation}
+\newtheorem{notation}[thm]{Notation}
+\newtheorem*{notation*}{Notation}
 \theoremstyle{remark}
 \newtheorem{remark}[thm]{Remark}
 \newtheorem*{remark*}{Remark}
@@ -595,7 +598,7 @@ follows:
         \begin{tikzcd}[cramped, ampersand replacement = \&]
            \IMode{\Upsilon,\vec{w}:\vec{\sigma}} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
         \end{tikzcd}.\quad
-      \forall\Of{\vec{X}}{\Exprs_\tau^{[\vec{\tau}]}(\Upsilon')}.\\
+      \forall\Of{\vec{X}}{\Exprs^{[\vec{\tau}]}(\Upsilon')}.\\
       \quad
       \SBinRel{R_\tau}{\Upsilon'}{
         \Subst{\vec{X}}{\vec{x}}{
@@ -609,6 +612,21 @@ follows:
     \end{array}
   }
 \]
+
+\begin{notation*}
+  For a family of copresheaves $\HypJ{X_\tau}{\Member{\tau}{\Sorts}}$, we will
+  use $X^{[\vec{\tau}]}$ as a shorthand for the following iterated product, as
+  in \cite{sterling-morrison:2015}:
+
+  \[
+    \Define{
+      X^{[\vec{\tau}]}
+    }{
+      \prod_{\tau\in\vec{\tau}}
+        X_\tau
+    }
+  \]
+\end{notation*}
 
 As a matter of convenience, we'll also define this judgment over vectors of
 bound terms and valences:
