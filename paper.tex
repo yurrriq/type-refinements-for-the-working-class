@@ -763,25 +763,69 @@ $\phi$ is perhaps a bit more clear:
   }
 \]
 
-%% \begin{thm}
-%%   For any refinement $\Refines{\Upsilon}{\phi}{\tau}$, from
-%%   $\IsValueType{\Upsilon}{\phi}{\tau}$ we may conclude
-%%   $\IsType{\Upsilon}{\phi}{\tau}$.
-%% \end{thm}
-%% \begin{proof}
-%%   Fix a renaming
-%%   \begin{tikzcd}[cramped]
-%%     \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
-%%   \end{tikzcd}%
-%%   , terms $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$ such that
-%%   $\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$;
-%%   by hypothesis, we also have some
-%%   $\Of{\psi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Values_\tau^2}}}$,
-%%   factoring through $\phi$.
-%%
-%%   We need to show that $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
-%%
-%% \end{proof}
+Now, let us return briefly to Martin-L\"of's notion of type, which we call a
+\emph{value type}. The minimal data of such a type's definition consists in a
+partial equivalence relation on values,
+$\Of{\phi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Values_\tau}}}$.
+It is easy to turn such a relation into a computational type
+$\IsType{\Upsilon}{\VToCType(\phi)}{\tau}$, as follows:
+\[
+  \begin{tikzcd}[sep=huge]
+    \IMode{\Yoneda{\Upsilon}\times\Values_\tau^2}
+      \arrow[r, "\IMode{\lambda(\phi)}"]
+      \arrow[d, swap, "\IMode{\Pair{\ArrId{}}{\iota}}"]
+      &
+    \IMode{\Omega}\\
+    \IMode{\Yoneda{\Upsilon}\times\Exprs_\tau^2}
+    \arrow[ur, swap, dotted, "\OMode{\lambda(\VToCType(\phi))}"]
+  \end{tikzcd}
+\]
+where $\VToCType(\phi)$ is the computational extension of $\phi$ in the following sense:
+\begin{align*}
+  \ADefine{
+    \VToCType(\phi)(M,N)
+  }{
+    \forall M', N' \in \Values_\tau.\
+    M\sim_\tau M' \land N\sim_\tau N' \implies \phi(M',N')
+  }
+\end{align*}
+
+\begin{thm}
+When viewed as an internal functor
+$\PERs{\Values_\tau}\to\PERs{\Exprs_\tau}$, $\VToCType$ is the left adjoint to
+the canonical inclusion
+$\Of{\iota}{\PERs{\Exprs_\tau}\inj\PERs{\Values_\tau}}$.
+\end{thm}
+\begin{proof}
+  We will exhibit a counit $\Of{\epsilon}{\VToCType\circ\iota\to
+  \ArrId{\PERs{\Values_\tau}}}$ and a unit
+  $\Of{\eta}{\ArrId{\PERs{\Exprs_\tau}}\to\iota\circ\VToCType}$ for
+  the adjunction $\IMode{\VToCType}\dashv\IMode{\iota}$.
+
+  The counit witnesses the fact that for any refinement
+  $\Of{\phi}{\PERs{\Exprs_\tau}}$ and terms $\Member{M,N}{\Exprs_\tau}$, if
+  $\VToCType(\iota(\phi))(M,N)$, then $\phi(M,N)$; this is evidently the case,
+  because the premise only obtains if $M,N$ are computationally equal to
+  values.  The unit witnesses the fact that for any value PER
+  $\Of{\psi}{\PERs{\Values_\tau}}$ and values $\Member{M,N}{\Values_\tau}$, if
+  $\psi(M,N)$, then $\iota(\VToCType(\psi))(M,N)$; this is clearly true, since
+  $\VToCType(\psi)$ can do nothing but coarsen $\psi$'s relation on values.
+
+\end{proof}
+
+\begin{definition}[Closure]
+  For any computational type $\IsType{\Upsilon}{\phi}{\tau}$, let
+  $\Define{\underline{\phi}}{\VToCType(\iota(\phi))}$ be called $\phi$'s
+  \emph{closure}, which we will use shortly in order to give a formal definition
+  to the notion of value types.
+\end{definition}
+
+\begin{definition}[Value Types]
+  We can give a simple characterization of Martin-L\"of's \emph{value types} in
+  terms of our computation types. For any type $\IsType{\Upsilon}{\phi}{\tau}$,
+  we will say $\IsValueType{\Upsilon}{\phi}{\tau}$ in case $\phi$ is equal to
+  its closure, i.e.\ $\EqRefines{\Upsilon}{\phi}{\underline{\phi}}{\tau}$.
+\end{definition}
 
 \ifdraft{}{
   \newpage
