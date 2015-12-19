@@ -723,6 +723,19 @@ $\phi$ is perhaps a bit more clear:
   }
 \]
 
+Let us write $\Types{\tau}$ for the object of types,
+\[
+  \Define{
+    \Types{\tau}
+  }{
+    \MkSet{
+      \phi\in\PERs{\Exprs_\tau}
+      \mid
+      -\parallel\phi\ \textit{type}_\tau
+    }
+  }
+\]
+
 Now, let us return briefly to Martin-L\"of's notion of type, which we call a
 \emph{value type}. The minimal data of such a type's definition consists in a
 partial equivalence relation on values,
@@ -752,21 +765,22 @@ where $\VToCType(\phi)$ is the computational extension of $\phi$ in the followin
 
 \begin{thm}
 When viewed as an internal functor
-$\PERs{\Values_\tau}\to\PERs{\Exprs_\tau}$, $\VToCType$ is the left adjoint to
+$\PERs{\Values_\tau}\to\Types{\tau}$, $\VToCType$ is the left adjoint to
 the canonical inclusion
-$\Of{\iota}{\PERs{\Exprs_\tau}\inj\PERs{\Values_\tau}}$.
+$\Of{\iota}{\Types{\tau}\inj\PERs{\Values_\tau}}$.
 \end{thm}
 \begin{proof}
   We will exhibit a counit $\Of{\epsilon}{\VToCType\circ\iota\to
   \ArrId{\PERs{\Values_\tau}}}$ and a unit
-  $\Of{\eta}{\ArrId{\PERs{\Exprs_\tau}}\to\iota\circ\VToCType}$ for
+  $\Of{\eta}{\ArrId{\Types{\tau}}\to\iota\circ\VToCType}$ for
   the adjunction $\IMode{\VToCType}\dashv\IMode{\iota}$.
 
   The counit witnesses the fact that for any refinement
-  $\Of{\phi}{\PERs{\Exprs_\tau}}$ and terms $\Member{M,N}{\Exprs_\tau}$, if
+  $\Of{\phi}{\Types{\tau}}$ and terms $\Member{M,N}{\Exprs_\tau}$, if
   $\VToCType(\iota(\phi))(M,N)$, then $\phi(M,N)$; this is evidently the case,
   because the premise only obtains if $M,N$ are computationally equal to
-  values.  The unit witnesses the fact that for any value PER
+  values, and $\phi$ respects computational equivalence by virtue of being a
+  type.  The unit witnesses the fact that for any value PER
   $\Of{\psi}{\PERs{\Values_\tau}}$ and values $\Member{M,N}{\Values_\tau}$, if
   $\psi(M,N)$, then $\iota(\VToCType(\psi))(M,N)$; this is clearly true, since
   $\VToCType(\psi)$ can do nothing but coarsen $\psi$'s relation on values.
