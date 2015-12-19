@@ -197,6 +197,7 @@ presheaf of $\tau$-sorted expressions, $\Exprs_\tau$ as follows
 We will also write $\Exprs_\tau$ for the presheaf $\Exprs_\tau(-\parallel\cdot)$ on $\SCtx$.
 
 \subsection{Parametric Refinement}
+\label{sec:parametric-refinement}
 
 The first judgment that will concern us is called \emph{parametric refinement},
 $\Refines{\Upsilon}{\phi}{\tau}$, which means that $\phi$ refines the sort
@@ -231,21 +232,25 @@ Furthermore, when $\Refines{\Upsilon}{\phi}{\tau}$, for any renaming
 \end{tikzcd}
 we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}{\tau}$.
 
-\begin{remark}
+\begin{remark}\label{rem:internal}
 
   At this point, it should be noted that this is very similar to the semantical
   explanation of typehood given in~\cite{martin-lof:1979}, except that we have
   generalized it to a multi-sorted setting, and that we have fibred the entire
-  apparatus over collections $\Upsilon$ of symbols.
+  apparatus over collections $\Upsilon$ of symbols; furthermore, whereas
+  Martin-L\"of defines types in terms of evaluation to canonical form, we have
+  remained agnostic on this point as far as refinements are concerned. We will
+  come back to the notions of \emph{type} and \emph{computation} in
+  section~\ref{sec:ctt}.
 
   In fact, the complexity of the above meaning explanation is an artifact of
   the pointwise style in which we have expressed it. Considered internally to
   the presheaf topos $\Sets^\SCtx$, a refinement is merely a section of the
-  object of $\Exprs_\tau$-PERs $\mathfrak{per}(\Exprs_\tau)$, defined
+  object of $\Exprs_\tau$-PERs $\PERs{\Exprs_\tau}$, defined
   internally as a subobject of $\Omega^{\Exprs_\tau\times\Exprs_\tau}$:
   \[
     \Define{
-      \mathfrak{per}(X)
+      \PERs{X}
     }{
       \{ \phi : \Omega^{X\times X}
          \mid
@@ -256,7 +261,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
   \]
 
   So, $\Refines{\Upsilon}{\phi}{\tau}$ obtains just when we have
-  $\Member{\phi}{\mathfrak{per}(\Exprs_\tau)(\Upsilon)}$. The benefit of
+  $\Member{\phi}{\PERs{\Exprs_\tau}(\Upsilon)}$. The benefit of
   explaining such judgments in terms of the presheaf topos is that we do not
   need to deal with the complexities of quantifying over renamings, since this
   is implicit in the definition of the exponential of presheaves,
@@ -521,6 +526,7 @@ It is trivial to verify that these constructions on refinements give rise to a
 lattice.
 
 \section{Multi-Sorted Computational Type Theory}
+\label{sec:ctt}
 
 Martin-L\"of's type theory is a theory of \emph{value types}: to define a type,
 you specify how to form its equal canonical inhabitants, or values. Then, the
@@ -679,6 +685,65 @@ written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
   \]
 \end{definition}
 
+\subsection{When is a refinement a type?}
+
+As we remarked in section~\ref{sec:parametric-refinement}, the notion of
+\emph{refinement} that we described is very much akin to a multi-sorted
+generalization of Martin-L\"of's explanation of types
+in~\cite{martin-lof:1979}, except that we have not required an operational
+semantics to be present prior to the definition of refinements.
+
+Types, on the other hand, are intrinsically tied up with computation.  In order
+to make this concrete, let us first define what it takes for a refinement to be
+a type, in the sense of Martin-L\"of---that is, a \emph{value type}. In the
+simple case, where we have a global refinement $\GloballyRefines{\phi}{\tau}$,
+we will say $\GlobalIsValueType{\phi}{\tau}$ when there exists a PER $\psi$ on
+\emph{values} that factors uniquely through $\phi$.
+
+In general, we must explain typehood for parametric refinements
+$\Refines{\Upsilon}{\phi}{\tau}$ as well, however; recall from
+Remark~\ref{rem:internal} that the definition of $\phi$ consists in a natural
+transformation
+$\Of{\phi}{\Hom{\Sets^\SCtx}{\Yoneda{\Upsilon}}{\PERs{\Exprs_\tau}}}$.
+Therefore, we say that $\IsValueType{\Upsilon}{\phi}{\tau}$ obtains when there
+is a unique $\psi$ such that the following diagram commutes, where
+$\lambda(\chi)$ is the exponential transpose of $\chi$:
+\[
+  \IsValueType{\Upsilon}{\phi}{\tau}
+  \triangleq
+  \begin{tikzcd}[sep=huge]
+    \IMode{\Yoneda{\Upsilon}\times\Values_\tau^2}
+      \arrow[r, dotted, "\OMode{\lambda(\psi)}"]
+      \arrow[d, swap, hook, "\Pair{\ArrId{}}{\IMode{\iota}}"] &
+    \IMode{\Omega}\\
+    \IMode{\Yoneda{\Upsilon}\times\Exprs_\tau^2}
+      \arrow[swap, ur, "\IMode{\lambda(\phi)}"]
+  \end{tikzcd}
+\]
+
+Contrary to Martin-L\"of, however, we wish to consider a full range of
+\emph{computational types}, including those which are not necessarily defined
+by their values; a general apparatus for computation-respecting refinements will
+allow us to define, for instance, a type for partial functions.
+
+Then, for any refinement $\Refines{\Upsilon}{\phi}{\tau}$, we say
+$\IsType{\Upsilon}{\phi}{\tau}$ just when for any
+\begin{tikzcd}[cramped]
+  \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+\end{tikzcd}%
+, and for all $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$, from
+$\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$ we
+can conclude $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
+Stated internally in the topos, the meaning of parametric typehood for
+$\phi$ is perhaps a bit more clear:
+\[
+  \Define{
+    \IsType{-}{\phi}{\tau}
+  }{
+    \prod_{L,M,N\in\Exprs_\tau}
+    {\phi(L,N)}^{L\sim_\tau M \times \phi(M,N)}
+  }
+\]
 
 \ifdraft{}{
   \newpage
