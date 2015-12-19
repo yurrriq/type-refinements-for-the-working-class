@@ -185,7 +185,7 @@ rules.}
 Fixing a signature $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ in the abt
 framework, we will define the notion of behavioral refinement by propounding
 several judgments and their semantical explanations. Let us first define the
-presheaf of $\tau$-sorted expressions, $\Exprs_\tau$ as follows
+copresheaf of $\tau$-sorted expressions, $\Exprs_\tau$ as follows
 \[
   \Define{
     \Exprs_\tau(\Upsilon\parallel\Gamma)
@@ -194,7 +194,7 @@ presheaf of $\tau$-sorted expressions, $\Exprs_\tau$ as follows
   }
 \]
 
-We will also write $\Exprs_\tau$ for the presheaf $\Exprs_\tau(-\parallel\cdot)$ on $\SCtx$.
+We will also write $\Exprs_\tau$ for the copresheaf $\Exprs_\tau(-\parallel\cdot)$ on $\SCtx$.
 
 \subsection{Parametric Refinement}
 \label{sec:parametric-refinement}
@@ -245,7 +245,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
 
   In fact, the complexity of the above meaning explanation is an artifact of
   the pointwise style in which we have expressed it. Considered internally to
-  the presheaf topos $\Sets^\SCtx$, a refinement is merely a section of the
+  the copresheaf topos $\Sets^\SCtx$, a refinement is merely a section of the
   object of $\Exprs_\tau$-PERs $\PERs{\Exprs_\tau}$, defined
   internally as a subobject of $\Omega^{\Exprs_\tau\times\Exprs_\tau}$:
   \[
@@ -262,7 +262,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
 
   So, $\Refines{\Upsilon}{\phi}{\tau}$ obtains just when we have
   $\Member{\phi}{\PERs{\Exprs_\tau}(\Upsilon)}$. The benefit of explaining such
-  judgments in terms of the presheaf topos is that we do not need to deal with
+  judgments as objects in the topos is that we do not need to deal with
   the complexities of quantifying over renamings, since this is implicit in the
   definition of the exponential of presheaves, where
   $\Define{\Coyoneda{\Upsilon}}{\Upsilon\inj-}$ is the co-yoneda embedding:
@@ -553,8 +553,10 @@ In this section we generalize Howe's notion of lazy computation
 system~\cite{howe:1989} to the multi-sorted, symbol-parameterized setting. An
 \emph{lazy computation language} is an abt signature
 $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished
-presheaf $\Of{\CanOperators}{\Sets^{\SCtx\times\Discrete{\Arities}}}$ of
-\emph{canonical} operators such that $\IsSubsetEq{\CanOperators}{\Operators}$.
+arity-indexed family of copresheaves
+$\HypJ{\Of{\CanOperators_a}{\Sets^\SCtx}}{\Member{a}{\Arities}}$ of
+\emph{canonical} operators such that
+$\IsSubsetEq{\CanOperators_a}{\Operators_a}$ for each arity $a$.
 
 For a lazy computation language
 $\Match{L}{\Tuple{\Sorts,\Operators,\CanOperators}}$, let us define
