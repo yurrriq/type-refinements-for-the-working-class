@@ -280,7 +280,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
     \OMode{
       \int_{\Upsilon'}
       (\Upsilon\inj\Upsilon')
-      \Rightarrow
+      \implies
       {B(\Upsilon')}^{A(\Upsilon')}
     }
   \end{align*}
@@ -422,7 +422,7 @@ induction on the evidence for its first presupposition.
         \end{tikzcd}
         .\ \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
         \left(\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{M_0}{M_1}{\Rename{\rho}{\chi}}\right)\\
-        \quad\Rightarrow
+        \quad\implies
         \left(\FEqRefines{\Upsilon'}{\Rename{\rho}{\Psi}}{\Subst{M_0}{x}{\Rename{\rho}{\phi}}}{\Subst{M_1}{x}{\Rename{\rho}{\psi}}}{\tau}\right)
       \end{array}
     }
@@ -470,7 +470,7 @@ $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
         \end{tikzcd}
         .\ \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
         \left(\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{M_0}{M_1}{\Rename{\rho}{\chi}}\right)\\
-        \quad\Rightarrow
+        \quad\implies
         \left(%
           \FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{%
             \Subst{M_0}{x}{\Rename{\rho}{N_0}}
