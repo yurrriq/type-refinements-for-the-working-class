@@ -24,7 +24,7 @@
 \usepackage{stmaryrd}
 \usepackage{supertabular}
 \usepackage{tikz-cd}
-\usepackage{tikzpfeile}
+\usepackage[length=.5]{tikzpfeile}
 \usepackage{url}
 \usepackage[titletoc,title]{appendix}
 \usepackage{todonotes}
@@ -68,11 +68,6 @@
   #3\vdash%
   #4:\OMode{#5}%
 }
-
-\newcommand\RenameLit[3]{%
-  \left\{#1\, /\, #2\right\}#3%
-}
-
 
 \newcommand\TyBase[1]{\mathtt{Base}_{#1}}
 \newcommand\TyTop[1]{\top_{#1}}
@@ -596,18 +591,24 @@ follows:
   }{
     \begin{array}{l}
       \forall\IMode{\vec{w}}\mathrel{\#}\IMode{\Dom{\Upsilon}\cup\vec{u}\cup\vec{v}}.\quad
-      \forall\Of{\vec{X}}{\Exprs_\tau^{[\vec{\tau}]}(\Upsilon,\vec{w}:\vec{\sigma})}.\\
-      \SBinRel{R_\tau}{\Upsilon,\vec{w}:\vec{\sigma}}{
-        \Subst{\vec{X}}{\vec{x}}{\RenameLit{\vec{w}}{\vec{u}}{M}}
+      \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+           \IMode{\Upsilon,\vec{w}:\vec{\sigma}} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}.\quad
+      \forall\Of{\vec{X}}{\Exprs_\tau^{[\vec{\tau}]}(\Upsilon')}.\\
+      \quad
+      \SBinRel{R_\tau}{\Upsilon'}{
+        \Subst{\vec{X}}{\vec{x}}{
+          \Rename{\rho\circ \vec{u}\mapsto\vec{w}}{M}
+        }
       }{
-        \Subst{\vec{X}}{\vec{y}}{\RenameLit{\vec{w}}{\vec{v}}{N}}
+        \Subst{\vec{X}}{\vec{y}}{
+          \Rename{\rho\circ \vec{u}\mapsto\vec{w}}{M}
+        }
       }
     \end{array}
   }
 \]
-\todo[inline]{%
-  The above rule feels a little fishy. Verify that it is correct.
-}
 
 As a matter of convenience, we'll also define this judgment over vectors of
 bound terms and valences:
