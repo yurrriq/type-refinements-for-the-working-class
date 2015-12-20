@@ -494,18 +494,21 @@ $\GloballyRefines{\TyTop{\tau}}{\tau}$ identifies all terms
 $\Member{M,N}{\Exprs_\tau(\Upsilon)}$.  The join (union)
 $\Refines{\Upsilon}{\phi\cup\psi}{\tau}$ of two refinements
 $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$ is defined as
-follows:
+follows, for any
+\begin{tikzcd}[cramped, ampersand replacement = \&]
+  \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+\end{tikzcd}:
 
 \begin{gather*}
   \infer{
-    \RMemEq{\Upsilon}{M}{N}{\phi\cup\psi}
+    \RMemEq{\Upsilon'}{M}{N}{\phi\cup\psi}
   }{
-    \RMemEq{\Upsilon}{M}{N}{\phi}
+    \RMemEq{\Upsilon'}{M}{N}{\phi}
   }\qquad
   \infer{
-    \RMemEq{\Upsilon}{M}{N}{\phi\cup\psi}
+    \RMemEq{\Upsilon'}{M}{N}{\phi\cup\psi}
   }{
-    \RMemEq{\Upsilon}{M}{N}{\psi}
+    \RMemEq{\Upsilon'}{M}{N}{\psi}
   }
 \end{gather*}
 
@@ -514,15 +517,23 @@ $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$ is defined
 dually:
 \[
   \infer{
-    \RMemEq{\Upsilon}{M}{N}{\phi\cap\psi}
+    \RMemEq{\Upsilon'}{M}{N}{\phi\cap\psi}
   }{
-    \RMemEq{\Upsilon}{M}{N}{\phi} &
-    \RMemEq{\Upsilon}{M}{N}{\psi}
+    \RMemEq{\Upsilon'}{M}{N}{\phi} &
+    \RMemEq{\Upsilon'}{M}{N}{\psi}
   }
 \]
 
 It is trivial to verify that these constructions on refinements give rise to a
 lattice.
+
+\begin{remark}
+  Observe that \emph{definition} of a refinement
+  $\Refines{\Upsilon}{\phi}{\tau}$ is given in terms of an arbitrary
+  $\Upsilon'$ that is related to $\Upsilon$ by a renaming. This is because
+  $\Upsilon$ is the stage at which the refinement has come into being, but the
+  definition of the refinement must be applicable at all subsequent stages.
+\end{remark}
 
 \subsection{Families of Refinements}
 
