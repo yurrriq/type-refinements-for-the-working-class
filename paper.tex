@@ -850,9 +850,10 @@ Let us write $\Types{\tau}$ for the object of types,
 Now, let us return briefly to Martin-L\"of's notion of type, which we call a
 \emph{value type}. The minimal data of such a type's definition consists in a
 partial equivalence relation on values,
-$\Of{\phi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Values_\tau}}}$.
-It is easy to turn such a relation into a computational type
-$\IsType{\Upsilon}{\VToCType(\phi)}{\tau}$, as follows:
+$\Of{\phi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Values_\tau}}}$.  It
+is easy to turn such a relation into a computational type
+$\IsType{\Upsilon}{\VToCType(\phi)}{\tau}$, as follows, where $\lambda(\chi)$
+is the exponential transpose of $\chi$:
 \[
   \begin{tikzcd}[sep=huge]
     \IMode{\Coyoneda{\Upsilon}\times\Values_\tau^2}
