@@ -75,8 +75,6 @@
 \newcommand\TyBase[1]{\mathtt{Base}_{#1}}
 \newcommand\TyTop[1]{\top_{#1}}
 \newcommand\TyBot[1]{\bot_{#1}}
-\newcommand\TyMeet[1]{\cap_{#1}}
-\newcommand\TyJoin[1]{\cup_{#1}}
 
 \newcommand\EvalN[5]{\IMode{#1}\parallel\IMode{#4}\Downarrow^{\OMode{#3}}_{\IMode{#2}}\OMode{#5}}
 \newcommand\Eval[4]{\EvalN{#1}{#2}{}{#3}{#4}}
@@ -493,30 +491,30 @@ at any sort $\tau$.
 We have the bottom refinement $\GloballyRefines{\TyBot{\tau}}{\tau}$, which
 simply contains no elements. Next, the top refinement
 $\GloballyRefines{\TyTop{\tau}}{\tau}$ identifies all terms
-$\Member{M,N}{\Exprs_\tau(\Upsilon)}$.  The join
-$\Refines{\Upsilon}{\phi\TyJoin{\tau}\psi}{\tau}$ of two refinements
+$\Member{M,N}{\Exprs_\tau(\Upsilon)}$.  The join (union)
+$\Refines{\Upsilon}{\phi\cup\psi}{\tau}$ of two refinements
 $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$ is defined as
 follows:
 
 \begin{gather*}
   \infer{
-    \RMemEq{\Upsilon}{M}{N}{\phi\TyJoin{\tau}\psi}
+    \RMemEq{\Upsilon}{M}{N}{\phi\cup\psi}
   }{
     \RMemEq{\Upsilon}{M}{N}{\phi}
   }\qquad
   \infer{
-    \RMemEq{\Upsilon}{M}{N}{\phi\TyJoin{\tau}\psi}
+    \RMemEq{\Upsilon}{M}{N}{\phi\cup\psi}
   }{
     \RMemEq{\Upsilon}{M}{N}{\psi}
   }
 \end{gather*}
 
-Finally the meet $\Refines{\Upsilon}{\phi\TyMeet{\tau}\psi}{\tau}$ of two refinements
+Finally the meet (intersection) $\Refines{\Upsilon}{\phi\cap\psi}{\tau}$ of two refinements
 $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$ is defined
 dually:
 \[
   \infer{
-    \RMemEq{\Upsilon}{M}{N}{\phi\TyMeet{\tau}\psi}
+    \RMemEq{\Upsilon}{M}{N}{\phi\cap\psi}
   }{
     \RMemEq{\Upsilon}{M}{N}{\phi} &
     \RMemEq{\Upsilon}{M}{N}{\psi}
@@ -525,6 +523,106 @@ dually:
 
 It is trivial to verify that these constructions on refinements give rise to a
 lattice.
+
+\subsection{Families of Refinements}
+
+Given a family of refinements (i.e. a functional refinement)
+$\FRefines{\Upsilon}{x:\phi}{\psi}{\tau}$ such that
+$\Refines{\Upsilon}{\phi}{\sigma}$, including the family intersection, the
+dependent intersection, the family union, and the set comprehension.
+
+\paragraph{Family intersection}
+The intersection $\Refines{\Upsilon}{\bigcap_{(x:\phi)}\psi}{\tau}$ of a family
+of refinements is defined by the following rule, for any
+\begin{tikzcd}[cramped, ampersand replacement = \&]
+  \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+\end{tikzcd}:
+\[
+  \infer={
+    \RMemEq{\Upsilon'}{M}{N}{
+      \bigcap_{(x:\phi)}\psi
+    }
+  }{
+    \FRMemEq{\Upsilon'}{x:\phi}{M}{N}{\Subst{M}{x}{\psi}}
+  }
+\]
+
+The intersection of a family of refinements is a kind of uniform universal
+quantification, in the sense that the terms themselves bear no trace of the
+quantification, but are guaranteed in the metalogic to be related in all fibres
+of $\psi$.
+
+In practice, the family intersection is perhaps the most-used type constructor
+in Nuprl developments, as it facilitates the simultaneous specification and
+implementation of programs in type theory, without causing details of the
+program's verification to leak into the extracted algorithm. Additionally, the
+family intersection can be used to implement coinductive types.
+
+\paragraph{Dependent intersection}
+The dependent intersection $\Refines{\Upsilon}{(x:\phi)\cap\psi}{\sigma}$
+contains the members $M$ of $\phi$ which are also members of
+$\Subst{M}{x}{\psi}$:
+\[
+  \infer={
+    \RMemEq{\Upsilon'}{M}{N}{
+      (x:\phi)\cap\psi
+    }
+  }{
+    \RMemEq{\Upsilon'}{M}{N}{\phi} &
+    \RMemEq{\Upsilon'}{M}{N}{
+      \Subst{M}{x}{\psi}
+    }
+  }
+\]
+
+The dependent intersection, first introduced by Kopylov in \cite{kopylov:2000},
+are a generalization of the binary intersection to the dependent case, not to
+be confused with the intersection of a family of sets. The dependent
+intersection has many applications, including the compositional representation
+of \emph{dependent records} or modules in Type Theory.
+
+\paragraph{Family union}
+The union $\Refines{\Upsilon}{\bigcup_{(x:\phi)}\psi}{\tau}$ of a family of
+refinements is defined as by the following rule:
+\[
+  \infer{
+    \RMemEq{\Upsilon'}{M}{N}{
+      \bigcup_{(x:\phi)}\psi
+    }
+  }{
+    \RMemEq{\Upsilon'}{L_0}{L_1}{\phi} &
+    \RMemEq{\Upsilon'}{M}{N}{
+      \Subst{L_0}{x}{\psi}
+    }
+  }
+\]
+
+The union of a family of refinements can be used to implement inductive types,
+among other things.
+
+\paragraph{Set comprehension}
+
+We can also use a family of refinements to define something analogous to set
+comprehension, $\Refines{\Upsilon'}{\MkSet{x:\phi\mid\psi}}{\sigma}$, defined
+as follows:
+\[
+  \infer{
+    \RMemEq{\Upsilon'}{M}{N}{
+      \MkSet{x:\phi\mid\psi}
+    }
+  }{
+    \RMemEq{\Upsilon'}{M}{N}{\phi} &
+    \RMemEq{\Upsilon'}{L_0}{L_1}{
+      \Subst{M}{x}{\psi}
+    }
+  }
+\]
+
+The set comprehension $\MkSet{x:\phi\mid\psi}$ contains just those elements of
+$\phi$ such that their fibres of $\psi$ are inhabited; this can be seen as an
+``implicit'' version of existential quantification, and can be used to
+simultaneously specify and implement program without the evidence for $\psi$
+intruding into the extracted algorithm.
 
 \section{Multi-Sorted Computational Type Theory}
 \label{sec:ctt}
