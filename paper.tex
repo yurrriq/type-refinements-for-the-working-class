@@ -301,7 +301,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
     \ADefine{
       B^A(\Upsilon)
     }{
-      \Hom{\Sets^\SCtx}{
+      \Hom{\SemU}{
         \Coyoneda{\Upsilon}\times A
       }{
         B
@@ -732,7 +732,7 @@ $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 \newcommand\OSBinRel[5]{\IMode{#2}\parallel\IMode{#3}\vDash\IMode{#4}\mathrel{#1}\IMode{#5}}
 
 \begin{notation*}
-  For a family of copresheaves $\HypJ{\Of{X_i}{\Sets^\SCtx}}{\Member{i}{I}}$, we will
+  For a family of copresheaves $\HypJ{\Of{X_i}{\SemU}}{\Member{i}{I}}$, we will
   use $X^{[\vec{i}]}$ as a shorthand for the following iterated product, as
   in \cite{sterling-morrison:2015}:
 
@@ -747,7 +747,7 @@ $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 \end{notation*}
 
 Fix a sort-indexed family of binary relations on closed expressions
-$\Of{R_\tau}{\Hom{\Sets^{\SCtx}}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$; we will
+$\Of{R_\tau}{\Hom{\SemU}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$; we will
 also write the relation as a judgment scheme
 $\SBinRel{R_\tau}{\Upsilon}{M}{N}$. First of all, we can lift such a relation
 to operate on open terms by quantifying over substitutions, as follows:
@@ -772,7 +772,7 @@ to operate on open terms by quantifying over substitutions, as follows:
 
 Next, we can always extend $R_\tau$ to a new
 family of valenced-indexed relations
-$\Of{R_v}{\Hom{\Sets^{\SCtx}}{\mathbb{1}}{\Pow{\BTms_v^2}}}$ for
+$\Of{R_v}{\Hom{\SemU}{\mathbb{1}}{\Pow{\BTms_v^2}}}$ for
 $\Match{v}{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}$, defined pointwise as
 follows:
 \[
@@ -826,7 +826,7 @@ $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}
 \begin{definition}[Computational Approximation]
   Because $[-_\tau]$ is monotonic, it has a greatest fixed point, which we will
   call \emph{computational approximation},
-  $\Of{\preccurlyeq_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
+  $\Of{\preccurlyeq_\tau}{\Hom{\SemU}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
   written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
 \end{definition}
 
@@ -858,7 +858,7 @@ $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}
 \subsection{Extensionality and Observational Congruence}
 
 A sort-indexed family of binary relations
-$\HypJ{\Of{R_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}}{\Member{\tau}{\Sorts}}$
+$\HypJ{\Of{R_\tau}{\Hom{\SemU}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}}{\Member{\tau}{\Sorts}}$
 is a \emph{congruence} when for all operators
 $\IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$, the following rule
 obtains:
@@ -1041,7 +1041,7 @@ Let us write $\Types{\tau}$ for the object of types,
 Now, let us return briefly to Martin-L\"of's notion of type, which we call a
 \emph{value type}. The minimal data of such a type's definition consists in a
 partial equivalence relation on values,
-$\Of{\phi}{\Hom{\Sets^\SCtx}{\Coyoneda{\Upsilon}}{\PERs{\Values_\tau}}}$.  It
+$\Of{\phi}{\Hom{\SemU}{\Coyoneda{\Upsilon}}{\PERs{\Values_\tau}}}$.  It
 is easy to turn such a relation into a computational type
 $\IsType{\Upsilon}{\VToCType(\phi)}{\tau}$, as follows, where $\lambda(\chi)$
 is the exponential transpose of $\chi$:
