@@ -57,7 +57,6 @@
 
 \newcommand\HPGenJ[4]{\vert^{\IMode{#1}\parallel\IMode{#2}}_{\IMode{#3}}\; #4}
 
-% power object
 \newcommand\Pow[1]{\wp\left(#1\right)}
 
 \newcommand\MapsTo[2]{\IMode{#1}\mapsto\OMode{#2}}
@@ -137,7 +136,7 @@ describe two distinct layers in a single, harmonious system. From this
 perspective, formal type theories can do little more than negotiate matters of
 grammar, and therefore may serve as a linguistic framework for mathematical
 expression, being responsible for the management of variable binding and
-substitution, among other things. On the other hand, mathematical objects find
+substitution. On the other hand, mathematical objects find
 \emph{meaning} in their extension within the behavioral type theory, and are
 subject to an extensional equality.
 
@@ -170,11 +169,47 @@ $\IMode{\texttt{blue}}$ and outputs with $\OMode{\texttt{red}}$. As a rule of
 thumb, inputs are things which are supplied when checking the correctness of a
 judgment, and outputs are things which are synthesized in the process. \fi
 
+
 \section{Abstract Binding Trees and Symbols}
 
 See~\cite{sterling-morrison:2015} for the development of abstract binding trees
 with symbols. \todo[inline]{give a brief description of the framework, and present its
 rules.}
+
+\section{Generalized Predicative Mathematical Foundations}
+
+Before we continue, it makes sense to remark briefly on the strength of the
+mathematical foundations that we are assuming for the development of our
+framework. As in Martin-L\"of's meaning-theoretic judgmental method, our
+apparatus is meant to be understood in a constructive and predicative
+metatheory; therefore, by $\Sets$, we do not mean the classical category of
+sets, but rather the intuitionistic one, which has lacks the powerset
+operation.
+
+Therefore, in our setting, $\Sets$ is not an elementary topos, and nor is any
+category of $\Sets$-valued (pre)sheaves. However, for a category of classes
+$\Classes$, we can express a power class operation
+$\Define{\Pow{X}}{\MkSet{Y\mid Y\subseteq X, Y\in\Sets}}$ which gives the
+proper class of sub\emph{sets} of a class $X$ \cite{gambino:2002}.
+
+A category of $\Classes$-valued presheaves then is a $\Pi W M$-pretopos (a
+predicative topos with dependent function objects, wellfounded trees, and
+non-wellfounded trees); such a pretopos also admits a large subobject
+classifier $\Omega(c)$, defined as the class of small sieves on
+$c$,\footnote{A sieve $S$ on $c$ is a subobject of the Yoneda
+embedding $\Yoneda{c}$, and $S$ is \emph{small} if $S(d)$ is a set for every
+stage $d$.} whence we can form the large power object
+$\Define{\Pow{X}}{\Omega^X}$ for any object $X$.
+
+In practice, the shift to a predicative topos with a large power object was a
+mere technical nuisance, as all the constructions we needed to perform carried
+over perfectly to this setting. For the remainder of this paper, we assume the
+semantic universe $\Define{\SemU}{\Classes^\SCtx}$, the category of
+copresheaves on symbol contexts. Every judgment $\mathcal{J}$ which we define
+in this paper should be understood as such a presheaf, which is at each stage
+$\Upsilon$ the class of derivations of $\mathcal{J}$ using symbols in
+$\Upsilon$; we will also make use of \emph{internal} forms of judgment, which
+are sections of $\Pow{X}$ for some object $X$.
 
 \section{Behavioral Refinements}
 
@@ -241,14 +276,14 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
 
   In fact, the complexity of the above meaning explanation is an artifact of
   the pointwise style in which we have expressed it. Considered internally to
-  the copresheaf topos $\Sets^\SCtx$, a refinement is merely a section of the
+  the semantic universe $\SemU$, a refinement is merely a section of the
   object of $\Exprs_\tau$-PERs $\PERs{\Exprs_\tau}$, defined
-  internally as a subobject of $\Omega^{\Exprs_\tau\times\Exprs_\tau}$:
+  internally as a subobject of $\Pow{\Exprs_\tau\times\Exprs_\tau}$:
   \[
     \Define{
       \PERs{X}
     }{
-      \{ \phi : \Omega^{X\times X}
+      \{ \phi : \Pow{X\times X}
          \mid
          symmetric(\phi)
          \land transitive(\phi)
@@ -258,7 +293,7 @@ we can clearly define a new refinement $\Refines{\Upsilon'}{\Rename{\rho}{\rho}}
 
   So, $\Refines{\Upsilon}{\phi}{\tau}$ obtains just when we have
   $\Member{\phi}{\PERs{\Exprs_\tau}(\Upsilon)}$. The benefit of explaining such
-  judgments as objects in the topos is that we do not need to deal with
+  judgments as copresheaves is that we do not need to deal with
   the complexities of quantifying over renamings, since this is implicit in the
   definition of the exponential of presheaves, where
   $\Define{\Coyoneda{\Upsilon}}{\Upsilon\inj-}$ is the co-yoneda embedding:
@@ -558,14 +593,15 @@ of refinements is defined by the following rule, for any
 
 The intersection of a family of refinements is a kind of uniform universal
 quantification, in the sense that the terms themselves bear no trace of the
-quantification, but are guaranteed in the metalogic to be related in all fibres
+quantification, but are guaranteed in the metalogic to be related in all fibers
 of $\psi$.
 
-In practice, the family intersection is perhaps the most-used type constructor
-in Nuprl developments, as it facilitates the simultaneous specification and
-implementation of programs in type theory, without causing details of the
-program's verification to leak into the extracted algorithm. Additionally, the
-family intersection can be used to implement coinductive types.
+In practice, the family intersection is perhaps the most ubiquitous type
+constructor in Nuprl developments, as it facilitates the simultaneous
+specification and implementation of programs in type theory, without causing
+details of the program's verification to leak into the extracted algorithm.
+Additionally, the family intersection can be used to implement coinductive
+types.
 
 \paragraph{Dependent intersection}
 The dependent intersection $\Refines{\Upsilon}{(x:\phi)\cap\psi}{\sigma}$
@@ -628,7 +664,7 @@ as follows:
 \]
 
 The set comprehension $\MkSet{x:\phi\mid\psi}$ contains just those elements of
-$\phi$ such that their fibres of $\psi$ are inhabited; this can be seen as an
+$\phi$ such that their fibers of $\psi$ are inhabited; this can be seen as an
 ``implicit'' version of existential quantification, and can be used to
 simultaneously specify and implement program without the evidence for $\psi$
 intruding into the extracted algorithm.
@@ -691,13 +727,6 @@ $\Member{M}{\Exprs_\tau(\Upsilon)}$ and $\Member{N}{\Values_\tau(\Upsilon)}$,
 expressing that $M$ evaluates to $N$ in $n$ steps.  We will write
 $\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$ such that
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
-
-\begin{remark}
-  In any topos $\mathcal{E}$, for an object $X$ we can define the object of
-  relations on $X$ as the exponential $\Define{\Pow{X}}{\Omega^X}$. Then, the
-  data of such a relation is contained in a global section
-  $\Of{R}{\Hom{\mathcal{E}}{\mathbb{1}}{\Pow{X}}}$.
-\end{remark}
 
 \newcommand\SBinRel[4]{\IMode{#2}\parallel\IMode{#3}\mathrel{#1}\IMode{#4}}
 \newcommand\OSBinRel[5]{\IMode{#2}\parallel\IMode{#3}\vDash\IMode{#4}\mathrel{#1}\IMode{#5}}
@@ -985,7 +1014,7 @@ type for partial functions.
   can conclude $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
 \end{definition}
 
-Stated internally as an object in the topos, the meaning of parametric typehood for
+Stated internally as an object in $\SemU$, the meaning of parametric typehood for
 $\phi$ is perhaps a bit more clear:
 \[
   \Define{
