@@ -702,13 +702,50 @@ $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 \end{remark}
 
 \newcommand\SBinRel[4]{\IMode{#2}\parallel\IMode{#3}\mathrel{#1}\IMode{#4}}
+\newcommand\OSBinRel[5]{\IMode{#2}\parallel\IMode{#3}\vDash\IMode{#4}\mathrel{#1}\IMode{#5}}
+
+\begin{notation*}
+  For a family of copresheaves $\HypJ{\Of{X_i}{\Sets^\SCtx}}{\Member{i}{I}}$, we will
+  use $X^{[\vec{\i}]}$ as a shorthand for the following iterated product, as
+  in \cite{sterling-morrison:2015}:
+
+  \[
+    \Define{
+      X^{[\vec{\i}]}
+    }{
+      \prod_{i\in\vec{\i}}
+        X_i
+    }
+  \]
+\end{notation*}
 
 Fix a sort-indexed family of binary relations on closed expressions
 $\Of{R_\tau}{\Hom{\Sets^{\SCtx}}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$; we will
 also write the relation as a judgment scheme
-$\SBinRel{R_\tau}{\Upsilon}{M}{N}$. Now, we can always extend $R_\tau$ to a new
-family of relations
-$\Of{R_v}{\Hom{\Sets^{\SCtx}}{\mathbb{1}}{\Pow{\BTms_v^2}}}$ for any valence
+$\SBinRel{R_\tau}{\Upsilon}{M}{N}$. First of all, we can lift such a relation
+to operate on open terms by quantifying over substitutions, as follows:
+\[
+  \infer{
+    \OSBinRel{R_\tau}{\Upsilon}{\vec{x}:\vec{\sigma}}{M}{N}
+  }{
+    \forall
+      \begin{tikzcd}[cramped, ampersand replacement = \&]
+         \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+      \end{tikzcd}.
+    \quad
+    \forall \Of{\vec{X}}{\Exprs^{[\vec{\sigma}]}(\Upsilon')}.
+    \quad
+    \SBinRel{R_\tau}{\Upsilon'}{
+      \Subst{\vec{X}}{\vec{x}}{\Rename{\rho}{M}}
+    }{
+      \Subst{\vec{X}}{\vec{x}}{\Rename{\rho}{M}}
+    }
+  }
+\]
+
+Next, we can always extend $R_\tau$ to a new
+family of valenced-indexed relations
+$\Of{R_v}{\Hom{\Sets^{\SCtx}}{\mathbb{1}}{\Pow{\BTms_v^2}}}$ for
 $\Match{v}{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}$, defined pointwise as
 follows:
 \[
@@ -721,39 +758,20 @@ follows:
   }{
     \begin{array}{l}
       \forall\IMode{\vec{w}}\mathrel{\#}\IMode{\Dom{\Upsilon}\cup\vec{u}\cup\vec{v}}.\quad
-      \forall
-        \begin{tikzcd}[cramped, ampersand replacement = \&]
-           \IMode{\Upsilon,\vec{w}:\vec{\sigma}} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
-        \end{tikzcd}.\quad
-      \forall\Of{\vec{X}}{\Exprs^{[\vec{\tau}]}(\Upsilon')}.\\
-      \quad
-      \SBinRel{R_\tau}{\Upsilon'}{
-        \Subst{\vec{X}}{\vec{x}}{
-          \Rename{(\rho\circ \vec{u}\mapsto\vec{w})}{M}
+      \forall\IMode{\vec{z}}\mathrel{\#}\IMode{\vec{x}\cup\vec{y}}.\\
+      \OSBinRel{R_\tau}{\Upsilon,\vec{w}:\vec{\sigma}}{\vec{z}:\vec{\tau}}{
+        \Subst{\vec{z}}{\vec{x}}{
+          \Rename{(\vec{u}\mapsto\vec{w})}{M}
         }
       }{
-        \Subst{\vec{X}}{\vec{y}}{
-          \Rename{(\rho\circ \vec{u}\mapsto\vec{w})}{M}
+        \Subst{\vec{z}}{\vec{y}}{
+          \Rename{(\vec{v}\mapsto\vec{w})}{M}
         }
       }
     \end{array}
   }
 \]
 
-\begin{notation*}
-  For a family of copresheaves $\HypJ{\Of{X_\tau}{\Sets^\SCtx}}{\Member{\tau}{\Sorts}}$, we will
-  use $X^{[\vec{\tau}]}$ as a shorthand for the following iterated product, as
-  in \cite{sterling-morrison:2015}:
-
-  \[
-    \Define{
-      X^{[\vec{\tau}]}
-    }{
-      \prod_{\tau\in\vec{\tau}}
-        X_\tau
-    }
-  \]
-\end{notation*}
 
 As a matter of convenience, we'll also define this judgment over vectors of
 bound terms and valences:
@@ -795,6 +813,102 @@ written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
       \SBinRel{\preccurlyeq_\tau}{\Upsilon}{N}{M}
     }
   \]
+\end{definition}
+
+\subsection{Extensionality and Observational Congruence}
+
+A sort-indexed family of binary relations
+$\HypJ{\Of{R_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}}{\Member{\tau}{\Sorts}}$
+is a \emph{congruence} when for all operators
+$\IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$, the following rule
+obtains:
+\[
+  \infer{
+    \SBinRel{R_\tau}{\Upsilon}{\vartheta(\vec{E})}{\vartheta(\vec{F})}
+  }{
+    \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
+  }
+  \tag{Congruence}
+\]
+
+In general, computational equivalence is not a congruence unless we impose a
+certain extensionality condition on operators. First, let us define a new
+version of approximation $\preccurlyeq^\star_\tau$ over open terms:
+\begin{gather*}
+  \infer[\textit{var}]{
+    \OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{x}{y}
+  }{
+    \OSBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{x}{y}
+  }
+  \qquad
+  \infer[\textit{app}]{
+    \OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{
+      \App{\vartheta}{\vec{E}}
+    }{
+      N
+    }
+  }{
+    \IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}} &
+    \OSBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon}{\Gamma}{
+      \vec{E}
+    }{
+      \vec{F}
+    } &
+    \OSBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{
+      \App{\vartheta}{\vec{F}}
+    }{
+      N
+    }
+  }
+\end{gather*}
+
+We will write $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{M}{N}$ for
+$\OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\cdot}{M}{N}$.  By definition,
+$\preccurlyeq^\star_\tau$ is a congruence; to show that $\sim_\tau$ is a
+congruence, it suffices to show that the following inference is valid:
+\[
+  \infer[?]{
+    \OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{M}{N}
+  }{
+    \OSBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{M}{N}
+  }
+\]
+
+We will not reproduce the full proof of the above rule here (see
+\cite{howe:1989}), but will simply remark that it holds only for what is called
+an \emph{extensional lcs}, an lcs in which each operator is extensional in the
+following sense:
+
+\begin{definition}[Extensionality]
+
+  An operator $\IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$ is
+  \emph{extensional} when, for any
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}%
+  , for all $\Member{\vec{E},\vec{F}}{\BTms^{[\vec{v}]}(\Upsilon')}$ and
+  $\Member{M}{\Exprs_\tau(\Upsilon')}$ and $\IMode{k}\geq\IMode{0}$, if we can conclude
+  $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{M}{\App{\vartheta}{\vec{F}}}$
+  from the following conditions:
+  %
+  \begin{enumerate}
+    \item
+      We have $\EvalN{\Upsilon'}{\tau}{k}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{N}$.
+
+    \item
+      We have $\SBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}$.
+
+    \item
+      For any
+      \begin{tikzcd}[cramped]
+        \IMode{\Upsilon'} \arrow[r,hook,"\IMode{\rho'}"] &\IMode{\Upsilon''}
+      \end{tikzcd}%
+      , for all $\Member{\sigma}{\Sorts}$ and $\Member{X,X',Y}{\Exprs_\sigma(\Upsilon'')}$, if
+      from $\EvalN{\Upsilon''}{\sigma}{k'}{X}{X'}$ for $\IMode{k'}<\IMode{k}$ and
+      $\SBinRel{\preccurlyeq^\star_\sigma}{\Upsilon''}{X}{Y}$, we can conclude
+      $\SBinRel{\preccurlyeq^\star_\sigma}{\Upsilon''}{X'}{Y}$.
+  \end{enumerate}
+
 \end{definition}
 
 \subsection{When is a refinement a type?}
