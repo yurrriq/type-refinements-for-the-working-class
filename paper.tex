@@ -806,12 +806,12 @@ $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}
 \end{thm}
 \begin{proof}
   The proof proceeds by coinduction, using the relation
-  $\IMode{M,N}\mapsto\OMode{M = N}$ as our motive; it, then, suffices to show
+  $\IMode{M,N}\mapsto\OMode{M = N}$ as our motive; then, it suffices to show
   that for all $M$, $\SBinRel{[=]}{\Upsilon}{M}{M}$. Expanding the definition
   of $[-]$, this means that we have to show that when
   $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\vec{E}}}$, then
   $\IsEq{\vec{E}}{\vec{E}}$; but this is always the case, because of the
-  functionality of the evaluation relation.
+  functionality/determinacy of the evaluation relation.
 \end{proof}
 
 \begin{definition}[Computational Equivalence]
