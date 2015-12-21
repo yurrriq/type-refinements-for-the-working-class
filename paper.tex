@@ -63,8 +63,6 @@
 \newcommand\MapsTo[2]{\IMode{#1}\mapsto\OMode{#2}}
 \newcommand\IsSubsetEq[2]{\IMode{#1}\subseteq\IMode{#2}}
 
-\newcommand\CanOperators{\mathcal{K}}
-
 \newcommand\IsAbtUnmoded[5]{
   #1\triangleright%
   #2\parallel%
@@ -686,7 +684,7 @@ sort-indexed (resp.\ valence-indexed) copresheaves on $\SCtx$ of closed values
 \end{align*}
 
 Then, a \emph{lazy computation system} (lcs) is a lazy computation language
-$\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with an $\SCtx$-indexed
+$\Match{L}{\Pair{\Sigma}{\CanOperators}}$ along with a partial, $\SCtx$-indexed
 $\equiv_\alpha$-functional evaluation relation
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$ presupposing $\Member{n}{\Naturals}$,
 $\Member{M}{\Exprs_\tau(\Upsilon)}$ and $\Member{N}{\Values_\tau(\Upsilon)}$,
@@ -706,14 +704,14 @@ $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 
 \begin{notation*}
   For a family of copresheaves $\HypJ{\Of{X_i}{\Sets^\SCtx}}{\Member{i}{I}}$, we will
-  use $X^{[\vec{\i}]}$ as a shorthand for the following iterated product, as
+  use $X^{[\vec{i}]}$ as a shorthand for the following iterated product, as
   in \cite{sterling-morrison:2015}:
 
   \[
     \Define{
-      X^{[\vec{\i}]}
+      X^{[\vec{i}]}
     }{
-      \prod_{i\in\vec{\i}}
+      \prod_{i\in\vec{i}}
         X_i
     }
   \]
@@ -788,7 +786,7 @@ Now, we can extend $R_\tau$ to a new relation $[R_\tau]$ on closed expressions
 which respects a single ``layer'' of computation. We will say
 $\SBinRel{[R_\tau]}{\Upsilon}{M}{N}$ when, supposing
 $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}}$ such that
-$\IMode{\Upsilon}\Vdash_{\IMode{\CanOperators}}\IMode{\vartheta}:\OMode{\MkArity{\vec{v}}{\tau}}$,
+$\IsCanOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$,
 for any
 \begin{tikzcd}[cramped]
   \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
@@ -797,11 +795,24 @@ for any
 $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}}$.
 
 \begin{definition}[Computational Approximation]
-Because $[-_\tau]$ is monotonic, it has a greatest fixed point, which we will
-call \emph{computational approximation},
-$\Of{\preccurlyeq_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
-written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
+  Because $[-_\tau]$ is monotonic, it has a greatest fixed point, which we will
+  call \emph{computational approximation},
+  $\Of{\preccurlyeq_\tau}{\Hom{\Sets^\SCtx}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
+  written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
 \end{definition}
+
+\begin{thm}[Reflexivity]\label{thm:approx-refl}
+  For all $\Member{M}{\Exprs_\tau(\Upsilon)}$, we have $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{M}$.
+\end{thm}
+\begin{proof}
+  The proof proceeds by coinduction, using the relation
+  $\IMode{M,N}\mapsto\OMode{M = N}$ as our motive; it, then, suffices to show
+  that for all $M$, $\SBinRel{[=]}{\Upsilon}{M}{M}$. Expanding the definition
+  of $[-]$, this means that we have to show that when
+  $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\vec{E}}}$, then
+  $\IsEq{\vec{E}}{\vec{E}}$; but this is always the case, because of the
+  functionality of the evaluation relation.
+\end{proof}
 
 \begin{definition}[Computational Equivalence]
   Two terms are said to be \emph{computationally equivalent} when they approximate each other:
@@ -849,6 +860,7 @@ version of approximation $\preccurlyeq^\star_\tau$ over open terms:
     }
   }{
     \IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}} &
+    \exists\IMode{\vec{F}}. &
     \OSBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon}{\Gamma}{
       \vec{E}
     }{
@@ -880,6 +892,7 @@ an \emph{extensional lcs}, an lcs in which each operator is extensional in the
 following sense:
 
 \begin{definition}[Extensionality]
+  \label{def:extensionality}
 
   An operator $\IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$ is
   \emph{extensional} when, for any
@@ -888,12 +901,12 @@ following sense:
   \end{tikzcd}%
   , for all $\Member{\vec{E},\vec{F}}{\BTms^{[\vec{v}]}(\Upsilon')}$ and
   $\Member{M}{\Exprs_\tau(\Upsilon')}$ and $\IMode{k}\geq\IMode{0}$, if we can conclude
-  $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{M}{\App{\vartheta}{\vec{F}}}$
+  $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{M}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$
   from the following conditions:
   %
   \begin{enumerate}
     \item
-      We have $\EvalN{\Upsilon'}{\tau}{k}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{N}$.
+      We have $\EvalN{\Upsilon'}{\tau}{k}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{M}$.
 
     \item
       We have $\SBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}$.
@@ -910,6 +923,41 @@ following sense:
   \end{enumerate}
 
 \end{definition}
+
+\begin{thm}
+  Every canonical operator
+  $\IsCanOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$ is
+  extensional.
+\end{thm}
+
+\begin{proof}
+  Fix
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}%
+  and $\Member{\vec{E},\vec{F}}{\BTms^{[\vec{v}]}(\Upsilon')}$ and
+  $\Member{M}{\Exprs_\tau(\Upsilon')}$ and $\IMode{k}\geq\IMode{0}$.
+  %
+  By hypothesis (1) from Definition~\ref{def:extensionality} above, we have
+  $\EvalN{\Upsilon'}{\tau}{k}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{M}$;
+  because $M$ is a closed term, by the idempotency of evaluation we have
+  $\Match{M}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}$.
+
+  It suffices, then, to show that
+  $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$.
+  %
+  Backward chaining through the \textit{app}-rule of $\preccurlyeq^\star$, we must
+  come up with a certain $\vec{G}$ such that the following subgoals obtain:
+  \begin{enumerate}
+    \item $\SBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{G}}$
+    \item $\SBinRel{\preccurlyeq_\tau}{\Upsilon'}{\App{\Rename{\rho}{\vartheta}}{\vec{G}}}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$
+  \end{enumerate}
+
+  Setting $\Define{\vec{G}}{\vec{F}}$, we discharge the first subgoal through
+  hypothesis (2); the second hypothesis holds because of the reflexivity of
+  approximation (Theorem~\ref{thm:approx-refl}).
+
+\end{proof}
 
 \subsection{When is a refinement a type?}
 

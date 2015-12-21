@@ -71,4 +71,13 @@
 
 
 \newcommand\VToCType{\mathfrak{c}}
+
+\newcommand\CanOperators{\mathcal{K}}
+
+\newcommand\IsCanOperator[3]{%
+  \IMode{#1}\Vdash_{\CanOperators}%
+  \IMode{#2}:%
+  \OMode{#3}%
+}
+
 \endinput
