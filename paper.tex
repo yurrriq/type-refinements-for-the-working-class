@@ -1120,6 +1120,182 @@ $\Of{\iota}{\Types{\tau}\inj\PERs{\Values_\tau}}$.
   closure, i.e.\ $\EqRefines{\Upsilon}{\phi}{\underline{\phi}}{\tau}$.
 \end{definition}
 
+\paragraph{Functional Typehood}
+\newcommand\PTyFamNil{\vDash^\textit{type}_{\mathtt{nil}}}
+\newcommand\PTyFamSnoc{\vDash^\textit{type}_{\mathtt{snoc}}}
+
+Let us define functional typehood
+$\EqTypeFam{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$, presupposing
+$\FEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$. As usual, we
+give our meaning explanation by induction on the evidence for
+the validity of the refined context $\Psi$.
+
+\paragraph{Case} $\DefRefinesCtxNil{\Upsilon}$.
+\[
+  \infer[\PTyFamNil]{
+    \EqTypeFam{\Upsilon}{\cdot}{\phi}{\psi}{\tau}
+  }{
+    \IsType{\Upsilon}{\phi}{\tau}
+  }
+\]
+Note that this case is not trivial, because it is only defined in
+case the presupposition $\FEqRefines{\Upsilon}{\Psi}{\phi}{\psi}{\tau}$
+obtains. It suffices to require only that $\phi$ be a type, since because
+typehood respects equality of refinement.
+
+\paragraph{Case} $\DefRefinesCtxSnoc{\Upsilon}{\Psi}{x}{\chi}{\Gamma}{\sigma}$.
+
+\begin{quote}
+  To know $\EqTypeFam{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}$ is to know,
+  for any renaming
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}
+  and closed terms $\Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}$, that from
+  $\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{M_0}{M_1}{\Rename{\rho}{\chi}}$, you can conclude
+  $\EqTypeFam{\Upsilon'}{\Rename{\rho}{\Psi}}{\Subst{M_0}{x}{\Rename{\rho}{\phi}}}{\Subst{M_1}{x}{\Rename{\rho}{\psi}}}{\tau}$.
+  In other words:
+  %
+  \[
+    \infer[\PTyFamSnoc]{
+      \EqTypeFam{\Upsilon}{\Psi,x:\chi}{\phi}{\psi}{\tau}
+    }{
+      \begin{array}{l}
+        \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+          \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}
+        .\ \forall \Member{M_0,M_1}{\Exprs_\sigma(\Upsilon')}.\\
+        \left(\FRMemEq{\Upsilon'}{\Rename{\rho}{\Psi}}{M_0}{M_1}{\Rename{\rho}{\chi}}\right)\\
+        \quad\implies
+        \left(\EqTypeFam{\Upsilon'}{\Rename{\rho}{\Psi}}{\Subst{M_0}{x}{\Rename{\rho}{\phi}}}{\Subst{M_1}{x}{\Rename{\rho}{\psi}}}{\tau}\right)
+      \end{array}
+    }
+  \]
+\end{quote}
+
+As with refinements, we will write $\IsTypeFam{\Upsilon}{\Psi}{\phi}{\tau}$
+to mean $\EqTypeFam{\Upsilon}{\Psi}{\phi}{\phi}{\tau}$.
+
+\subsection{Example: Dependent Function Types}
+\newcommand\SortArr[2]{#1\rightharpoonup #2}
+\newcommand\OpLambda[2]{\mathtt{lam}_{#1}^{#2}}
+\newcommand\OpAp[2]{\mathtt{ap}_{#1}^{#2}}
+
+Fix an extensional lcs such that its signature contains the following:
+\[
+  \infer{
+    \IsSort{\SortArr{\sigma}{\tau}}
+  }{
+    \IsSort{\sigma} &
+    \IsSort{\tau}
+  }
+  \qquad
+  \infer{
+    \IsOperator{\Upsilon}{
+      \OpAp{\sigma}{\tau}
+    }{
+      \MkArity{
+        \MkValence{}{}{\SortArr{\sigma}{\tau}};
+        \MkValence{}{}{\sigma}
+      }{\tau}
+    }
+  }{
+    \IsSort{\sigma} &
+    \IsSort{\tau}
+  }
+\]
+
+The sort $\SortArr{\sigma}{\tau}$ is intended to classify the (syntax of)
+partial operations, and $\OpAp{\sigma}{\tau}$ is the application operator. Now,
+we can define a refinement on this sort for dependent functions, and then prove
+that it is a type. We intend to define a refinement $\prod_{(x:\phi)}\psi$
+such that the following rule holds:
+\[
+  \infer{
+    \Refines{\Upsilon}{\prod_{(x:\phi)}\psi}{\SortArr{\sigma}{\tau}}
+  }{
+    \Refines{\Upsilon}{\phi}{\sigma} &
+    \FRefines{\Upsilon}{x:\phi}{\psi}{\tau}
+  }
+\]
+
+For any renaming
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}%
+, the meaning of $\prod_{(x:\phi)}\psi$ at
+$\Member{M, N}{\Exprs_{\SortArr{\sigma}{\tau}}(\Upsilon')}$ is given by
+the following rule:
+\[
+  \infer={
+    \RMemEq{\Upsilon'}{M}{N}{
+      \prod_{(x:\phi)}\psi
+    }
+  }{
+    \FRMemEq{\Upsilon'}{x:\phi}{
+      \App{\OpAp{\sigma}{\tau}}{M; x}
+    }{
+      \App{\OpAp{\sigma}{\tau}}{N; x}
+    }{
+      \psi
+    }
+  }
+\]
+
+Note that we have not required an introduction form such as
+$\OpLambda{\sigma}{\tau}$, and have instead opted for a negative
+definition of the dependent function refinement. This is strictly more
+open-ended than the positive definition, because it does not fix in
+advance a syntax for the canonical formation of functions.
+
+\begin{thm}
+  The dependent function refinement
+  $\Refines{\Upsilon}{\prod_{(x:\phi)}\psi}{\SortArr{\sigma}{\tau}}$ is a
+  type assuming $\IsType{\Upsilon}{\phi}{\sigma}$ and
+  $\IsTypeFam{\Upsilon}{x:\phi}{\psi}{\tau}$.
+\end{thm}
+\begin{proof}
+  Fix
+    \begin{tikzcd}[cramped]
+      \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+    \end{tikzcd}%
+  , and $\Member{L,M,N}{\Exprs_{\SortArr{\sigma}{\tau}}(\Upsilon')}$ such that
+  \begin{enumerate}
+    \item $\PBinRel{\sim_{\SortArr{\sigma}{\tau}}}{\Upsilon'}{L}{M}$
+    \item $\FRMemEq{\Upsilon'}{x:\Rename{\rho}{\phi}}{\App{\OpAp{\sigma}{\tau}}{M;x}}{\App{\OpAp{\sigma}{\tau}}{N;x}}{\Rename{\rho}{\psi}}$
+  \end{enumerate}
+%
+  It suffices to show that
+  $\FRMemEq{\Upsilon'}{x:\Rename{\rho}{\phi}}{\App{\OpAp{\sigma}{\tau}}{L;x}}{\App{\OpAp{\sigma}{\tau}}{N;x}}{\Rename{\rho}{\psi}}$.
+%
+  Now fix
+    \begin{tikzcd}[cramped]
+      \IMode{\Upsilon'}\arrow[r,hook,"\IMode{\rho'}"] &\IMode{\Upsilon''}
+    \end{tikzcd}%
+  , and $\Member{X,Y}{\Exprs_\sigma(\Upsilon'')}$ such that
+  $\RMemEq{\Upsilon''}{X}{Y}{\Rename{(\rho'\circ\rho)}{\phi}}$.
+  Then, we have to show that
+  $\RMemEq{\Upsilon''}{%
+    \App{\OpAp{\sigma}{\tau}}{
+      \Rename{\rho'}{L};
+      X
+    }
+  }{
+    \App{\OpAp{\sigma}{\tau}}{
+      \Rename{\rho'}{N};
+      Y
+    }
+  }{\Subst{X}{x}{\Rename{(\rho'\circ\rho)}{\psi}}}$.
+
+  Because $\psi$ is a functional family of types,
+  $\Subst{X}{x}{\Rename{(\rho'\circ\rho)}{\psi}}$ must respect
+  computational equivalence, so by drawing hypothesis (1) along $\rho'$, we
+  can rewrite hypothesis (2) into the goal.
+\end{proof}
+
+
+
 \ifdraft{}{
   \newpage
   \nocite{maclane:1971}

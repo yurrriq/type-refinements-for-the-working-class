@@ -54,6 +54,18 @@
   \IMode{#1}\parallel \IMode{#2}\ \textit{type}_\OMode{#3}
 }
 
+\newcommand\EqTypeFam[5]{%
+  \IMode{#1}\parallel \IMode{#2}%
+  \vDash%
+  \IMode{#3} = \IMode{#4}\ \textit{type}_\OMode{#5}%
+}
+
+\newcommand\IsTypeFam[4]{%
+  \IMode{#1}\parallel \IMode{#2}%
+  \vDash%
+  \IMode{#3}\ \textit{type}_\OMode{#4}%
+}
+
 % the object of partial equivalence relations
 \newcommand\PERs[1]{%
   \mathfrak{per}(#1)
