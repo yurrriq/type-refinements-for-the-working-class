@@ -475,6 +475,9 @@ induction on the evidence for its first presupposition.
 
 \subsection{Functional Equality}
 
+\newcommand\PFunEqNil{\vDash^=_{\mathtt{nil}}}
+\newcommand\PFunEqSnoc{\vDash^=_{\mathtt{snoc}}}
+
 Functional equality $\FRMemEq{\Upsilon}{\Psi}{N_0}{N_1}{\phi}$ presupposes
 $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$, $\FRefines{\Upsilon}{\Psi}{\phi}{\tau}$,
 and $\Member{N_0,N_1}{\Exprs_\tau(\Upsilon\parallel\Gamma)}$; this judgment is defined by
@@ -484,7 +487,7 @@ $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
 
 \paragraph{Case} $\DefRefinesCtxNil{\Upsilon}$.
 \[
-  \infer{
+  \infer[\PFunEqNil]{
     \FRMemEq{\Upsilon}{\cdot}{N_0}{N_1}{\phi}
   }{
     \RMemEq{\Upsilon}{N_0}{N_1}{\phi}
@@ -503,7 +506,7 @@ $\RefinesCtx{\Upsilon}{\Psi}{\Gamma}$:
   In other words:
   %
   \[
-    \infer{
+    \infer[\PFunEqSnoc]{
       \FRMemEq{\Upsilon}{\Psi,x:\psi}{N_0}{N_1}{\phi}
     }{
       \begin{array}{l}
@@ -561,7 +564,7 @@ Finally the meet (intersection) $\Refines{\Upsilon}{\phi\cap\psi}{\tau}$ of two 
 $\Refines{\Upsilon}{\phi}{\tau}$ and $\Refines{\Upsilon}{\psi}{\tau}$ is defined
 dually:
 \[
-  \infer{
+  \infer={
     \RMemEq{\Upsilon'}{M}{N}{\phi\cap\psi}
   }{
     \RMemEq{\Upsilon'}{M}{N}{\phi} &
@@ -642,7 +645,7 @@ of \emph{dependent records} or modules in Type Theory.
 The union $\Refines{\Upsilon}{\bigcup_{(x:\phi)}\psi}{\tau}$ of a family of
 refinements is defined by the following rule:
 \[
-  \infer{
+  \infer={
     \RMemEq{\Upsilon'}{M}{N}{
       \bigcup_{(x:\phi)}\psi
     }
@@ -663,7 +666,7 @@ We can also use a family of refinements to define something analogous to set
 comprehension, $\Refines{\Upsilon'}{\MkSet{x:\phi\mid\psi}}{\sigma}$, defined
 as follows:
 \[
-  \infer{
+  \infer={
     \RMemEq{\Upsilon'}{M}{N}{
       \MkSet{x:\phi\mid\psi}
     }
@@ -740,8 +743,8 @@ expressing that $M$ evaluates to $N$ in $n$ steps.  We will write
 $\Eval{\Upsilon}{\tau}{M}{N}$ to mean that there exists an $n$ such that
 $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 
-\newcommand\SBinRel[4]{\IMode{#2}\parallel\IMode{#3}\mathrel{#1}\IMode{#4}}
-\newcommand\OSBinRel[5]{\IMode{#2}\parallel\IMode{#3}\vDash\IMode{#4}\mathrel{#1}\IMode{#5}}
+\newcommand\PBinRel[4]{\IMode{#2}\parallel\IMode{#3}\mathrel{#1}\IMode{#4}}
+\newcommand\HPBinRel[5]{\IMode{#2}\parallel\IMode{#3}\vDash\IMode{#4}\mathrel{#1}\IMode{#5}}
 
 \begin{notation*}
   For a family of copresheaves $\HypJ{\Of{X_i}{\SemU}}{\Member{i}{I}}$, we will
@@ -761,11 +764,11 @@ $\EvalN{\Upsilon}{\tau}{n}{M}{N}$.
 Fix a sort-indexed family of binary relations on closed expressions
 $\Of{R_\tau}{\Hom{\SemU}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$; we will
 also write the relation as a judgment scheme
-$\SBinRel{R_\tau}{\Upsilon}{M}{N}$. First of all, we can lift such a relation
+$\PBinRel{R_\tau}{\Upsilon}{M}{N}$. First of all, we can lift such a relation
 to operate on open terms by quantifying over substitutions, as follows:
 \[
   \infer{
-    \OSBinRel{R_\tau}{\Upsilon}{\vec{x}:\vec{\sigma}}{M}{N}
+    \HPBinRel{R_\tau}{\Upsilon}{\vec{x}:\vec{\sigma}}{M}{N}
   }{
     \forall
       \begin{tikzcd}[cramped, ampersand replacement = \&]
@@ -774,7 +777,7 @@ to operate on open terms by quantifying over substitutions, as follows:
     \quad
     \forall \Of{\vec{X}}{\Exprs^{[\vec{\sigma}]}(\Upsilon')}.
     \quad
-    \SBinRel{R_\tau}{\Upsilon'}{
+    \PBinRel{R_\tau}{\Upsilon'}{
       \Subst{\vec{X}}{\vec{x}}{\Rename{\rho}{M}}
     }{
       \Subst{\vec{X}}{\vec{x}}{\Rename{\rho}{M}}
@@ -789,7 +792,7 @@ $\Match{v}{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}$, defined pointwise as
 follows:
 \[
   \infer{
-    \SBinRel{R_{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}}{\Upsilon}{
+    \PBinRel{R_{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}}{\Upsilon}{
       \MkBTm{\vec{u}}{\vec{x}}{M}
     }{
       \MkBTm{\vec{v}}{\vec{y}}{N}
@@ -798,7 +801,7 @@ follows:
     \begin{array}{l}
       \forall\IMode{\vec{w}}\mathrel{\#}\IMode{\Dom{\Upsilon}\cup\vec{u}\cup\vec{v}}.\quad
       \forall\IMode{\vec{z}}\mathrel{\#}\IMode{\vec{x}\cup\vec{y}}.\\
-      \OSBinRel{R_\tau}{\Upsilon,\vec{w}:\vec{\sigma}}{\vec{z}:\vec{\tau}}{
+      \HPBinRel{R_\tau}{\Upsilon,\vec{w}:\vec{\sigma}}{\vec{z}:\vec{\tau}}{
         \Subst{\vec{z}}{\vec{x}}{
           \Rename{(\vec{u}\mapsto\vec{w})}{M}
         }
@@ -816,16 +819,16 @@ As a matter of convenience, we'll also define this judgment over vectors of
 bound terms and valences:
 \[
   \infer{
-    \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
+    \PBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
   }{
     \forall\Member{(E,F,v)}{(\vec{E},\vec{F},\vec{v})}.\
-    \SBinRel{R_v}{\Upsilon}{E}{F}
+    \PBinRel{R_v}{\Upsilon}{E}{F}
   }
 \]
 
 Now, we can extend $R_\tau$ to a new relation $[R_\tau]$ on closed expressions
 which respects a single ``layer'' of computation. We will say
-$\SBinRel{[R_\tau]}{\Upsilon}{M}{N}$ when, supposing
+$\PBinRel{[R_\tau]}{\Upsilon}{M}{N}$ when, supposing
 $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}}$ such that
 $\IsCanOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$,
 for any
@@ -833,22 +836,22 @@ for any
   \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
 \end{tikzcd}
 , we have $\Eval{\Upsilon'}{\tau}{\Rename{\rho}{N}}{\App{\Rename{\rho}{\vartheta}}{\Rename{\rho}{\Vec{F}}}}$ and
-$\SBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}}$.
+$\PBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}}$.
 
 \begin{definition}[Computational Approximation]
   Because $[-_\tau]$ is monotonic, it has a greatest fixed point, which we will
   call \emph{computational approximation},
   $\Of{\preccurlyeq_\tau}{\Hom{\SemU}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
-  written pointwise as $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
+  written pointwise as $\PBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
 \end{definition}
 
 \begin{thm}[Reflexivity]\label{thm:approx-refl}
-  For all $\Member{M}{\Exprs_\tau(\Upsilon)}$, we have $\SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{M}$.
+  For all $\Member{M}{\Exprs_\tau(\Upsilon)}$, we have $\PBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{M}$.
 \end{thm}
 \begin{proof}
   The proof proceeds by coinduction, using the relation
   $\IMode{M,N}\mapsto\OMode{M = N}$ as our motive; then, it suffices to show
-  that for all $M$, $\SBinRel{[=]}{\Upsilon}{M}{M}$. Expanding the definition
+  that for all $M$, $\PBinRel{[=]}{\Upsilon}{M}{M}$. Expanding the definition
   of $[-]$, this means that we have to show that when
   $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\vec{E}}}$, then
   $\IsEq{\vec{E}}{\vec{E}}$; but this is always the case, because of the
@@ -859,10 +862,10 @@ $\SBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}
   Two terms are said to be \emph{computationally equivalent} when they approximate each other:
   \[
     \infer{
-      \SBinRel{\sim_\tau}{\Upsilon}{M}{N}
+      \PBinRel{\sim_\tau}{\Upsilon}{M}{N}
     }{
-      \SBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N} &
-      \SBinRel{\preccurlyeq_\tau}{\Upsilon}{N}{M}
+      \PBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N} &
+      \PBinRel{\preccurlyeq_\tau}{\Upsilon}{N}{M}
     }
   \]
 \end{definition}
@@ -876,9 +879,9 @@ $\IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$, the following rule
 obtains:
 \[
   \infer{
-    \SBinRel{R_\tau}{\Upsilon}{\vartheta(\vec{E})}{\vartheta(\vec{F})}
+    \PBinRel{R_\tau}{\Upsilon}{\vartheta(\vec{E})}{\vartheta(\vec{F})}
   }{
-    \SBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
+    \PBinRel{R_{\vec{v}}}{\Upsilon}{\vec{E}}{\vec{F}}
   }
   \tag{Congruence}
 \]
@@ -888,13 +891,13 @@ certain extensionality condition on operators. First, let us define a new
 version of approximation $\preccurlyeq^\star_\tau$ over open terms:
 \begin{gather*}
   \infer[\textit{var}]{
-    \OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{x}{y}
+    \HPBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{x}{y}
   }{
-    \OSBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{x}{y}
+    \HPBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{x}{y}
   }
   \qquad
   \infer[\textit{app}]{
-    \OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{
+    \HPBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{
       \App{\vartheta}{\vec{E}}
     }{
       N
@@ -902,12 +905,12 @@ version of approximation $\preccurlyeq^\star_\tau$ over open terms:
   }{
     \IsOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}} &
     \exists\IMode{\vec{F}}. &
-    \OSBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon}{\Gamma}{
+    \HPBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon}{\Gamma}{
       \vec{E}
     }{
       \vec{F}
     } &
-    \OSBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{
+    \HPBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{
       \App{\vartheta}{\vec{F}}
     }{
       N
@@ -915,15 +918,15 @@ version of approximation $\preccurlyeq^\star_\tau$ over open terms:
   }
 \end{gather*}
 
-We will write $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{M}{N}$ for
-$\OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\cdot}{M}{N}$.  By definition,
+We will write $\PBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{M}{N}$ for
+$\HPBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\cdot}{M}{N}$.  By definition,
 $\preccurlyeq^\star_\tau$ is a congruence; to show that $\sim_\tau$ is a
 congruence, it suffices to show that the following inference is valid:
 \[
   \infer[?]{
-    \OSBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{M}{N}
+    \HPBinRel{\preccurlyeq_\tau}{\Upsilon}{\Gamma}{M}{N}
   }{
-    \OSBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{M}{N}
+    \HPBinRel{\preccurlyeq^\star_\tau}{\Upsilon}{\Gamma}{M}{N}
   }
 \]
 
@@ -942,7 +945,7 @@ following sense:
   \end{tikzcd}%
   , for all $\Member{\vec{E},\vec{F}}{\BTms^{[\vec{v}]}(\Upsilon')}$ and
   $\Member{M}{\Exprs_\tau(\Upsilon')}$ and $\IMode{k}\geq\IMode{0}$, if we can conclude
-  $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{M}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$
+  $\PBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{M}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$
   from the following conditions:
   %
   \begin{enumerate}
@@ -950,7 +953,7 @@ following sense:
       We have $\EvalN{\Upsilon'}{\tau}{k}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{M}$.
 
     \item
-      We have $\SBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}$.
+      We have $\PBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}$.
 
     \item
       For any
@@ -959,8 +962,8 @@ following sense:
       \end{tikzcd}%
       , for all $\Member{\sigma}{\Sorts}$ and $\Member{X,X',Y}{\Exprs_\sigma(\Upsilon'')}$, if
       from $\EvalN{\Upsilon''}{\sigma}{k'}{X}{X'}$ for $\IMode{k'}<\IMode{k}$ and
-      $\SBinRel{\preccurlyeq^\star_\sigma}{\Upsilon''}{X}{Y}$, we can conclude
-      $\SBinRel{\preccurlyeq^\star_\sigma}{\Upsilon''}{X'}{Y}$.
+      $\PBinRel{\preccurlyeq^\star_\sigma}{\Upsilon''}{X}{Y}$, we can conclude
+      $\PBinRel{\preccurlyeq^\star_\sigma}{\Upsilon''}{X'}{Y}$.
   \end{enumerate}
 
 \end{definition}
@@ -985,13 +988,13 @@ following sense:
   $\Match{M}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}$.
 
   It suffices, then, to show that
-  $\SBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$.
+  $\PBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{\App{\Rename{\rho}{\vartheta}}{\vec{E}}}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$.
   %
   Backward chaining through the \textit{app}-rule of $\preccurlyeq^\star$, we must
   come up with a certain $\vec{G}$ such that the following subgoals obtain:
   \begin{enumerate}
-    \item $\SBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{G}}$
-    \item $\SBinRel{\preccurlyeq_\tau}{\Upsilon'}{\App{\Rename{\rho}{\vartheta}}{\vec{G}}}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$
+    \item $\PBinRel{\preccurlyeq^\star_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{G}}$
+    \item $\PBinRel{\preccurlyeq_\tau}{\Upsilon'}{\App{\Rename{\rho}{\vartheta}}{\vec{G}}}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$
   \end{enumerate}
 
   Setting $\Define{\vec{G}}{\vec{F}}$, we discharge the first subgoal through
@@ -1022,7 +1025,7 @@ type for partial functions.
     \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
   \end{tikzcd}%
   , and for all $\Member{L,M,N}{\Exprs_\tau(\Upsilon')}$, from
-  $\SBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$ we
+  $\PBinRel{\sim_\tau}{\Upsilon'}{L}{M}$ and $\RMemEq{\Upsilon'}{M}{N}{\phi}$ we
   can conclude $\RMemEq{\Upsilon'}{L}{N}{\phi}$.
 \end{definition}
 
@@ -1105,15 +1108,16 @@ $\Of{\iota}{\Types{\tau}\inj\PERs{\Values_\tau}}$.
 \begin{definition}[Value Closure]
   For any computational type $\IsType{\Upsilon}{\phi}{\tau}$, let
   $\Define{\underline{\phi}}{\VToCType(\iota(\phi))}$ be called $\phi$'s
-  \emph{value closure}, which we will use shortly in order to give a formal definition
-  to the notion of value types.
+  \emph{value closure}, which we will use shortly in order to give a formal
+  definition to the notion of value types.
 \end{definition}
 
 \begin{definition}[Value Types]
   We can give a simple characterization of Martin-L\"of's \emph{value types} in
-  terms of our more general computational types. For any type $\IsType{\Upsilon}{\phi}{\tau}$,
-  we will say $\IsValueType{\Upsilon}{\phi}{\tau}$ in case $\phi$ is equal to
-  its value closure, i.e.\ $\EqRefines{\Upsilon}{\phi}{\underline{\phi}}{\tau}$.
+  terms of our more general computational types. For any type
+  $\IsType{\Upsilon}{\phi}{\tau}$, we will say
+  $\IsValueType{\Upsilon}{\phi}{\tau}$ in case $\phi$ is equal to its value
+  closure, i.e.\ $\EqRefines{\Upsilon}{\phi}{\underline{\phi}}{\tau}$.
 \end{definition}
 
 \ifdraft{}{
