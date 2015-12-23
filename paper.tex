@@ -1193,8 +1193,7 @@ Fix an extensional lcs whose signature contains the following:
     \IsSort{\SortAtom}
   }{
   }
-\]
-\[
+  \qquad
   \infer{
     \IsCanOperator{\Upsilon,a:\SortAtom}{
       \OpToken{a}
@@ -1202,20 +1201,6 @@ Fix an extensional lcs whose signature contains the following:
       \MkArity{}{\SortAtom}
     }
   }{
-  }
-  \qquad
-  \infer{
-    \IsOperator{\Upsilon}{
-      \OpMatch{\tau}
-    }{
-      \MkArity{
-        \MkValence{}{}{\SortAtom};
-        \MkValence{}{}{\tau};
-        \MkValence{}{}{\tau}
-      }{\tau}
-    }
-  }{
-    \IsSort{\tau}
   }
 \]
 
