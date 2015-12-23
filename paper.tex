@@ -1177,7 +1177,81 @@ typehood respects equality of refinement.
 As with refinements, we will write $\IsTypeFam{\Upsilon}{\Psi}{\phi}{\tau}$
 to mean $\EqTypeFam{\Upsilon}{\Psi}{\phi}{\phi}{\tau}$.
 
-\subsection{Example: Dependent Function Types}
+\subsection{Examples of refinements and their typehood}
+
+We will demonstrate how to define certain refinements, and prove that they are
+types.
+
+\subsubsection{The type of atoms}
+\newcommand\SortAtom{\mathtt{atom}}
+\newcommand\OpToken[1]{\mathtt{tok}[#1]}
+\newcommand\OpMatch[1]{\mathtt{match}_{#1}}
+
+Fix an extensional lcs whose signature contains the following:
+\[
+  \infer{
+    \IsSort{\SortAtom}
+  }{
+  }
+\]
+\[
+  \infer{
+    \IsCanOperator{\Upsilon,a:\SortAtom}{
+      \OpToken{a}
+    }{
+      \MkArity{}{\SortAtom}
+    }
+  }{
+  }
+  \qquad
+  \infer{
+    \IsOperator{\Upsilon}{
+      \OpMatch{\tau}
+    }{
+      \MkArity{
+        \MkValence{}{}{\SortAtom};
+        \MkValence{}{}{\tau};
+        \MkValence{}{}{\tau}
+      }{\tau}
+    }
+  }{
+    \IsSort{\tau}
+  }
+\]
+
+Then, we can define a refinement $\GloballyRefines{\mathbb{A}_0}{\SortAtom}$ as
+follows:
+\[
+  \infer{
+    \RMemEq{\Upsilon}{
+      \App{\OpToken{a}}{}
+    }{
+      \App{\OpToken{a}}{}
+    }{\mathbb{A}_0}
+  }{
+    \IMode{\Upsilon}\ni\IMode{a}:\IMode{\SortAtom}
+  }
+\]
+
+However, it is not the case that $\mathbb{A}_0$ is a type, because it doesn't
+respect computational equivalence. This is easily resolved by defining the type
+of atoms as the computational extension of $\mathbb{A}_0$,
+\[
+  \Define{
+    \mathbb{A}
+  }{
+    \VToCType(\mathbb{A}_0)
+  }
+\]
+
+\begin{thm}
+  For any $\Upsilon$, we have $\IsType{\Upsilon}{\mathbb{A}}{\SortAtom}$.
+\end{thm}
+\begin{proof}
+  Trivial, because the computational extension of any value PER is a type.
+\end{proof}
+
+\subsubsection{Dependent function types}
 \newcommand\SortArr[2]{#1\rightharpoonup #2}
 \newcommand\OpLambda[2]{\mathtt{lam}_{#1}^{#2}}
 \newcommand\OpAp[2]{\mathtt{ap}_{#1}^{#2}}
