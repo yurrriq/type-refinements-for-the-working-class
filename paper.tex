@@ -1182,6 +1182,27 @@ to mean $\EqTypeFam{\Upsilon}{\Psi}{\phi}{\phi}{\tau}$.
 We will demonstrate how to define certain refinements, and prove that they are
 types.
 
+\subsubsection{The type of closed expressions}
+
+The \emph{discrete} refinement on a sort (which equates each closed term only
+with itself, up to alpha equivalence) is not a type in general, because it may
+not respect computational equivalence. However, we can form the next best
+thing, which is called the \emph{base} refinement, which identifies closed
+expressions of a sort up to computational equivalence.
+
+Let $\GloballyRefines{\TyBase{\tau}}{\tau}$ for any sort $\tau$ be defined as
+follows:
+\[
+  \infer{
+    \RMemEq{\Upsilon}{M}{N}{\TyBase{\tau}}
+  }{
+    \PBinRel{\sim_\tau}{\Upsilon}{M}{N}
+  }
+\]
+
+Then, we clearly have $\IsType{\Upsilon}{\TyBase{\tau}}{\tau}$, because it respects
+computational equivalence by definition.
+
 \subsubsection{The type of atoms}
 \newcommand\SortAtom{\mathtt{atom}}
 \newcommand\OpToken[1]{\mathtt{tok}[#1]}
