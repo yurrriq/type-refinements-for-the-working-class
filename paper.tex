@@ -1207,6 +1207,7 @@ computational equivalence by definition.
 \newcommand\SortAtom{\mathtt{atom}}
 \newcommand\OpToken[1]{\mathtt{tok}[#1]}
 \newcommand\OpMatch[1]{\mathtt{match}_{#1}}
+\newcommand\Atoms{\mathbb{A}}
 
 Fix an extensional lcs whose signature contains the following:
 \[
@@ -1225,7 +1226,7 @@ Fix an extensional lcs whose signature contains the following:
   }
 \]
 
-Then, we can define a refinement $\GloballyRefines{\mathbb{A}_0}{\SortAtom}$ as
+Then, we can define a refinement $\GloballyRefines{\Atoms_0}{\SortAtom}$ as
 follows:
 \[
   \infer{
@@ -1233,25 +1234,25 @@ follows:
       \App{\OpToken{a}}{}
     }{
       \App{\OpToken{a}}{}
-    }{\mathbb{A}_0}
+    }{\Atoms_0}
   }{
     \IMode{\Upsilon}\ni\IMode{a}:\IMode{\SortAtom}
   }
 \]
 
-However, it is not the case that $\mathbb{A}_0$ is a type, because it doesn't
+However, it is not the case that $\Atoms_0$ is a type, because it doesn't
 respect computational equivalence. This is easily resolved by defining the type
-of atoms as the computational extension of $\mathbb{A}_0$,
+of atoms as the computational extension of $\Atoms_0$,
 \[
   \Define{
-    \mathbb{A}
+    \Atoms
   }{
-    \VToCType(\mathbb{A}_0)
+    \VToCType(\Atoms_0)
   }
 \]
 
 \begin{thm}
-  For any $\Upsilon$, we have $\IsType{\Upsilon}{\mathbb{A}}{\SortAtom}$.
+  For any $\Upsilon$, we have $\IsType{\Upsilon}{\Atoms}{\SortAtom}$.
 \end{thm}
 \begin{proof}
   Trivial, because the computational extension of any value PER is a type.
@@ -1417,14 +1418,14 @@ $\NuprlInterp{\AtomModel}{\Rename{\rho}{\mathfrak{s}}}$. Under the
 supervaluation, we can rule out certain observations about atoms which might
 hold in particular models.
 
-For instance, assuming a type $\Naturals$ of natural numbers and $\mathbb{A}$
-of atoms, with $\Naturals\inj\mathbb{A}$ the type of embeddings of the naturals
+For instance, assuming a type $\Naturals$ of natural numbers and $\Atoms$
+of atoms, with $\Naturals\inj\Atoms$ the type of embeddings of the naturals
 into the atoms, we do have
-$\NuprlInterpSeq{\Strings}{\cdot}{\Naturals\inj\mathbb{A}}$, because there are
+$\NuprlInterpSeq{\Strings}{\cdot}{\Naturals\inj\Atoms}$, because there are
 numerous ways to embed the naturals into the strings; however, because the
 embedding fails in every finite model $\AtomModel$, we do not have
-$\NuprlInterpSeq{*}{\cdot}{\Naturals\inj\mathbb{A}}$.  Furthermore, we also do
-not have $\NuprlInterpSeq{*}{\iota:\Naturals\inj\mathbb{A}}{\bot}$, because this
+$\NuprlInterpSeq{*}{\cdot}{\Naturals\inj\Atoms}$.  Furthermore, we also do
+not have $\NuprlInterpSeq{*}{\iota:\Naturals\inj\Atoms}{\bot}$, because this
 would fail in any infinite model.
 
 \paragraph{Comparison with the present work}
@@ -1441,36 +1442,89 @@ $\models\NuprlSeq{\Phi}{\phi}$ when $\NuprlSeq{\Phi}{\phi}$ obtains.
 \begin{thm}
   \label{thm:no-nat-injection}
   As in the supervaluation semantics, we have
-  $\not\models\NuprlSeq{\cdot}{\Naturals\inj\mathbb{A}}$.
+  $\not\models\NuprlSeq{\cdot}{\Naturals\inj\Atoms}$.
 \end{thm}
 \begin{proof}
-  Suppose $\models\NuprlSeq{\cdot}{\Naturals\inj\mathbb{A}}$. Then, there
+  Suppose $\models\NuprlSeq{\cdot}{\Naturals\inj\Atoms}$. Then, there
   exists an $\Member{\Upsilon}{\SCtx}$ and $\Member{M}{\Exprs_\tau(\Upsilon)}$
-  such that $\RMemEq{\Upsilon}{M}{M}{\Naturals\inj\mathbb{A}}$; but this
+  such that $\RMemEq{\Upsilon}{M}{M}{\Naturals\inj\Atoms}$; but this
   is impossible because it would require a means of embedding the naturals into
   finite $\Dom{\Upsilon}$.
 \end{proof}
 
 \begin{thm}
+  \label{thm:never-nat-injection}
   Contrary to the supervaluation semantics, we do have
-  $\models\NuprlSeq{\iota:\Naturals\inj\mathbb{A}}{\bot}$.
+  $\models\NuprlSeq{\iota:\Naturals\inj\Atoms}{\bot}$.
 \end{thm}
 \begin{proof}
   It suffices to show that for all $\Upsilon$, there is no $\iota$ such that
-  $\RMemEq{\Upsilon}{\iota}{\iota}{\Naturals\inj\mathbb{A}}$. However, by the
+  $\RMemEq{\Upsilon}{\iota}{\iota}{\Naturals\inj\Atoms}$. However, by the
   definition of $\SCtx$, all $\Member{\Upsilon}{\SCtx}$ are finite, so there
   can be no injection of the naturals into $\Dom{\Upsilon}$.
 \end{proof}
 
-The crux of the problem is that all worlds (symbol contexts) are finite in our
-semantics, so it is possible to observe that it will never be possible to
-inject the naturals into the atoms. One way to make our system more open-ended
-is to replace the current semantic universe $\Define{\SemU}{\Classes^\SCtx}$
-with an extended universe $\Define{\SemU_\infty}{\Classes^{\SCtx_\infty}}$ with
-$\SCtx_\infty$ the set of possibly-infinite symbol contexts and injective,
-sort-preserving renamings. Externally, by Theorem~\ref{thm:no-nat-injection} we
-could still never exhibit an embedding of the naturals, but internally, we
-would be unable to rule it out.
+Another seemingly paradoxical observation is also possible:
+
+\begin{thm}
+  \label{thm:never-atom-injection}
+  The atoms may not be embedded into the naturals, i.e.\
+  $\models\NuprlSeq{\iota:\Atoms\inj\Naturals}{\bot}$.
+\end{thm}
+\begin{proof}
+
+  Fix a symbol context $\Upsilon$; suppose we have an $\Member{\iota}{\Exprs(\Upsilon)}$ such that
+  $\RMemEq{\Upsilon}{\iota}{\iota}{\Atoms\inj\Naturals}$. Then, by inversion we
+  have
+  $\FRMemEq{\Upsilon}{x:\Atoms}{\App{\OpAp{}{}}{\iota;x}}{\App{\OpAp{}{}}{\iota;x}}{\Naturals}$;
+  in other words, for all
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}
+  and $\Member{a}{\Dom{\Upsilon}}$, we have
+  $\RMemEq{\Upsilon'}{\App{\OpAp{}{}}{\iota;a}}{\App{\OpAp{}{}}{\iota;a}}{\Naturals}$
+  such that $\iota$ is injective.
+  But the only way for $\iota$ to assign a different index to each atom is for
+  it to test each atom in $\Dom{\Upsilon'}$ separately---but $\iota$ may only
+  mention the atoms in $\Dom{\Upsilon}$.
+\end{proof}
+
+\paragraph{Should the above be worrisome?}
+
+At the very least, the fact that neither the naturals nor the atoms may be
+embedded into the other commits us to a truly intuitionistic ontology, as
+opposed to merely constructive one. In particular, our framework is
+anti-classical in at least a na\"ive sense, because the Axiom of Choice puts
+each set in bijection with a cardinal, whence it is impossible for neither of
+two sets to embed in the other. However, it is important to note that as far as
+the propositions-as-types principle is concerned, Computational Type Theory is
+already anti-classical, as the undecidability of the halting program can be
+observed internally.
+
+In fact, we view the simultaneous validity of
+Theorems~\ref{thm:never-nat-injection}~and~\ref{thm:never-atom-injection} as
+totally desirable, because we adhere to a strictly Brouwerian conception of
+data. The proper way to view the type of atoms is as an ongoing act of free
+generation---and it is a basic fact concerning the activity of an idealized
+mathematician that at each stage, only a finite number of constructions shall
+have been effected so far.
+
+On the other hand, (the analogues of) these theorems are \emph{not} valid under
+Allen's supervaluation semantics, because one would have to account for worlds
+at which an infinite number of atoms have already been generated; in this way,
+the open-endedness of Allen's semantics relies crucially on a condition that is
+simply impossible under a Brouwerian conception of mathematical activity.
+
+\begin{remark}
+  One way to recover something essentially equivalent to the supervaluation
+  semantics in our style would be to replace the current semantic universe
+  $\Define{\SemU}{\Classes^\SCtx}$ with an extended universe
+  $\Define{\SemU_\infty}{\Classes^{\SCtx_\infty}}$, $\SCtx_\infty$ the set of
+  possibly-infinite symbol contexts and injective, sort-preserving renamings.
+  Externally, by Theorem~\ref{thm:no-nat-injection} we could still never
+  exhibit an embedding of the naturals, but internally, we would be unable to
+  rule it out.
+\end{remark}
 
 \ifdraft{}{
   \newpage
