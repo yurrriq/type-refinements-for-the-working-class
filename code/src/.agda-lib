@@ -1,0 +1,4 @@
+name: refinements
+include:
+  .
+  ../modules/agda-prelude/src
