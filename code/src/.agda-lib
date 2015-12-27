@@ -1,4 +1,5 @@
 name: refinements
 include:
   .
-  ../modules/agda-prelude/src
+  ../modules/agda-groupoids/modules/agda-prelude/src
+  ../modules/agda-groupoids/src
