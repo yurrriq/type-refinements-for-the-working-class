@@ -1,6 +1,6 @@
 [submodule "notation"]
 	path = notation
 	url = https://github.com/jonsterling/latex-common-notation.git
-[submodule "code/modules/agda-prelude"]
-	path = code/modules/agda-prelude
-	url = git@github.com:freebroccolo/agda-prelude.git
+[submodule "code/modules/agda-groupoids"]
+	path = code/modules/agda-groupoids
+	url = git@github.com:freebroccolo/agda-groupoids.git
