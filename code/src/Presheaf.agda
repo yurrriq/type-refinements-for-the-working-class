@@ -1,24 +1,37 @@
-module Presheaf (𝒮 : Set) where
+module Presheaf where
 
 open import Basis
-open import Context 𝒮
+open import Category
+open import Category.Setoids
+open import Category.Opposite
+open import Functor
 
-record Presheaf ..ℓ : Set (lsuc ℓ) where
-  field
-    act : Ctx → Set ℓ
-    map : {Γ Δ : Ctx} → Γ ↩ Δ ﹫ ℓ → act Δ → act Γ
+Presheaf
+  : ..{ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀ : _}
+  → Category ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀
+  → ..(ℓˢᵒ₁ ℓˢʰ₁ : _)
+  → Set _
+Presheaf 𝒞 ℓˢᵒ₁ ℓˢʰ₁ = Functor (𝒞 ᵒᵖ) (SETOID ℓˢᵒ₁ ℓˢʰ₁)
 
-open Presheaf public
+Presheaf₀
+  : ..{ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀ : _}
+  → Category ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀
+  → Set _
+Presheaf₀ 𝒞 = Presheaf 𝒞 lzero lzero
 
-_⊩_ : {ℓ : _} → Ctx → Presheaf ℓ → Set ℓ
-Γ ⊩ X = act X Γ
+_⊩_
+  : ..{ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀ ℓˢᵒ₁ ℓˢʰ₁ : _} {𝒞 : Category ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀}
+  → obj 𝒞
+  → Presheaf 𝒞 ℓˢᵒ₁ ℓˢʰ₁
+  → obj (SETOID ℓˢᵒ₁ ℓˢʰ₁)
+U ⊩ X =
+  Functor.ap₀ X U
 
-_•_ : {ℓ : _} {{X : Presheaf ℓ}} {Γ Δ : Ctx} → Δ ⊩ X  → Γ ↩ Δ → Γ ⊩ X
-_•_ {{X = X}} x ϱ = map X ϱ x
+_⊢_•_
+  : ..{ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀ ℓˢᵒ₁ ℓˢʰ₁ : _} {𝒞 : Category ℓᵒ₀ ℓˢᵒ₀ ℓˢʰ₀} (X : Presheaf 𝒞 ℓˢᵒ₁ ℓˢʰ₁) {U V : obj 𝒞}
+  → S.obj (V ⊩ X)
+  → S.obj (homˢ 𝒞 U V)
+  → S.obj (U ⊩ X)
+X ⊢ x • ϱ =
+  (Functor.ap₁ X S.$₀ ϱ) S.$₀ x
 
-{-# DISPLAY act X Γ = Γ ⊩ X #-}
-{-# DISPLAY map X ϱ x = x • ϱ #-}
-
--- the set of natural transformations between presheaves
-[_,_] : ..{ℓ₀ ℓ₁ : _} → Presheaf ℓ₀ → Presheaf ℓ₁ → Set (ℓ₀ ⊔ ℓ₁)
-[ X , Y ] = {Γ : Ctx} → Γ ⊩ X → Γ ⊩ Y
