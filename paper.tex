@@ -77,7 +77,7 @@
 \newcommand\Eval[4]{\EvalN{#1}{#2}{}{#3}{#4}}
 \newcommand\Exprs{\mathbf{E}}
 \newcommand\Values{\mathbf{V}}
-\newcommand\BTms{\mathbf{B}}
+\newcommand\BExprs{\mathbf{B}}
 \newcommand\Naturals{\mathbb{N}}
 \newcommand\NaturalsPsh{\mathcal{N}}
 
@@ -728,7 +728,7 @@ sort-indexed (resp.\ valence-indexed) copresheaves on $\SCtx$ of closed values
     }
   }\\
   \ADefine{
-    \BTms_{v}(\Upsilon)
+    \BExprs_{v}(\Upsilon)
   }{
     \MkSet{E \mid \IsAbtUnmoded{\cdot}{\Upsilon}{\cdot}{E}{v}}
   }
@@ -787,15 +787,15 @@ to operate on open terms by quantifying over substitutions, as follows:
 
 Next, we can always extend $R_\tau$ to a new
 family of valenced-indexed relations
-$\Of{R_v}{\Hom{\SemU}{\mathbb{1}}{\Pow{\BTms_v^2}}}$ for
+$\Of{R_v}{\Hom{\SemU}{\mathbb{1}}{\Pow{\BExprs_v^2}}}$ for
 $\Match{v}{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}$, defined pointwise as
 follows:
 \[
   \infer{
     \PBinRel{R_{\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}}}{\Upsilon}{
-      \MkBTm{\vec{u}}{\vec{x}}{M}
+      \MkAbs{\vec{u}}{\vec{x}}{M}
     }{
-      \MkBTm{\vec{v}}{\vec{y}}{N}
+      \MkAbs{\vec{v}}{\vec{y}}{N}
     }
   }{
     \begin{array}{l}
@@ -943,7 +943,7 @@ following sense:
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
   \end{tikzcd}%
-  , for all $\Member{\vec{E},\vec{F}}{\BTms^{[\vec{v}]}(\Upsilon')}$ and
+  , for all $\Member{\vec{E},\vec{F}}{\BExprs^{[\vec{v}]}(\Upsilon')}$ and
   $\Member{M}{\Exprs_\tau(\Upsilon')}$ and $\IMode{k}\geq\IMode{0}$, if we can conclude
   $\PBinRel{\preccurlyeq^\star_\tau}{\Upsilon'}{M}{\App{\Rename{\rho}{\vartheta}}{\vec{F}}}$
   from the following conditions:
@@ -979,7 +979,7 @@ following sense:
   \begin{tikzcd}[cramped]
     \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
   \end{tikzcd}%
-  and $\Member{\vec{E},\vec{F}}{\BTms^{[\vec{v}]}(\Upsilon')}$ and
+  and $\Member{\vec{E},\vec{F}}{\BExprs^{[\vec{v}]}(\Upsilon')}$ and
   $\Member{M}{\Exprs_\tau(\Upsilon')}$ and $\IMode{k}\geq\IMode{0}$.
   %
   By hypothesis (1) from Definition~\ref{def:extensionality} above, we have
