@@ -192,7 +192,7 @@ of symbols $U$ and sort-assignments
   \IMode{U}\arrow[r, "\IMode{\mathfrak{s}}"] &\IMode{\Sorts}
 \end{tikzcd}, and whose morphisms are
 sort-preserving renamings; we will write $\Upsilon$ for a symbol context
-$(U,\mathfrak{s})$.
+$(U,\mathfrak{s})$.  We also write $\IsSymCtx{\Upsilon}$ when $\Member{\Upsilon}{\SCtx}$.
 
 We will say that an $\Sorts$-valence is a form
 $\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}$, where
@@ -200,13 +200,14 @@ $\IMode{\vec{\sigma}\cup\vec{\tau}}\subseteq\IMode{\Sorts}$ and
 $\IsSort{\tau}$; valences represent the \emph{binding structure} of an
 abstraction of sort $\tau$, where $\vec{\sigma}$ are the sorts of the bound
 symbols and $\vec{\tau}$ are the sorts of the bound variables. When $v$ is a
-valence, we will say $\IsValence{v}$. An $\Sorts$-arity is of the form
-$\MkArity{\vec{v}}{\tau}$, where $\vec{v}$ are $\Sorts$-valences and
-$\IsSort{\tau}$; arities classify \emph{operators} (also called ``function
-symbols'' in older treatments of algebra). When $a$ is an arity, we will say
-$\IsArity{a}$.
+valence, we will say $\IsValence{v}$; let $\Valences$ be the set of $\Sorts$-valences.
 
-An \emph{operator signature} is an arity-indexed family of copresheaves on
+An $\Sorts$-arity is of the form $\MkArity{\vec{v}}{\tau}$, where $\vec{v}$ are
+$\Sorts$-valences and $\IsSort{\tau}$; arities classify \emph{operators} (also
+called ``function symbols'' in older treatments of algebra). When $a$ is an
+arity, we will say $\IsArity{a}$; let $\Arities$ be the set of $\Sorts$-arities.
+
+An $\Sorts$-\emph{operator signature} is an $\Sorts$-arity-indexed family of copresheaves on
 $\SCtx$, namely $\HypJ{\Of{\Operators_a}{\Sets^\SCtx}}{\IsArity{a}}$; this is
 an intensional generalization of the state of affairs for standard universal
 algebra, where operators are arity-indexed families of \emph{sets}. The point
@@ -227,8 +228,101 @@ renaming action $\Member{\Rename{\rho}{\vartheta}}{\Operators_a(\Upsilon')}$.%
   development, we have omitted this part of the apparatus for the sake of
   simplicity.
 }
+%
+We call the pair $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ an \emph{abt signature}.
 
-% \todo[inline]{give a brief description of the framework, and present its rules.}
+Just as we have defined symbol contexts as $\SCtx$, we will use the category
+$\FinSets$ of finite cardinals and \emph{all} maps between them to define
+variable contexts $\Ctx$ and metavariable contexts $\MCtx$, writing
+$\IsVarCtx{\Gamma}$ when $\Member{\Gamma}{\Ctx}$ and $\IsMetaCtx{\Theta}$ when
+$\Member{\Theta}{\MCtx}$. The difference between $\SCtx$ and $\Ctx$ is that the
+latter allows renamings that may identify distinct names, whereas renamings in
+$\SCtx$ are always injective.
+
+For a given abt signature, the syntax of abts is given by the judgments
+$\IsAbt{\Theta}{\Upsilon}{\Gamma}{M}{\tau}$ (presupposing $\IsMetaCtx{\Theta}$,
+$\IsSymCtx{\Upsilon}$, $\IsVarCtx{\Gamma}$ and $\IsSort{\tau}$) and
+$\IsAbs{\Theta}{\Upsilon}{\Gamma}{E}{v}$ (presupposing $\IsMetaCtx{\Theta}$,
+$\IsSymCtx{\Upsilon}$, $\IsVarCtx{\Gamma}$ and $\IsValence{v}$), defined in
+mutual induction as follows:
+
+
+\[
+  \infer[\RuleIsAbtVar]{
+    \IsAbt{\Theta}{\Upsilon}{\Gamma}{x}{\tau}
+  }{
+    \Lookup{\Gamma}{x}{\tau}
+  }
+\]
+\[
+  \infer[\RuleIsAbtMVar]{
+    \IsAbt{\Theta}{\Upsilon}{\Gamma}{
+      \MApp{\MV{m}}{u_0,\dots,u_m}{M_0,\dots,M_n}
+    }{\tau}
+  }{
+    \begin{array}{l}
+      \Lookup{\Theta}{\MV{m}}{
+        \MkValence{
+          \sigma_0,\dots,\sigma_m
+        }{
+          \tau_0,\dots,\tau_n
+        }{\tau}
+      }
+\\
+      \HypJ{
+        \Lookup{\Upsilon}{u_i}{\sigma_i}
+      }{\Leq{i}{m}}
+\\
+      \HypJ{
+        \IsAbt{\Theta}{\Upsilon}{\Gamma}{M_i}{\tau_i}
+      }{\Leq{i}{n}}
+    \end{array}
+  }
+\]
+\[
+  \infer[\RuleIsAbtApp]{
+    \IsAbt{\Theta}{\Upsilon}{\Gamma}{
+      \App{\vartheta}{E_0,\dots,E_n}
+    }{\tau}
+  }{
+    \begin{array}{l}
+      \IsOperator{\Upsilon}{\vartheta}{
+        \MkArity{v_1,\dots,v_n}{\tau}
+      }
+\\
+      \HypJ{
+        \IsAbs{\Theta}{\Upsilon}{\Gamma}{E_i}{v_i}
+      }{\Leq{i}{n}}
+    \end{array}
+  }
+\]
+\[
+  \infer[\RuleIsAbtAbs]{
+    \IsAbs{\Theta}{\Upsilon}{\Gamma}{
+      \MkAbs{\vec{u}}{\vec{x}}{M}
+    }{
+      \MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}
+    }
+  }{
+    \IsAbt{
+      \Theta
+    }{
+      \Upsilon, \vec{u}:\vec{\sigma}
+    }{
+      \Gamma,\vec{x}:{\vec{\tau}}
+    }{
+      M
+    }{\tau}
+  }
+\]
+
+We have several meta-operations on abts, including the calculation of free
+symbols $\FS{M}$, the calculation of free variables $\FV{M}$, the transport
+$\Rename{\rho}{M}$ across a renaming $\rho$, the substitution $\Subst{N}{x}{M}$
+of a term $N$ for the variable $x$ in $M$, and the substitution
+$\Subst{E}{\MV{m}}{M}$ of an abstraction $E$ for the metavariable $\MV{m}$ in
+$M$. Please see~\cite{sterling-morrison:2015} for the explicit definition of
+these operations.
 
 \section{Generalized Predicative Foundations}
 
