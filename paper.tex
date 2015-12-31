@@ -172,9 +172,63 @@ judgment, and outputs are things which are synthesized in the process. \fi
 
 \section{Abstract Binding Trees and Symbols}
 
-See~\cite{sterling-morrison:2015} for the development of abstract binding trees
-with symbols. \todo[inline]{give a brief description of the framework, and present its
-rules.}
+We will briefly reproduce the syntax of abts here;
+see~\cite{sterling-morrison:2015} for a full development of the syntax and
+semantics of multi-sorted nominal abstract binding trees, however. The point
+of nominal abts is that they extend the standard treatments of second order
+universal algebra~\cite{fiore-hur:2010} with a notion of \emph{symbolic
+parameter} and name abstraction; this is absolutely essential for correctly
+treating the syntax of assignables, open exceptions, fluid bindings, and
+processes, among other things. See Harper's \emph{Practical Foundations for
+Programming Languages}~$\cite{harper:2016}$ for numerous examples of the use of
+symbolic parameters.
+
+Fix a set of \emph{sorts} $\Sorts$; we'll say $\IsSort{\tau}$ when
+$\Member{\tau}{\Sorts}$. Let $\SymSets$ be the category of finite cardinals and
+injective maps between them; using the comma construction, we can define the
+category $\SCtx$ of \emph{contexts} of symbols, whose objects are finite sets
+of symbols $U$ and sort-assignments
+\begin{tikzcd}[cramped]
+  \IMode{U}\arrow[r, "\IMode{\mathfrak{s}}"] &\IMode{\Sorts}
+\end{tikzcd}, and whose morphisms are
+sort-preserving renamings; we will write $\Upsilon$ for a symbol context
+$(U,\mathfrak{s})$.
+
+We will say that an $\Sorts$-valence is a form
+$\MkValence{\vec{\sigma}}{\vec{\tau}}{\tau}$, where
+$\IMode{\vec{\sigma}\cup\vec{\tau}}\subseteq\IMode{\Sorts}$ and
+$\IsSort{\tau}$; valences represent the \emph{binding structure} of an
+abstraction of sort $\tau$, where $\vec{\sigma}$ are the sorts of the bound
+symbols and $\vec{\tau}$ are the sorts of the bound variables. When $v$ is a
+valence, we will say $\IsValence{v}$. An $\Sorts$-arity is of the form
+$\MkArity{\vec{v}}{\tau}$, where $\vec{v}$ are $\Sorts$-valences and
+$\IsSort{\tau}$; arities classify \emph{operators} (also called ``function
+symbols'' in older treatments of algebra). When $a$ is an arity, we will say
+$\IsArity{a}$.
+
+An \emph{operator signature} is an arity-indexed family of copresheaves on
+$\SCtx$, namely $\HypJ{\Of{\Operators_a}{\Sets^\SCtx}}{\IsArity{a}}$; this is
+an intensional generalization of the state of affairs for standard universal
+algebra, where operators are arity-indexed families of \emph{sets}. The point
+of fibering over symbol contexts is to introduce an open-ended indexing
+mechanism for operators; the functorial liftings of $\SCtx$-morphisms
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}
+equip operators $\Member{\vartheta}{\Operators_a(\Upsilon)}$ with a suitable
+renaming action $\Member{\Rename{\rho}{\vartheta}}{\Operators_a(\Upsilon')}$.%
+%
+\footnote{
+  In~\cite{sterling-morrison:2015}, the authors defined operator signatures as
+  \emph{sheaves} on $\OpCat{(\SCtx)}$ under the atomic topology (alternatively,
+  pullback-preserving presheaves), where all non-empty sieves cover; the sheaf
+  condition induces the unique existence of \emph{strengthenings} for
+  operators. However, because we do not use strengthening in the present
+  development, we have omitted this part of the apparatus for the sake of
+  simplicity.
+}
+
+% \todo[inline]{give a brief description of the framework, and present its rules.}
 
 \section{Generalized Predicative Foundations}
 
