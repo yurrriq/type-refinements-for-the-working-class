@@ -1579,6 +1579,14 @@ one which was constructed without knowledge of that symbol.
   particular, it is not guaranteed that the refinement $\phi$ is defined at
   $\Upsilon'\setminus\rho(a)$, and nor do we have
   $\Member{M,N}{\Exprs_\tau(\Upsilon'\setminus\rho(a))}$.
+
+  In fact, far from being a technical nuisance, the definition that is forced
+  by the nature of our presuppositions is completely desirable, since it
+  expresses a \emph{behavioral} notion of independence rather than a
+  \emph{structural} one. Moreover, under the structural definition, even if
+  $\phi$ is a type, $\phi\setminus a$ might fail to be a type in case there is
+  a member of $\phi$ that uses $a$ which is merely computationally equivalent
+  to another member that is independent of $a$.
 \end{remark}
 
 \begin{thm} \label{thm:independence-comonadic}
