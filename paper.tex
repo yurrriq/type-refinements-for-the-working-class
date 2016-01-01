@@ -1607,15 +1607,23 @@ one which was constructed without knowledge of that symbol.
     }
     \\[6pt]
     \infer[\textit{lift}]{
-      \forall\Member{M,N}{\Exprs_\tau(\Upsilon)}.\
-      \RMemEq{\Upsilon}{M}{N}{\Indep{\phi}{a}}
+      \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+          \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}.\
+      \forall\Member{M,N}{\Exprs_\tau(\Upsilon')}.\
+      \RMemEq{\Upsilon'}{M}{N}{\Indep{\phi}{a}}
       \implies
-      \RMemEq{\Upsilon}{M}{N}{\Indep{\psi}{a}}
+      \RMemEq{\Upsilon'}{M}{N}{\Indep{\psi}{a}}
     }{
-      \forall\Member{M,N}{\Exprs_\tau(\Upsilon)}.\
-      \RMemEq{\Upsilon}{M}{N}{\phi}
+      \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+          \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}.\
+      \forall\Member{M,N}{\Exprs_\tau(\Upsilon')}.\
+      \RMemEq{\Upsilon'}{M}{N}{\phi}
       \implies
-      \RMemEq{\Upsilon}{M}{N}{\psi}
+      \RMemEq{\Upsilon'}{M}{N}{\psi}
     }
   \end{gather*}
 \end{thm}
@@ -1658,6 +1666,174 @@ any renaming
 \begin{proof}
   The demonstration is essentially analogous to the one for independence in
   Theorem~\ref{thm:independence-comonadic}.
+\end{proof}
+
+\subsubsection{Nominal Possibility}
+
+\emph{Nominal possibility} expresses the idea that there \emph{exists} an
+extension of the current symbol context at which a refinement is inhabited.
+However, it is not possible to define a useful possibility modality in the same
+way as the others, without imposing requirements on the abt signature. In
+particular, we need to introduce a new sort and a new canonical operator for
+introducing possibility:
+\[
+  \infer{
+    \IsSort{\Diamond\tau}
+  }{
+    \IsSort{\tau}
+  }\qquad
+  \infer{
+    \IsCanOperator{\Upsilon}{\Diamond[\vec{\sigma}]}{
+      \MkArity{
+        \MkValence{\vec{\sigma}}{}{\tau}
+      }{\Diamond\tau}
+    }
+  }{
+  }
+\]
+
+Then, we can explain the following refinement formation rule:
+\[
+  \infer={
+    \Refines{\Upsilon}{\Diamond\phi}{\Diamond\tau}
+  }{
+    \Refines{\Upsilon}{\phi}{\tau}
+  }
+\]
+
+We will begin by defining a refinement $\Diamond_0\phi$ on values, for any renaming
+\begin{tikzcd}[cramped]
+  \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+\end{tikzcd}%
+:
+\[
+  \infer={
+    \RMemEq{\Upsilon'}{
+      \App{
+        \Diamond[\vec{\sigma}]
+      }{
+        \MkAbs{\vec{u}}{}{M}
+      }
+    }{
+      \App{
+        \Diamond[\vec{\sigma}]
+      }{
+        \MkAbs{\vec{v}}{}{N}
+      }
+    }{\Diamond_0\phi}
+  }{
+    \forall\IMode{\vec{w}}\mathrel{\#}\IMode{\Dom{\Upsilon'}\cup\vec{u}\cup\vec{v}}.\
+    \RMemEq{\Upsilon',\vec{w}:\vec{\sigma}}{\Rename{(\vec{u}\mapsto\vec{w}}{M})}{\Rename{(\vec{v}\mapsto\vec{w})}{N}}{\phi}
+  }
+\]
+
+Then, the possibility modality is defined as the computational extension of
+$\Diamond_0-$, $\Define{\Diamond\phi}{\VToCType\left(\Diamond_0\phi\right)}$.
+
+
+\begin{thm}
+
+  Nominal possibility is an idempotent monadic modality, in the sense that the
+  following rules are valid:
+%
+  \[
+    \infer[\textit{return}]{
+      \RMemEq{\Upsilon}{
+        \App{
+          \Diamond[\cdot]
+        }{
+          \MkAbs{}{}{M}
+        }
+      }{
+        \App{
+          \Diamond[\cdot]
+        }{
+          \MkAbs{}{}{N}
+        }
+      }{\Diamond\phi}
+    }{
+      \RMemEq{\Upsilon}{M}{N}{\phi}
+    }
+  \]
+  \[
+    \infer=[\textit{join}]{
+      \RMemEq{\Upsilon}{
+        \App{
+          \Diamond[\vec{\sigma}_0,\vec{\sigma}_1]
+        }{
+          \MkAbs{\vec{u}_0,\vec{u}_1}{}{M}
+        }
+      }{
+        \App{
+          \Diamond[\vec{\sigma}_0,\vec{\sigma}_1]
+        }{
+          \MkAbs{\vec{v}_0,\vec{v}_1}{}{M}
+        }
+      }{\Diamond\phi}
+    }{
+      \RMemEq{\Upsilon}{
+        \App{
+          \Diamond[\vec{\sigma}_0]
+        }{
+          \MkAbs{\vec{u}_0}{}{
+            \App{
+              \Diamond[\vec{\sigma}_1]
+            }{
+              \MkAbs{\vec{u}_1}{}{M}
+            }
+          }
+        }
+      }{
+        \App{
+          \Diamond[\vec{\sigma_0}]
+        }{
+          \MkAbs{\vec{v}_0}{}{
+            \App{
+              \Diamond[\vec{\sigma}_1]
+            }{
+              \MkAbs{\vec{v}_1}{}{N}
+            }
+          }
+        }
+      }{\Diamond\Diamond\phi}
+    }
+  \]
+  \[
+    \infer[\textit{lift}]{
+      \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+          \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}.\
+      \forall\Member{M,N}{\Exprs_{\Diamond\tau}(\Upsilon')}.\
+      \RMemEq{\Upsilon'}{M}{N}{\Diamond\phi}
+      \implies
+      \RMemEq{\Upsilon'}{M}{N}{\Diamond\psi}
+    }{
+      \forall
+        \begin{tikzcd}[cramped, ampersand replacement = \&]
+          \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+        \end{tikzcd}.\
+      \forall\Member{M,N}{\Exprs_\tau(\Upsilon')}.\
+      \RMemEq{\Upsilon'}{M}{N}{\phi}
+      \implies
+      \RMemEq{\Upsilon'}{M}{N}{\psi}
+    }
+  \]
+\end{thm}
+\begin{proof}
+
+  As in Theorem~\ref{thm:independence-comonadic}, the validity first two rules
+  is obvious. To demonstrate the \textit{lift} rule, fix a renaming
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &
+    \IMode{\Upsilon'}\arrow[r,hook,"\IMode{\rho'}"] &
+    \IMode{\Upsilon''}\equiv\OMode{\Upsilon', \vec{w}:\vec{\sigma}}
+  \end{tikzcd}
+  and $\Member{M,N}{\Exprs_\tau(\Upsilon'')}$ such that
+  $\RMemEq{\Upsilon''}{M}{N}{\phi}$; then it suffices to show that
+  $\RMemEq{\Upsilon'}{\App{\Diamond[\vec{\sigma}]}{\MkAbs{\vec{w}}{}{M}}}{\App{\Diamond[\vec{\sigma}]}{\MkAbs{\vec{w}}{}{N}}}{\Diamond\psi}$, which is to say,
+  $\RMemEq{\Upsilon''}{M}{N}{\psi}$. But this follows directly from the premise, setting $\Match{\Upsilon'}{\Upsilon''}$.
+
 \end{proof}
 
 \section{Related Work}
