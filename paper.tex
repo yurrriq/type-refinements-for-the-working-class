@@ -1352,6 +1352,7 @@ Then, we clearly have $\IsType{\Upsilon}{\TyBase{\tau}}{\tau}$, because it respe
 computational equivalence by definition.
 
 \subsubsection{The type of atoms}
+\label{sec:atom-type}
 \newcommand\SortAtom{\mathtt{atom}}
 \newcommand\OpToken[1]{\mathtt{tok}[#1]}
 \newcommand\OpMatch[1]{\mathtt{match}_{#1}}
@@ -1523,6 +1524,98 @@ advance a syntax for the canonical formation of functions.
   can rewrite hypothesis (2) into the goal.
 \end{proof}
 
+\subsection{Refinement Modalities}
+
+In Section~\ref{sec:atom-type} we introduced our first \emph{intensional} type,
+that is, a type whose meaning varies over worlds $\Upsilon$. It is also
+possible to introduce \emph{refinement modalities} which change the
+meaning of a refinement in an intensional manner.
+
+\subsubsection{Nominal Independence}
+
+\newcommand\Indep[2]{#1\setminus #2}
+
+Mark Bickford introduced in~\cite{bickford:2008} a type in Nuprl that expresses
+the independence of a term $M$ of type $A$ from a symbol $a$, written
+$M:A\parallel a$, which is used in order to express the notion that some agent
+is not aware of a particular token/atom. In our setting, nominal independence
+is best expressed through a comonadic refinement modality, $\Indep{\phi}{a}$, whose
+inhabitants are the inhabitants of $\phi$ which do not make use of the symbol
+$a$. To be precise, we intend to explain the following refinement formation
+rule:
+\[
+  \infer={
+    \Refines{\Upsilon,a:\sigma}{\Indep{\phi}{a}}{\tau}
+  }{
+    \Refines{\Upsilon,a:\sigma}{\phi}{\tau}
+  }
+\]
+
+The definition of nominal independence is as follows, for any renaming
+\begin{tikzcd}[cramped]
+  \IMode{\Upsilon,a:\sigma}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+\end{tikzcd}%
+:
+\[
+  \infer={
+    \RMemEq{\Upsilon'}{M}{N}{\Indep{\phi}{\rho(a)}}
+  }{
+    \exists\Member{L}{\Exprs_\tau(\Upsilon'\setminus \rho(a))}.
+    \begin{array}{l}
+      \quad \RMemEq{\Upsilon'}{L}{M}{\phi}\\
+      \quad \RMemEq{\Upsilon'}{L}{N}{\phi}
+    \end{array}
+  }
+\]
+
+In other words, a construction is independent of a symbol when it is equal to
+one which was constructed without knowledge of that symbol.
+
+\begin{thm}
+  The refinement operator $\Indep{-}{a}$ is an idempotent comonad on refinements
+  in the sense that the following rules are valid:
+
+  \begin{gather*}
+    \infer[\textit{extract}]{
+      \RMemEq{\Upsilon}{M}{N}{\phi}
+    }{
+      \RMemEq{\Upsilon}{M}{N}{\Indep{\phi}{a}}
+    }
+    \qquad
+    \infer=[\textit{duplicate}]{
+      \RMemEq{\Upsilon}{M}{N}{\Indep{\Indep{\phi}{a}}{a}}
+    }{
+      \RMemEq{\Upsilon}{M}{N}{\Indep{\phi}{a}}
+    }
+    \\[6pt]
+    \infer[\textit{lift}]{
+      \forall\Member{M,N}{\Exprs_\tau(\Upsilon)}.\
+      \RMemEq{\Upsilon}{M}{N}{\Indep{\phi}{a}}
+      \implies
+      \RMemEq{\Upsilon}{M}{N}{\Indep{\psi}{a}}
+    }{
+      \forall\Member{M,N}{\Exprs_\tau(\Upsilon)}.\
+      \RMemEq{\Upsilon}{M}{N}{\phi}
+      \implies
+      \RMemEq{\Upsilon}{M}{N}{\psi}
+    }
+  \end{gather*}
+\end{thm}
+\begin{proof}
+  The first two inferences are obviously evident. To validate \textit{lift},
+  suppose that $\RMemEq{\Upsilon}{M}{N}{\Indep{\phi}{a}}$; by inversion, we
+  have an $\Member{L}{\Exprs_\tau(\Upsilon\setminus a)}$ such that
+  $\RMemEq{\Upsilon}{L}{M}{\phi}$ and $\RMemEq{\Upsilon}{L}{N}{\phi}$.  Now, it
+  suffices to exhibit an $\Member{L'}{\Exprs_\tau(\Upsilon\setminus a)}$ such
+  that $\RMemEq{\Upsilon}{L'}{M}{\psi}$ and $\RMemEq{\Upsilon}{L'}{N}{\psi}$;
+  but we may simply choose $\Match{L'}{L}$ and discharge the remaining subgoals
+  by appealing to the premise of the rule.
+\end{proof}
+
+%% \subsubsection{Nominal Necessity}
+%%
+%% \subsubsection{Nominal Possibility}
+%%
 \section{Related Work}
 
 In \cite{allen:2006}, Stuart Allen gave a \emph{supervaluation} semantics for
@@ -1662,6 +1755,16 @@ Allen's supervaluation semantics, because one would have to account for worlds
 at which an infinite number of atoms had already been generated; in this way,
 the open-endedness of Allen's semantics relies crucially on a condition that is
 simply impossible under a Brouwerian conception of mathematical activity.
+
+\section*{Acknowledgements}
+
+The first author wishes to thank Robert Harper for the inspiration to pursue a
+generalization of the Nuprl type theory from the refinements perspective. We
+also thank Mark Bickford for clarifying the status of atoms and generative
+phenomena in Nuprl; finally, we owe a debt of gratitude to Vincent Rahli and
+Abhishek Anand for their tireless work on the \emph{Nuprl in Coq} project,
+which was helpful in our efforts to understand Howe's computational equivalence
+and its generalization to the nominal setting.
 
 \ifdraft{}{
   \newpage
