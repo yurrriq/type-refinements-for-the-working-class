@@ -1633,7 +1633,7 @@ one which was constructed without knowledge of that symbol.
 \subsubsection{Nominal Necessity}
 
 Another comonadic refinement modality is \emph{nominal necessity}
-$\HypJ{\Refines{\Upsilon}{\square\phi}{\tau}}{\Refines{\Upsilon}{\phi}{\tau}}$,
+$\HypJ{\Refines{\Upsilon}{\Box\phi}{\tau}}{\Refines{\Upsilon}{\phi}{\tau}}$,
 which expresses the independence of an object from \emph{any} atoms at all. For
 any renaming
 \begin{tikzcd}[cramped]
@@ -1642,7 +1642,7 @@ any renaming
 , we define nominal necessity as follows:
 \[
   \infer={
-    \RMemEq{\Upsilon'}{M}{N}{\square\phi}
+    \RMemEq{\Upsilon'}{M}{N}{\Box\phi}
   }{
     \exists\Member{L}{\Exprs_\tau(\cdot)}.
     \begin{array}{l}
@@ -1660,8 +1660,6 @@ any renaming
   Theorem~\ref{thm:independence-comonadic}.
 \end{proof}
 
-%% \subsubsection{Nominal Possibility}
-%%
 \section{Related Work}
 
 In \cite{allen:2006}, Stuart Allen gave a \emph{supervaluation} semantics for
