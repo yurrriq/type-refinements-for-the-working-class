@@ -1571,7 +1571,17 @@ The definition of nominal independence is as follows, for any renaming
 In other words, a construction is independent of a symbol when it is equal to
 one which was constructed without knowledge of that symbol.
 
-\begin{thm}
+\begin{remark}
+  Note that we could not have simply used
+  $\RMemEq{\Upsilon'\setminus\rho(a)}{M}{N}{\phi}$ as the premise in our
+  definition, since that would be outside the range of significance of this
+  form of judgment (i.e.\ the presuppositions fail to be satisfied); in
+  particular, it is not guaranteed that the refinement $\phi$ is defined at
+  $\Upsilon'\setminus\rho(a)$, and nor do we have
+  $\Member{M,N}{\Exprs_\tau(\Upsilon'\setminus\rho(a))}$.
+\end{remark}
+
+\begin{thm} \label{thm:independence-comonadic}
   The refinement operator $\Indep{-}{a}$ is an idempotent comonad on refinements
   in the sense that the following rules are valid:
 
@@ -1612,8 +1622,36 @@ one which was constructed without knowledge of that symbol.
   by appealing to the premise of the rule.
 \end{proof}
 
-%% \subsubsection{Nominal Necessity}
-%%
+\subsubsection{Nominal Necessity}
+
+Another comonadic refinement modality is \emph{nominal necessity}
+$\HypJ{\Refines{\Upsilon}{\square\phi}{\tau}}{\Refines{\Upsilon}{\phi}{\tau}}$,
+which expresses the independence of an object from \emph{any} atoms at all. For
+any renaming
+\begin{tikzcd}[cramped]
+  \IMode{\Upsilon}\arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+\end{tikzcd}%
+, we define nominal necessity as follows:
+\[
+  \infer={
+    \RMemEq{\Upsilon'}{M}{N}{\square\phi}
+  }{
+    \exists\Member{L}{\Exprs_\tau(\cdot)}.
+    \begin{array}{l}
+      \RMemEq{\Upsilon'}{L}{M}{\phi}\\
+      \RMemEq{\Upsilon'}{L}{N}{\phi}
+    \end{array}
+  }
+\]
+
+\begin{thm}
+  Nominal independence is an idempotent comonadic modality on refinements.
+\end{thm}
+\begin{proof}
+  The demonstration is essentially analogous to the one for independence in
+  Theorem~\ref{thm:independence-comonadic}.
+\end{proof}
+
 %% \subsubsection{Nominal Possibility}
 %%
 \section{Related Work}
