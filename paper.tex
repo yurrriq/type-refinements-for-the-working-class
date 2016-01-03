@@ -1002,7 +1002,11 @@ $\PBinRel{R_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}$.
   $\IMode{M,N}\mapsto\OMode{M = N}$ as our motive; then, it suffices to show
   that for all $M$, $\PBinRel{[=]}{\Upsilon}{M}{M}$. Expanding the definition
   of $[-]$, this means that we have to show that when
-  $\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\vec{E}}}$, then
+  $\Eval{\Upsilon'}{\tau}{\Rename{\rho}{M}}{\App{\vartheta}{\vec{E}}}$ for
+  \begin{tikzcd}[cramped]
+    \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
+  \end{tikzcd}%
+  , then
   $\IsEq{\vec{E}}{\vec{E}}$; but this is always the case, because of the
   functionality/determinacy of the evaluation relation.
 \end{proof}
