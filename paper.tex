@@ -977,15 +977,15 @@ bound terms and valences:
 
 Now, we can extend $R_\tau$ to a new relation $[R_\tau]$ on closed expressions
 which respects a single ``layer'' of computation. We will say
-$\PBinRel{[R_\tau]}{\Upsilon}{M}{N}$ when, supposing
-$\Eval{\Upsilon}{\tau}{M}{\App{\vartheta}{\Vec{E}}}$ such that
-$\IsCanOperator{\Upsilon}{\vartheta}{\MkArity{\vec{v}}{\tau}}$,
-for any
+$\PBinRel{[R_\tau]}{\Upsilon}{M}{N}$ when, for any
 \begin{tikzcd}[cramped]
   \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] &\IMode{\Upsilon'}
-\end{tikzcd}
-, we have $\Eval{\Upsilon'}{\tau}{\Rename{\rho}{N}}{\App{\Rename{\rho}{\vartheta}}{\Rename{\rho}{\Vec{F}}}}$ and
-$\PBinRel{R_{\vec{v}}}{\Upsilon'}{\Rename{\rho}{\vec{E}}}{\Rename{\rho}{\vec{F}}}$.
+\end{tikzcd}%
+, supposing
+$\Eval{\Upsilon'}{\tau}{\Rename{\rho}{M}}{\App{\vartheta}{\Vec{E}}}$ such that
+$\IsCanOperator{\Upsilon'}{\vartheta}{\MkArity{\vec{v}}{\tau}}$,
+we have $\Eval{\Upsilon'}{\tau}{\Rename{\rho}{N}}{\App{\vartheta}{\Vec{F}}}$ and
+$\PBinRel{R_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}$.
 
 \begin{definition}[Computational Approximation]
   Because $[-_\tau]$ is monotonic, it has a greatest fixed point, which we will
