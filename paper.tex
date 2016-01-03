@@ -992,6 +992,30 @@ $\PBinRel{R_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}$.
   call \emph{computational approximation},
   $\Of{\preccurlyeq_\tau}{\Hom{\SemU}{\mathbb{1}}{\Pow{\Exprs_\tau^2}}}$,
   written pointwise as $\PBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}$.
+  In other words:
+  \[
+    \infer{
+      \PBinRel{\preccurlyeq_\tau}{\Upsilon}{M}{N}
+    }{
+      \forall
+      \begin{tikzcd}[cramped, ampersand replacement = \&]
+        \IMode{\Upsilon} \arrow[r,hook,"\IMode{\rho}"] \&\IMode{\Upsilon'}
+      \end{tikzcd}.\
+      \land\left\{
+        \begin{array}{l}
+          \Eval{\Upsilon'}{\tau}{\Rename{\rho}{M}}{\App{\vartheta}{\vec{E}}}\\
+          \IsCanOperator{\Upsilon'}{\vartheta}{\MkArity{\vec{v}}{\tau}}
+        \end{array}
+      \right\}
+      \implies
+      \land\left\{
+        \begin{array}{l}
+          \Eval{\Upsilon'}{\tau}{\Rename{\rho}{N}}{\App{\vartheta}{\Vec{F}}}\\
+          \PBinRel{\preccurlyeq_{\vec{v}}}{\Upsilon'}{\vec{E}}{\vec{F}}
+        \end{array}
+      \right\}
+    }
+  \]
 \end{definition}
 
 \begin{thm}[Reflexivity]\label{thm:approx-refl}
