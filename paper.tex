@@ -736,8 +736,9 @@ lattice.
 
 Given a family of refinements (i.e. a functional refinement)
 $\FRefines{\Upsilon}{x:\phi}{\psi}{\tau}$ such that
-$\Refines{\Upsilon}{\phi}{\sigma}$, including the family intersection, the
-dependent intersection, the family union, and the set comprehension.
+$\Refines{\Upsilon}{\phi}{\sigma}$, we may construct a number of new refinement
+connectives, including the family intersection, the dependent intersection, the
+family union, and the set comprehension.
 
 \paragraph{Family intersection}
 The intersection $\Refines{\Upsilon}{\bigcap_{(x:\phi)}\psi}{\tau}$ of a family
@@ -856,7 +857,7 @@ as PERs on \emph{programs} in addition to values.
 
 \subsection{Lazy Computation Systems}
 
-In this section we generalize Howe's notion of lazy computation
+In this section we adapt Howe's notion of lazy computation
 system~\cite{howe:1989} to the multi-sorted, symbol-parameterized setting. An
 \emph{lazy computation language} is an abt signature
 $\Match{\Sigma}{\Pair{\Sorts}{\Operators}}$ along with a distinguished
@@ -1690,7 +1691,7 @@ any renaming
 \]
 
 \begin{thm}
-  Nominal independence is an idempotent comonadic modality on refinements.
+  Nominal necessity is an idempotent comonadic modality on refinements.
 \end{thm}
 \begin{proof}
   The demonstration is essentially analogous to the one for independence in
